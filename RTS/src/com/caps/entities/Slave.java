@@ -23,6 +23,7 @@ public class Slave extends GameObject{
 	private boolean goToBase = false;
 	private boolean first = true;
 	private boolean stop = false;
+	private TownCenter base = (TownCenter) handler.findObject(ID.Base);
 	private int carry = 0;
 	
 	public Slave(float x, float y, ID id, Handler handler) {
@@ -38,7 +39,7 @@ public class Slave extends GameObject{
 		x += velX;
 		y += velY;
 
-		if(getBoundsTotal().intersects(handler.findObject(ID.Base).getBoundsTotal())){
+		if(getBoundsTotal().intersects(base.getBoundsTotal())){
 			if(isResource == RESOURCE.Wood){
 				HUD.WOOD += carry;
 				carry = 0;
@@ -54,14 +55,14 @@ public class Slave extends GameObject{
 			}
 		}
 		if(stop == true){
-			if(getBoundsTotal().intersects(handler.findObject(ID.Base).getBoundsTotal())){
+			if(getBoundsTotal().intersects(base.getBoundsTotal())){
 				velX = 0;
 				velY = 0;
 				stop = false;
 			}
 		}
 		if(goToBase == true){
-			handler.goToCords(Math.round(handler.findObject(ID.Base).getX()), Math.round(handler.findObject(ID.Base).getY()), this);
+			handler.goToCords(Math.round(base.getX()), Math.round(base.getY()), this);
 			goToBase = false;
 		}
 		if(goToResource == true && isHandling == false){
