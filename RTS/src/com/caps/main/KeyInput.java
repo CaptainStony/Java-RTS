@@ -19,7 +19,7 @@ public class KeyInput extends KeyAdapter{
 	
 	public void keyPressed(java.awt.event.KeyEvent e){
 		int key = e.getKeyCode();
-		
+		if(key == KeyEvent.VK_ESCAPE) System.exit(0);
 		if(key == KeyEvent.VK_W || key == KeyEvent.VK_UP) keyPress[0] = true;
 		if(key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) keyPress[1] = true;
 		if(key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) keyPress[2] = true;

@@ -89,12 +89,9 @@ public class MouseInput implements MouseListener{
 							for (int j = 0; j < handler.object.size(); j++) {
 								GameObject resObj = handler.object.get(j);
 								if(resObj.getId() == ID.Resource){
-									System.out.println(resObj.getResource());
 									if(endPoint.getBoundsTotal().intersects(resObj.getBoundsTotal())){
 										obj.interactedResource = resObj;
-										System.out.println(resObj.getBoundsTotal().x + ":" + resObj.getBoundsTotal().y);
-										System.out.println(mouseBounds.getBounds().x + ":" + mouseBounds.getBounds().y);
-                                        break;
+										break;
 									}	
 								}
 							}	
