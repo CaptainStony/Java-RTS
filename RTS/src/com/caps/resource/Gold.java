@@ -1,4 +1,4 @@
-package com.caps.entities;
+package com.caps.resource;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,61 +12,67 @@ import com.caps.main.GameObject;
 import com.caps.main.Handler;
 import com.caps.main.ID;
 
-public class TownCenter extends GameObject{
+public class Gold extends GameObject{
 
-	private Handler handler;
+private Handler handler;
 	
-	public TownCenter(float x, float y, ID id, Handler handler) {
+	public Gold(float x, float y, ID id, Handler handler) {
 		super(x, y, id);
 		baseSpeed = 0;
+		Health = 115;
 		this.handler = handler;
-
+		isResource = RESOURCE.Gold;
 	}
-
 	
 	@Override
 	public void tick() {
 		x += velX;
 		y += velY;
-		
-		
+		if(Health <= 0){
+			handler.removeObject(this);
+		}
+		collision();
 	}
-
+	
 	@Override
 	public void render(Graphics g) {
 		try {
-			Image image = ImageIO.read(this.getClass().getResource("/base.png"));
+			Image image = ImageIO.read(this.getClass().getResource("/gold.png"));
             int w = image.getWidth(null);
             int h = image.getHeight(null);
-            g.drawImage(image,Math.round(x),Math.round(y), w/2, h/2, null);
+            g.drawImage(image,Math.round(x),Math.round(y), w/4, h/4, null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		if (selected == true){
 			g.setColor(Color.white);
-			if (selected == true){
-				g.drawRect((int)x, (int)y, 105, 158);
-			}
+			g.drawRect((int)x, (int)y, 53,40);
+		}
+	}
+	private void collision(){
+
 
 	}
 	@Override
 	public Rectangle getBoundsUp() {
-		return new Rectangle((int)x+2, (int)y, 101, 2);
+		return null;
 	}
 	@Override
 	public Rectangle getBoundsDown() {
-		return new Rectangle((int)x+2, (int)y+156, 101, 2);
+		return null;
 	}
 	@Override
 	public Rectangle getBoundsLeft() {
-		return new Rectangle((int)x, (int)y, 2, 154);
+		return null;
 	}
 	@Override
 	public Rectangle getBoundsRight() {
-		return new Rectangle((int)x+103, (int)y, 2, 154);
+		return null;
 	}
 	@Override
 	public Rectangle getBoundsTotal() {
-		return new Rectangle((int)x, (int)y, 105, 158);
+		return new Rectangle((int)x, (int)y, 53,40);
+
 	}
 
 }

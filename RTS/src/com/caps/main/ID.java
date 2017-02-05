@@ -9,5 +9,6 @@ public enum ID {
 	Base(),
 	Building(),
 	Particle(),
+	Button(),
 	
 }

@@ -4,7 +4,10 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import com.caps.entities.Slave;
+import com.caps.entities.Tank;
 import com.caps.entities.mousePoint;
+import com.caps.main.Button.TYPE;
 
 public class MouseInput implements MouseListener{
 	private Handler handler;
@@ -34,10 +37,32 @@ public class MouseInput implements MouseListener{
 		Rectangle mouseBounds = new Rectangle(worldMouseX, worldMouseY, 1, 1);
 		//handler.addObject(new Tank(mouseX, mouseY, ID.Tank, handler));
 		if(e.getButton() == 1){
-			game.selectedObject.clear();
-			for (int j = 0; j < handler.object.size(); j++) {
-				handler.object.get(j).selected = false;
+			Button bb = (Button) handler.findObject(ID.Button);
+			
+			if(bb != null && handler.findObject(ID.Base).selected){
+				if(HUD.FOOD >= 10 && bb.getBoundsTotal().intersects(mouseBounds)){
+					HUD.FOOD -= 10;
+					GameObject base = handler.findObject(ID.Base);
+					if(bb.type == TYPE.Slave){
+						handler.addObject(new Slave(base.x - 20, base.y - 20, ID.Slave, handler));
+					} else if(bb.type == TYPE.Tank){
+						handler.addObject(new Tank(base.x - 20, base.y - 20, ID.Tank, handler));
+					}
+				}else{
+					game.selectedObject.clear();
+					for (int j = 0; j < handler.object.size(); j++) {
+						handler.object.get(j).selected = false;
+					}
+				}
+				
+			}else{
+				game.selectedObject.clear();
+				for (int j = 0; j < handler.object.size(); j++) {
+					handler.object.get(j).selected = false;
+				}
 			}
+
+			
 			for (int i = 0; i < handler.object.size(); i++) {
 				GameObject tempObject = handler.object.get(i);
 				if (tempObject.getBoundsTotal().intersects(mouseBounds)){
@@ -53,6 +78,7 @@ public class MouseInput implements MouseListener{
 			}
 				
 		}
+			
 		if (e.getButton() == 3){
 			for (int i = 0; i < game.selectedObject.size(); i++) {
 				GameObject obj = game.selectedObject.get(i);
@@ -63,9 +89,12 @@ public class MouseInput implements MouseListener{
 							for (int j = 0; j < handler.object.size(); j++) {
 								GameObject resObj = handler.object.get(j);
 								if(resObj.getId() == ID.Resource){
+									System.out.println(resObj.getResource());
 									if(endPoint.getBoundsTotal().intersects(resObj.getBoundsTotal())){
 										obj.interactedResource = resObj;
-
+										System.out.println(resObj.getBoundsTotal().x + ":" + resObj.getBoundsTotal().y);
+										System.out.println(mouseBounds.getBounds().x + ":" + mouseBounds.getBounds().y);
+                                        break;
 									}	
 								}
 							}	
@@ -74,30 +103,6 @@ public class MouseInput implements MouseListener{
 						}
 					}
 					handler.goToCords(worldMouseX, worldMouseY, obj);
-					/*
-					 * 
-					 * is in handler nu :)
-					 * 
-					float difX = worldMouseX - obj.getX()-8;
-					float difY = worldMouseY - obj.getY()-8;
-					float angle = (float) Math.atan(difY/difX);
-					
-					if(difX>0 && difY<0 || difX>0 && difY>0){
-						obj.velX = (float) (obj.baseSpeed * Math.cos(angle));
-						obj.velY = (float) (obj.baseSpeed * Math.sin(angle));
-						
-					}else if (difX<0 && difY<0 || difX<0 && difY>0){
-						obj.velX = (float) -(obj.baseSpeed * Math.cos(angle));
-						obj.velY = (float) -(obj.baseSpeed * Math.sin(angle));
-					}
-					if (obj.getEndPoint() == null){
-						handler.addObject(endPoint);
-						obj.setEndPoint(endPoint);
-					}else{
-						handler.removeObject(obj.getEndPoint());
-						obj.setEndPoint(endPoint);
-						handler.addObject(endPoint);
-					}*/
 					
 				}
 			}
@@ -107,5 +112,4 @@ public class MouseInput implements MouseListener{
 	public void mouseReleased(MouseEvent e) {
 		
 	}
-
 }

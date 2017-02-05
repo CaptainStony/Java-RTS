@@ -103,13 +103,13 @@ public class Tank extends GameObject{
 			GameObject tempObject = handler.object.get(i);
 			if(tempObject.getId() == ID.Base){
 				if(getBoundsUp().intersects(tempObject.getBoundsTotal())){
-					y = tempObject.getY()+53;
+					y = tempObject.getY()+178;
 				}else if (getBoundsDown().intersects(tempObject.getBoundsTotal())){
 					y = tempObject.getY()-50;
 				}else if (getBoundsLeft().intersects(tempObject.getBoundsTotal())){
-					x = tempObject.getX()+42;
+					x = tempObject.getX()+116;
 				}else if (getBoundsRight().intersects(tempObject.getBoundsTotal())){
-					x = tempObject.getX()-34;
+					x = tempObject.getX()-36;
 				}
 			}
 		}
@@ -129,7 +129,7 @@ public class Tank extends GameObject{
 	}
 	@Override
 	public Rectangle getBoundsRight() {
-		return new Rectangle((int)x+32, (int)y-20, 2, 70);
+		return new Rectangle((int)x+33, (int)y-20, 2, 70);
 	}
 	@Override
 	public Rectangle getBoundsTotal() {

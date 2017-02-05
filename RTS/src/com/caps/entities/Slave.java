@@ -22,7 +22,7 @@ public class Slave extends GameObject{
 	private boolean goToResource = false;
 	private boolean goToBase = false;
 	private boolean first = true;
-	
+	private boolean stop = false;
 	private int carry = 0;
 	
 	public Slave(float x, float y, ID id, Handler handler) {
@@ -53,17 +53,26 @@ public class Slave extends GameObject{
 				isHandling = false;
 			}
 		}
+		if(stop == true){
+			if(getBoundsTotal().intersects(handler.findObject(ID.Base).getBoundsTotal())){
+				velX = 0;
+				velY = 0;
+				stop = false;
+			}
+		}
 		if(goToBase == true){
 			handler.goToCords(Math.round(handler.findObject(ID.Base).getX()), Math.round(handler.findObject(ID.Base).getY()), this);
+			goToBase = false;
 		}
-		if(goToResource == true){
+		if(goToResource == true && isHandling == false){
 			handler.goToCords(Math.round(interactedResource.getX()), Math.round(interactedResource.getY()), this);
 			isHandling = true;
 		}
 		if(interactedResource != null && isHandling == false){
 			goToBase = false;
 			goToResource = true;
-		}else if (interactedResource == null){
+		}
+		if (interactedResource == null){
 			goToBase = false;
 			goToResource = false;
 			isHandling = false;
@@ -77,46 +86,25 @@ public class Slave extends GameObject{
 			}
 			if(time >= future){
 				first = true;
-				carry++;
 				interactedResource.setHealth(interactedResource.getHealth()-1);
 				for (int i = 0; i < 20; i++) {
 					handler.addObject(new MiningParticle(x+10+randInt(-5, 5), y+20+randInt(-5, 5), ID.Particle, handler,interactedResource.getResource()));
 					
 				}
-				if(carry >= 15 || interactedResource.getHealth() <= 0){
+				if(interactedResource.getHealth() <= 0){
+					goToBase = true;
+					stop = true;
+					interactedResource = null;
+				}
+				if(carry >= 15){
 					goToResource = false;
 					goToBase = true;
+				}else{
+					carry++;
 				}
 			}
 		}
-		/*if(interactedResource != null && goToBase == false){
-			goToResource = true;
-			isHandling = true;
-			handler.goToCords(Math.round(interactedResource.getX()), Math.round(interactedResource.getY()), this);
 		
-		}else goToResource = false;
-		if(isHandling == true){
-			if (getBoundsTotal().intersects(interactedResource.getBoundsTotal())){
-				isMining = true;
-				time = System.currentTimeMillis();
-				if(first == true){
-					isResource = interactedResource.getResource();
-					first = false;
-					future = time + 1000;
-				}
-				if(time > future){
-					first = true;
-					carry++;
-					System.out.println(carry);
-					if(carry >= 5){
-						goToResource = false;
-						goToBase = true;
-						isMining = false;
-						first = true;
-					}
-				}
-			}
-		}*/
 		collision();
 	}
 	
@@ -133,7 +121,6 @@ public class Slave extends GameObject{
 	}
 	
 	public void render(Graphics g) {
-		g.setColor(Color.black);
 		
 		try {
 			Image image = ImageIO.read(this.getClass().getResource("/slave.png"));
@@ -143,58 +130,7 @@ public class Slave extends GameObject{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//Made by ThaFartKnight©
-		//Peasant
-		//Body
-	/*
-		g.setColor(Color.white);
-		g.fillRect((int) x, (int) y, 18, 28);
-		g.setColor(Color.black);
-		g.fillRect((int) x, (int) y, -4, 28);
-		g.fillRect((int) x+18, (int) y, 4, 28);
-		g.fillRect((int) x, (int) y-4, 18, 4);
-		g.fillRect((int) x, (int) y + 28, 18, 4);
-		g.setColor(new Color(102, 65, 32, 255));
-		g.fillRect((int) x, (int) y + 14, 8, 5);
-		g.fillRect((int) x + 4, (int) y + 18, 8, 8);
-		g.fillRect((int) x + 18, (int) y + 2, -6, 10);
-		g.fillRect((int) x + 18, (int) y + 2, -6, 10);
-		g.fillRect((int) x + 12, (int) y + 6, -3, 4);
-		g.fillRect((int) x + 18, (int) y + 12, -3, 6);
-		//Left Hand
-		g.setColor(Color.white);
-		g.fillRect((int) x-13, (int) y + 22, 6, 6);
-		g.setColor(Color.black);
-		g.fillRect((int) x-13, (int) y + 19, 6, 3);
-		g.fillRect((int) x-13, (int) y + 27, 6, 3);
-		g.fillRect((int) x-13, (int) y + 22, -3, 6);
-		g.fillRect((int) x-7, (int) y + 22, 3, 6);
-		//Right hand
-		g.setColor(Color.white);
-		g.fillRect((int) x+25, (int) y + 22, 6, 6);
-		g.setColor(Color.black);
-		g.fillRect((int) x+25, (int) y + 19, 6, 3);
-		g.fillRect((int) x+25, (int) y + 27, 6, 3);
-		g.fillRect((int) x+25, (int) y + 22, -3, 6);
-		g.fillRect((int) x+31, (int) y + 22, 3, 6);
-		//Head
-		g.setColor(Color.white);
-		g.fillRect((int) x-8, (int) y -20, 15, 15);
-		g.setColor(Color.black);
-		g.fillRect((int) x-8, (int) y -14, 4, 4);
-		g.fillRect((int) x , (int) y -14, 4, 4);
-		g.fillRect((int) x-8, (int) y -20, 3, 3);
-		g.fillRect((int) x-8, (int) y -20, -3, 13);
-		g.fillRect((int) x-8, (int) y -7, 8, 4);
-		g.fillRect((int) x-8, (int) y -20, 12, -3);
-		g.fillRect((int) x+4, (int) y -20, 3, 3);
-		g.fillRect((int) x+7, (int) y -20, 3, 16);
-		//Left foot
-		g.fillRect((int) x+2, (int) y + 32, 4, 6);
-		g.fillRect((int) x+4, (int) y + 38, -6, 3);
-		//Right foot
-		g.fillRect((int) x+13, (int) y + 32, 4, 6);
-		g.fillRect((int) x+15, (int) y + 38, -6, 3);*/
+
 		if (selected == true){
 			g.setColor(Color.white);
 			g.drawRect((int)x, (int)y, 20, 40);
@@ -209,11 +145,11 @@ public class Slave extends GameObject{
 			GameObject tempObject = handler.object.get(i);
 			if(tempObject.getId() == ID.Base){
 				if(getBoundsUp().intersects(tempObject.getBoundsTotal())){
-					y = tempObject.getY()+33;
+					y = tempObject.getY()+158;
 				}else if (getBoundsDown().intersects(tempObject.getBoundsTotal())){
 					y = tempObject.getY()-40;
 				}else if (getBoundsLeft().intersects(tempObject.getBoundsTotal())){
-					x = tempObject.getX()+33;
+					x = tempObject.getX()+106;
 				}else if (getBoundsRight().intersects(tempObject.getBoundsTotal())){
 					x = tempObject.getX()-20;
 				}

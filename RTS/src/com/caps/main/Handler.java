@@ -33,7 +33,6 @@ public class Handler {
 	public void render(java.awt.Graphics g){
 		for (int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
-			
 			tempObject.render(g);
 		}
 	}
@@ -44,7 +43,13 @@ public class Handler {
 	public void removeObject(GameObject object){
 		this.object.remove(object);
 	}
-
+    public void removeByID(ID id){
+    	for(int i = 0; i < object.size(); i++){
+    		if(object.get(i).id == id){
+    			object.remove(i);
+    		}
+    	}
+    }
 	public void goToCords(int worldMouseX,int worldMouseY,GameObject obj){
 		GameObject endPoint = new mousePoint(worldMouseX, worldMouseY, ID.MousePointer, this);
 		float difX = worldMouseX - obj.getX();

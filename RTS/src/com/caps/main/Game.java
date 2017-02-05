@@ -8,7 +8,8 @@ import java.util.LinkedList;
 import com.caps.entities.Slave;
 import com.caps.entities.Tank;
 import com.caps.entities.TownCenter;
-import com.caps.resource.Tree;
+import com.caps.resource.Gold;
+import com.caps.resource.Wood;
 
 public class Game extends Canvas implements Runnable{
 
@@ -17,8 +18,6 @@ public class Game extends Canvas implements Runnable{
 
 	//private Random r;
 	private HUD hud;
-	private Menu menu;
-
 	private static final long serialVersionUID = 1L;
 	
 	public int cameraX = 0;
@@ -40,20 +39,19 @@ public class Game extends Canvas implements Runnable{
 	public Game(){
 
 		handler = new Handler();
-		menu = new Menu(this, handler);
+		
 		this.addKeyListener(new KeyInput(handler, this));
 
 		mouseinput = new MouseInput(this, handler);
 		this.addMouseListener(mouseinput);
-
-		if(!(gameState == STATE.Game))	this.addMouseListener(menu);	
 		
 		new Window(WIDTH, HEIGHT, "RTS shit game", this);
 		handler.addObject(new Tank(WIDTH/2-40, HEIGHT/2-40, ID.Tank, handler));
 		handler.addObject(new Slave(WIDTH/2+50, HEIGHT/2+50, ID.Slave, handler));
 		handler.addObject(new Slave(WIDTH/2+30, HEIGHT/2+30, ID.Slave, handler));
 
-		handler.addObject(new Tree(WIDTH/2+200, HEIGHT/2+200, ID.Resource, handler));
+		handler.addObject(new Wood(WIDTH/2+200, HEIGHT/2+200, ID.Resource, handler));
+		handler.addObject(new Gold(WIDTH/2+200, HEIGHT/2+400, ID.Resource, handler));
 		handler.addObject(new TownCenter(WIDTH/2, HEIGHT/2, ID.Base, handler));
 		hud = new HUD();
 
@@ -114,6 +112,7 @@ public class Game extends Canvas implements Runnable{
 
 		}
 	}
+		
 	private void render(){
 		BufferStrategy bs = this.getBufferStrategy();
 		
@@ -137,7 +136,7 @@ public class Game extends Canvas implements Runnable{
 		/*g.setColor(Color.black);
 		g.drawLine(0, -9999, 0, 9999);
 		g.drawLine(-9999, 0, 9999, 0);*/
-
+		
 		g.dispose();
 		bs.show();
 	}

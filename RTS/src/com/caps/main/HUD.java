@@ -27,7 +27,11 @@ public class HUD{
 		g.drawString("GOLD: "+GOLD, x-1070, y-780);
 		g.drawString("WOOD: "+WOOD, x-1070, y-760);
 		g.drawString("FOOD: "+FOOD, x-1070, y-740);
-
+		if(!game.selectedObject.isEmpty()){
+		    g.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+			g.drawString("Name: "+game.selectedObject.getLast().getId().toString(), x-1070, y-130);
+			
+		}
 	}
 
 }

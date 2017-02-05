@@ -1,5 +1,6 @@
 package com.caps.main;
 
+import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public abstract class GameObject {
@@ -15,7 +16,7 @@ public abstract class GameObject {
 	protected GameObject endPoint;
 	protected GameObject interactedResource;
 	
-	protected static RESOURCE isResource;
+	protected RESOURCE isResource;
 	
 	protected static enum RESOURCE{
 		Wood,Gold,Food,
@@ -27,7 +28,7 @@ public abstract class GameObject {
 	}
 	
 	public abstract void tick();
-	public abstract void render(java.awt.Graphics g);
+	public abstract void render(Graphics g);
 	public abstract Rectangle getBoundsTotal();
 	public abstract Rectangle getBoundsUp();
 	public abstract Rectangle getBoundsDown();
