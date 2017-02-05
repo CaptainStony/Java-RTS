@@ -13,7 +13,7 @@ import com.caps.resource.Wood;
 
 public class Game extends Canvas implements Runnable{
 
-	private Handler handler;
+	protected Handler handler;
 	public MouseInput mouseinput;
 
 	//private Random r;

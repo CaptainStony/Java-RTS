@@ -12,13 +12,11 @@ public class Button extends GameObject{
 	protected TYPE type;
 	public Button(float x, float y, ID id, TYPE type) {
 		super(x, y, id);
-		// TODO Auto-generated constructor stub
 		this.type = type;
 	}
 
 	@Override
 	public void tick() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -31,31 +29,26 @@ public class Button extends GameObject{
 
 	@Override
 	public Rectangle getBoundsTotal() {
-		
 		return new Rectangle((int) this.x, (int) this.y, 50, 50);
 	}
 
 	@Override
 	public Rectangle getBoundsUp() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Rectangle getBoundsDown() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Rectangle getBoundsLeft() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Rectangle getBoundsRight() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
