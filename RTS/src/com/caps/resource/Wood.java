@@ -41,7 +41,7 @@ public class Wood extends GameObject{
 		if(img == null){
 			
 			try {
-				img = ImageIO.read(this.getClass().getResource("/gold.png"));
+				img = ImageIO.read(this.getClass().getResource("/tree.png"));
 				width = img.getWidth(null);
 	            height = img.getHeight(null);
 	            g.drawImage(img,Math.round(x),Math.round(y), width/4, height/4, null);
