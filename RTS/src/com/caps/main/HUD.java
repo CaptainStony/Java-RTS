@@ -10,6 +10,7 @@ public class HUD{
 	public static int GOLD = 0;
 	public static int WOOD = 0;
 	public static int FOOD = 100;
+	private Button b;
 	public void tick(){
 		
 		
@@ -34,10 +35,9 @@ public class HUD{
 		}
 		if(game.handler.findObject(ID.Button) == null && game.handler.findObject(ID.Base).selected ){
 			game.handler.addObject(new Button(x - 1070, y -155, ID.Button, TYPE.Slave));
-			Button b = (Button) game.handler.findObject(ID.Button);
+			b = (Button) game.handler.findObject(ID.Button);
 		    b.render(g, x - 1060, y -105);
 		}else if(game.handler.findObject(ID.Base).selected){
-			Button b = (Button) game.handler.findObject(ID.Button);
 			b.render(g, x - 1060, y -105);
 		}else{
 			game.handler.removeByID(ID.Button);
