@@ -15,7 +15,9 @@ import com.caps.main.ID;
 public class Gold extends GameObject{
 
 private Handler handler;
-	
+	Image img = null;
+	private int width;
+	private int height;
 	public Gold(float x, float y, ID id, Handler handler) {
 		super(x, y, id);
 		baseSpeed = 0;
@@ -36,14 +38,32 @@ private Handler handler;
 	
 	@Override
 	public void render(Graphics g) {
-		try {
+		/*try {
 			Image image = ImageIO.read(this.getClass().getResource("/gold.png"));
             int w = image.getWidth(null);
             int h = image.getHeight(null);
             g.drawImage(image,Math.round(x),Math.round(y), w/4, h/4, null);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}*/
+		if(img == null){
+			
+			try {
+				img = ImageIO.read(this.getClass().getResource("/gold.png"));
+				width = img.getWidth(null);
+	            height = img.getHeight(null);
+	            g.drawImage(img,Math.round(x),Math.round(y), width/4, height/4, null);
+	            System.out.println("Loading img");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+            
+		}else{
+			g.drawImage(img,Math.round(x),Math.round(y), width/4, height/4, null);
 		}
+		
 		if (selected == true){
 			g.setColor(Color.white);
 			g.drawRect((int)x, (int)y, 53,40);
@@ -71,7 +91,7 @@ private Handler handler;
 	}
 	@Override
 	public Rectangle getBoundsTotal() {
-		return new Rectangle((int)x, (int)y, 53,40);
+		return new Rectangle((int)x, (int)y, width, height);
 
 	}
 
