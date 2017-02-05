@@ -14,6 +14,9 @@ import com.caps.main.ID;
 
 public class Wood extends GameObject{
 
+	private Image img;
+	private int width;
+	private int height;
 	private Handler handler;
 	
 	public Wood(float x, float y, ID id, Handler handler) {
@@ -33,26 +36,28 @@ public class Wood extends GameObject{
 		}
 		collision();
 	}
-	
 	@Override
 	public void render(Graphics g) {
-		try {
-			Image image = ImageIO.read(this.getClass().getResource("/tree.png"));
-            int w = image.getWidth(null);
-            int h = image.getHeight(null);
-            g.drawImage(image,Math.round(x),Math.round(y), w/4, h/4, null);
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(img == null){
+			
+			try {
+				img = ImageIO.read(this.getClass().getResource("/gold.png"));
+				width = img.getWidth(null);
+	            height = img.getHeight(null);
+	            g.drawImage(img,Math.round(x),Math.round(y), width/4, height/4, null);
+	            System.out.println("Loading img");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+            
+		}else{
+			g.drawImage(img,Math.round(x),Math.round(y), width/4, height/4, null);
 		}
-			/*g.setColor(Color.black);
-			g.drawRect((int)x, (int)y, 2, 16);//left
-			g.drawRect((int)x+14, (int)y, 2, 16);//right
-			g.drawRect((int)x+2, (int)y, 12, 2);//up
-			g.drawRect((int)x+2, (int)y+14, 12, 2);//down
-			 */
+		
 		if (selected == true){
 			g.setColor(Color.white);
-			g.drawRect((int)x, (int)y, 32,62);
+			g.drawRect((int)x, (int)y, 53,40);
 		}
 	}
 	private void collision(){
