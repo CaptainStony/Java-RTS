@@ -2,11 +2,11 @@ package com.caps.main;
 
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.util.LinkedList;
 
+import com.caps.entities.Sheep;
 import com.caps.entities.Slave;
 import com.caps.entities.Tank;
 import com.caps.entities.TownCenter;
@@ -20,8 +20,6 @@ public class Game extends Canvas implements Runnable{
 
 	//private Random r;
 	private HUD hud;
-	private Grid grid;
-
 	private static final long serialVersionUID = 1L;
 	
 	public int cameraX = 0;
@@ -32,6 +30,7 @@ public class Game extends Canvas implements Runnable{
 	public static final int WIDTH = 1080, HEIGHT = WIDTH /12 * 9;
 	private Thread thread;
 	private boolean running = false;
+	protected Grid grid;
 	public boolean paused = false;
 	
 	public enum STATE{
@@ -53,14 +52,14 @@ public class Game extends Canvas implements Runnable{
 		handler.addObject(new TownCenter(WIDTH/2, HEIGHT/2, ID.Base, handler));
 		handler.addObject(new Tank(WIDTH/2-40, HEIGHT/2-40, ID.Tank, handler));
 		handler.addObject(new Slave(WIDTH/2+50, HEIGHT/2+50, ID.Slave, handler));
+		handler.addObject(new Slave(WIDTH/2+30, HEIGHT/2+30, ID.Slave, handler));
 
 		handler.addObject(new Wood(WIDTH/2+200, HEIGHT/2+200, ID.Resource, handler));
 		handler.addObject(new Gold(WIDTH/2+200, HEIGHT/2+400, ID.Resource, handler));
+		handler.addObject(new Sheep(WIDTH/2 - 100, HEIGHT/2+50, ID.Sheep, handler));
 		
-		hud = new HUD(handler);
-
-		grid = new Grid(handler);
-		
+		this.grid = new Grid(handler);
+		hud = new HUD(this);
 	}
 	
 	public synchronized void start(){
@@ -100,7 +99,7 @@ public class Game extends Canvas implements Runnable{
 	             
 	              if(System.currentTimeMillis() - timer > 1000) {
 	                      timer += 1000;
-	                     // System.out.println("FPS: " + frames);
+	                      System.out.println("FPS: " + frames);
 	                      frames = 0;
 	              }
 	             
@@ -109,15 +108,13 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	private void tick(){
-		if(paused == false){
+		if(!paused){
 			handler.tick();
 			hud.tick();
-
 		}
 	}
-
+		
 	private void render(){
-
 		BufferStrategy bs = this.getBufferStrategy();
 		
 		if(bs == null){
@@ -135,38 +132,18 @@ public class Game extends Canvas implements Runnable{
 			hud.render(g,this);
 		}
 		if(paused == true){
-			GridCell cell1 = grid.findGridCellByRowAndCol(5, 5);
-			GridCell cell2 = grid.findGridCellByRowAndCol(20, 10);
-			LinkedList<GridCell> path = grid.findPath(cell1, cell2);
-			for (int i = 0; i < path.size(); i++) {
-				
-				GameObject slave = handler.findObject(ID.Slave);
-				GridCell curCell = path.get(i);
-				handler.goToCords((int)curCell.getX(), (int)curCell.getY(), slave);
-				System.out.println(curCell.getX());
-				
-			}
 			
 		}
 		/*g.setColor(Color.black);
 		g.drawLine(0, -9999, 0, 9999);
 		g.drawLine(-9999, 0, 9999, 0);*/
+		
 		g.dispose();
 		bs.show();
-	}
-
-	public static float clamp(float var, float min, float max){
-		if(var >= max)
-			return var = max;
-		else if(var <= min)
-			return var = min;
-		else
-			return var;
+		grid.render(g);
 	}
 		
 	public static void main(String args[]){
-			new Game();
-			
+			new Game();	
 	}
-	
 }
