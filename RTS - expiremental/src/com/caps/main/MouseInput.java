@@ -38,35 +38,30 @@ public class MouseInput implements MouseListener{
 		//handler.addObject(new Tank(mouseX, mouseY, ID.Tank, handler));
 		if(e.getButton() == 1){
 			Button bb = (Button) handler.findObject(ID.Button);
-			
-			if(bb != null && handler.findObject(ID.Base).selected){
+			TownCenter base = (TownCenter) handler.findObject(ID.Base);
+			if(base.selected && bb != null){
 				if(HUD.FOOD >= 10 && bb.getBoundsTotal().intersects(mouseBounds)){
 					HUD.FOOD -= 10;
-					GameObject base = handler.findObject(ID.Base);
 					if(bb.type == TYPE.Slave){
-						handler.addObject(new Slave(base.x - 20, base.y - 20, ID.Slave, handler));
+						base.getQueue().addItemToQueue(new Slave(base.x - 20, base.y - 20, ID.Slave, handler), 5);
 					} else if(bb.type == TYPE.Tank){
-						handler.addObject(new Tank(base.x - 20, base.y - 20, ID.Tank, handler));
+						base.getQueue().addItemToQueue(new Tank(base.x - 20, base.y - 20, ID.Tank, handler), 10);
 					}
 				}else{
 					game.selectedObject.clear();
-					for (int j = 0; j < handler.object.size(); j++) {
-						handler.object.get(j).selected = false;
-					}
+					handler.object.forEach(obj->obj.selected = false);
 				}
 				
 			}else{
 				game.selectedObject.clear();
-				for (int j = 0; j < handler.object.size(); j++) {
-					handler.object.get(j).selected = false;
-				}
+				handler.object.forEach(obj->obj.selected = false);
 			}
 
 			
 			for (int i = 0; i < handler.object.size(); i++) {
 				GameObject tempObject = handler.object.get(i);
 				if (tempObject.getBoundsTotal().intersects(mouseBounds)){
-						if (tempObject.selected == true){
+						if (tempObject.selected){
 							tempObject.selected = false;
 							game.selectedObject.remove(tempObject);
 						}else{

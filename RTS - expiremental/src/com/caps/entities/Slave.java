@@ -25,6 +25,9 @@ public class Slave extends GameObject{
 	private boolean stop = false;
 	private TownCenter base = null;
 	private int carry = 0;
+	private Image img = null;
+	protected int width = 0;
+    protected int height = 0;
 	
 	public Slave(float x, float y, ID id, Handler handler) {
 		super(x, y, id);
@@ -90,18 +93,17 @@ public class Slave extends GameObject{
 			if(time >= future){
 				first = true;
 				interactedResource.setHealth(interactedResource.getHealth()-1);
-				for (int i = 0; i < 20; i++) {
+				for (int i = 0; i < 15; i++) {
 					handler.addObject(new MiningParticle(x+10+randInt(-5, 5), y+20+randInt(-5, 5), ID.Particle, handler,interactedResource.getResource()));
 					
-				}
-				if(interactedResource.getHealth() <= 0){
-					goToBase = true;
-					stop = true;
-					interactedResource = null;
 				}
 				if(carry >= 15){
 					goToResource = false;
 					goToBase = true;
+				}else if(interactedResource.getHealth() <= 0){
+					goToBase = true;
+					stop = true;
+					interactedResource = null;
 				}else{
 					carry++;
 				}
@@ -125,18 +127,23 @@ public class Slave extends GameObject{
 	
 	public void render(Graphics g) {
 		
-		try {
-			Image image = ImageIO.read(this.getClass().getResource("/slave.png"));
-            int w = image.getWidth(null);
-            int h = image.getHeight(null);
-            g.drawImage(image,Math.round(x),Math.round(y), w/7, h/7, null);
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(img == null){
+			try {
+				img = ImageIO.read(this.getClass().getResource("/peasant.png"));
+	            width = img.getWidth(null);
+	            height = img.getHeight(null);
+	            g.drawImage(img,Math.round(x),Math.round(y), width/2, height/2, null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			g.drawImage(img, Math.round(x), Math.round(y), width/2, height/2, null);
 		}
+		
 
 		if (selected == true){
 			g.setColor(Color.white);
-			g.drawRect((int)x, (int)y, 20, 40);
+			g.drawRect((int)x, (int)y, this.width/2, this.height/2);
 
 		}
 		

@@ -11,14 +11,17 @@ import javax.imageio.ImageIO;
 import com.caps.main.GameObject;
 import com.caps.main.Handler;
 import com.caps.main.ID;
+import com.caps.main.Queue;
 
 public class TownCenter extends GameObject{
 
-	
+	private Queue queue;
+	private Handler handler;
 	public TownCenter(float x, float y, ID id, Handler handler) {
 		super(x, y, id);
 		baseSpeed = 0;
-
+		this.handler = handler;
+		this.queue = new Queue(this.handler);
 	}
 
 	
@@ -26,7 +29,6 @@ public class TownCenter extends GameObject{
 	public void tick() {
 		x += velX;
 		y += velY;
-		
 		
 	}
 
@@ -65,6 +67,9 @@ public class TownCenter extends GameObject{
 	@Override
 	public Rectangle getBoundsTotal() {
 		return new Rectangle((int)x, (int)y, 105, 158);
+	}
+	public Queue getQueue(){
+		return this.queue;
 	}
 
 }

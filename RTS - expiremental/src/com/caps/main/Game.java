@@ -57,7 +57,7 @@ public class Game extends Canvas implements Runnable{
 		handler.addObject(new Wood(WIDTH/2+200, HEIGHT/2+200, ID.Resource, handler));
 		handler.addObject(new Gold(WIDTH/2+200, HEIGHT/2+400, ID.Resource, handler));
 		
-		hud = new HUD();
+		hud = new HUD(handler);
 
 		grid = new Grid(handler);
 		
