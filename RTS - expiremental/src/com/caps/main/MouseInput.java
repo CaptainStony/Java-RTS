@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 
 import com.caps.entities.Slave;
 import com.caps.entities.Tank;
+import com.caps.entities.TownCenter;
 import com.caps.entities.mousePoint;
 import com.caps.main.Button.TYPE;
 
@@ -42,16 +43,31 @@ public class MouseInput implements MouseListener{
 			if(base.selected && bb != null){
 				if(HUD.FOOD >= 10 && bb.getBoundsTotal().intersects(mouseBounds)){
 					HUD.FOOD -= 10;
+					boolean isEmpty;
+					if(base.getQueue().getQueueSize() == 0){
+						isEmpty = true;
+					}else isEmpty = false;
+					
 					if(bb.type == TYPE.Slave){
 						base.getQueue().addItemToQueue(new Slave(base.x - 20, base.y - 20, ID.Slave, handler), 5);
+						if(isEmpty){
+							base.timer = base.getQueue().getTimeFromQueue(1)*60;
+							System.out.println(base.timer);
+						}
 					} else if(bb.type == TYPE.Tank){
 						base.getQueue().addItemToQueue(new Tank(base.x - 20, base.y - 20, ID.Tank, handler), 10);
+						if(base.timer != null && base.timer <= 0){
+							base.timer = base.getQueue().getFirstTime()*60;
+						}
 					}
 				}else{
 					game.selectedObject.clear();
 					handler.object.forEach(obj->obj.selected = false);
 				}
 				
+			}else if(base.selected && !handler.intersects(mouseBounds)){
+				game.selectedObject.clear();
+				game.selectedObject.add(base);
 			}else{
 				game.selectedObject.clear();
 				handler.object.forEach(obj->obj.selected = false);

@@ -1,6 +1,7 @@
 package com.caps.main;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.caps.entities.mousePoint;
@@ -8,32 +9,39 @@ import com.caps.entities.mousePoint;
 public class Handler {
 
 	public LinkedList<GameObject> object = new LinkedList<GameObject>();
-
+	//public LinkedList<CellObject> cell = new LinkedList<CellObject>();
+	//private HUD hud = new HUD();
 	public GameObject findObject(ID id){
 
-		  for (int i = 0; i < object.size(); i++) {
-		   GameObject tempObject = object.get(i);
+		GameObject returnObj = null;
+		GameObject tempObject;
+		for (int i = 0; i < object.size(); i++) {
+			
+		    tempObject = object.get(i);
 		   
-		   if(tempObject.getId() == id){
-		    
-		    return tempObject;
+		    if(tempObject.getId() == id){
+		    	return object.get(i);
 		    }
-		   }
-		  return null;
-		 }
+		}
+		return returnObj;
+	}
 	
 	public void tick(){
 		for (int i = 0; i < object.size(); i++) {
 			object.get(i).tick();
 		}
-
+		/*for (int i = 0; i < cell.size(); i++) {
+			CellObject tempObject = cell.get(i);
+			
+			tempObject.tick();
+			
+		}*/
 	}
 	
 	public void render(Graphics g){
 		for (int i = 0; i < object.size(); i++) {
 			object.get(i).render(g);
 		}
-		
 	}
 	
 	public void addObject(GameObject object){
@@ -72,5 +80,23 @@ public class Handler {
 			addObject(endPoint);
 		}
 	}
-
+	/*public boolean exists(ID id){
+		boolean doesExist = false;
+		for(int i = 0; i < object.size(); i++){
+			if(object.get(i).getId() == id){
+				doesExist = true;
+				break;
+			}
+		}
+		return doesExist;
+	}*/
+	
+	public boolean intersects(Rectangle r){
+		for(int i = 0; i < object.size(); i++){
+			if(r.intersects(object.get(i).getBoundsTotal())){
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -14,8 +14,8 @@ public class Queue {
 		
 	}
 	public void addItemToQueue(GameObject g, int time){
-		queue.add(g);
 		queueTime.add(time);
+		queue.add(g);
 	}
 	public GameObject getItemFromQueue(int posInQueue){
 		return queue.get(posInQueue - 1);
@@ -24,10 +24,12 @@ public class Queue {
 		return queueTime.get(posInQueue - 1);
 	}
 	public void removeFromQueue(int posInQueue){
+		queueTime.remove(posInQueue - 1);
 		handler.addObject(queue.get(posInQueue-1));
 		queue.remove(posInQueue - 1);
 	}
 	public void removeFromQueue(){
+		queueTime.remove(0);
 		handler.addObject(queue.get(0));
 		queue.remove(0);
 	}

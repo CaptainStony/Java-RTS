@@ -27,6 +27,7 @@ public class Sheep extends GameObject{
 	public void tick() {
 		x += velX;
 		y += velY;
+		isResource = RESOURCE.Food;
 	}
 
 	@Override

@@ -28,12 +28,6 @@ public class Tank extends GameObject{
 	@Override
 	public void render(Graphics g) {
 		//Made by ThaFartKnight©
-		//Graphics2D g2d = (Graphics2D)g;
-		//AffineTransform old = g2d.getTransform();
-		//AffineTransform newt = new AffineTransform();
-		//newt.rotate(Math.toRadians(10),x+45/2,y+70/2);
-		//g2d.transform(newt);
-		//Made by ThaFartKnight©
 		g.setColor(new Color(17, 71, 17, 255));
 		//body
 		g.fillRect((int) x, (int) y, 26, 48);

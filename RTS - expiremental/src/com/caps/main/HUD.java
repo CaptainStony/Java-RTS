@@ -11,23 +11,20 @@ public class HUD{
 	public static int GOLD = 0;
 	public static int WOOD = 0;
 	public static int FOOD = 100;
-	private int time = 0;
-	private Button b = null;
+	protected Button b = null;
 	private TownCenter base;
-	private Game game;
 	public HUD(Game game){
-		this.game = game;
 		base = (TownCenter) game.handler.findObject(ID.Base);
 	}
 	public void tick(){
-		if(base.getQueue().getQueueSize() > 0 && time == 0){
+		/*if(base.getQueue().getQueueSize() > 0 && time == 0){
 			time =  base.getQueue().getTimeFromQueue(1)*60;
 		}else if(base.getQueue().getQueueSize() > 0){
 			time--;
 		}else if(base.getQueue().getQueueSize() > 0 && time == 1){
 			this.game.handler.addObject(base.getQueue().getItemFromQueue(1));
 			base.getQueue().removeFromQueue();
-		}
+		}*/
 	}
 	public void render(Graphics g,Game game){
 		int x = Game.WIDTH-game.cameraX;
@@ -49,19 +46,15 @@ public class HUD{
 		if(b == null && base.selected ){
 			game.handler.addObject(new Button(x - 1070, y -155, ID.Button, TYPE.Slave));
 			b = (Button) game.handler.findObject(ID.Button);
+			base = (TownCenter) game.handler.findObject(ID.Base);
 		    b.render(g, x - 1060, y -105);
 		    g.setColor(Color.white);
 		    g.drawRect(x - 600, y-800, 100, 30);
 		}else if(base.selected){
 			b.render(g, x - 1060, y -105);
-			
-			if(base.getQueue().getQueueSize() > 0){
-				float fac = (float) (time/(base.getQueue().getFirstTime()*60.00));
+			if(base.getQueue().getQueueSize() > 0 && base.timer != null && base.timer > 0){
+				float fac = (float) (base.timer/(base.getQueue().getFirstTime()*60.00));
 				float width = 100 * fac;
-				if(time == 0){
-					
-					base.getQueue().removeFromQueue();
-				}
 				g.setColor(Color.red);
 				g.fillRect(x-600, y-800, (int) width, 30);
 			}
@@ -70,6 +63,7 @@ public class HUD{
 			
 		}else{
 			game.handler.removeByID(ID.Button);
+			b = null;
 		}
 	}
 

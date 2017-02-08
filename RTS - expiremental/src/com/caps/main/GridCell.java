@@ -8,12 +8,10 @@ public class GridCell {
 
 	protected int x, y;
 	protected int row,col;
+	protected int effort;
 	
-	protected int G=0,H,F;
-	
-	protected GridCell parent;
 	protected boolean isWall = false;
-	
+	protected GridCell parent;
 	
 	public GridCell(int x, int y, int row,int col, boolean isWall){
 		this.x = x;
@@ -28,7 +26,7 @@ public class GridCell {
 	}
 	public void render(Graphics g){
 		g.setColor(Color.red);
-		g.drawRect(x, y, 20, 20);
+		g.fillRect(this.x, this.y, 20, 20);
 	}
 	public Rectangle getBoundsTotal(){
 		
@@ -67,4 +65,10 @@ public class GridCell {
 		this.col = col;
 	}
 
+	public void setParent(GridCell parent){
+		this.parent = parent;
+	}
+	public GridCell getParent(){
+		return parent;
+	}
 }

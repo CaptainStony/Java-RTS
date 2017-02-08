@@ -19,7 +19,7 @@ public class Game extends Canvas implements Runnable{
 	public MouseInput mouseinput;
 
 	//private Random r;
-	private HUD hud;
+	protected HUD hud;
 	private static final long serialVersionUID = 1L;
 	
 	public int cameraX = 0;

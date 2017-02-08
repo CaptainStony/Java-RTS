@@ -45,7 +45,6 @@ public class Wood extends GameObject{
 				width = img.getWidth(null);
 	            height = img.getHeight(null);
 	            g.drawImage(img,Math.round(x),Math.round(y), width/4, height/4, null);
-	            System.out.println("Loading img");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -57,7 +56,7 @@ public class Wood extends GameObject{
 		
 		if (selected == true){
 			g.setColor(Color.white);
-			g.drawRect((int)x, (int)y, 32,62);
+			g.drawRect((int)x, (int)y, 53,40);
 		}
 	}
 	private void collision(){

@@ -53,7 +53,6 @@ private Handler handler;
 				width = img.getWidth(null);
 	            height = img.getHeight(null);
 	            g.drawImage(img,Math.round(x),Math.round(y), width/4, height/4, null);
-	            System.out.println("Loading img");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

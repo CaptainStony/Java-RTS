@@ -17,6 +17,7 @@ public class TownCenter extends GameObject{
 
 	private Queue queue;
 	private Handler handler;
+	public Integer timer = null;
 	public TownCenter(float x, float y, ID id, Handler handler) {
 		super(x, y, id);
 		baseSpeed = 0;
@@ -29,7 +30,18 @@ public class TownCenter extends GameObject{
 	public void tick() {
 		x += velX;
 		y += velY;
-		
+		if(queue.getQueueSize() > 0 && timer == null){
+			timer = queue.getFirstTime()*60;
+			System.out.println("Timer initialized");
+		}else if(queue.getQueueSize() > 0 && timer > 0){
+			timer--;
+		}else if(queue.getQueueSize() > 0 && timer <= 0){
+			System.out.println("Spawning object");
+			queue.removeFromQueue();
+			if(queue.getQueueSize() > 0){
+				timer = queue.getFirstTime()*60;
+			}
+		}
 	}
 
 	@Override
@@ -43,7 +55,7 @@ public class TownCenter extends GameObject{
 			e.printStackTrace();
 		}
 			g.setColor(Color.white);
-			if (selected == true){
+			if (selected){
 				g.drawRect((int)x, (int)y, 105, 158);
 			}
 
