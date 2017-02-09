@@ -80,16 +80,6 @@ public class Handler {
 			addObject(endPoint);
 		}
 	}
-	/*public boolean exists(ID id){
-		boolean doesExist = false;
-		for(int i = 0; i < object.size(); i++){
-			if(object.get(i).getId() == id){
-				doesExist = true;
-				break;
-			}
-		}
-		return doesExist;
-	}*/
 	
 	public boolean intersects(Rectangle r){
 		for(int i = 0; i < object.size(); i++){
@@ -98,5 +88,14 @@ public class Handler {
 			}
 		}
 		return false;
+	}
+	public LinkedList<GameObject> getAllByID(ID id){
+		LinkedList<GameObject> all = new LinkedList<GameObject>();
+		for(GameObject obj : object){
+			if(obj.id == id){
+				all.add(obj);
+			}
+		}
+		return all;
 	}
 }
