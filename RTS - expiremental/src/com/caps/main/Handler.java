@@ -9,8 +9,6 @@ import com.caps.entities.mousePoint;
 public class Handler {
 
 	public LinkedList<GameObject> object = new LinkedList<GameObject>();
-	//public LinkedList<CellObject> cell = new LinkedList<CellObject>();
-	//private HUD hud = new HUD();
 	public GameObject findObject(ID id){
 
 		GameObject returnObj = null;
@@ -30,12 +28,6 @@ public class Handler {
 		for (int i = 0; i < object.size(); i++) {
 			object.get(i).tick();
 		}
-		/*for (int i = 0; i < cell.size(); i++) {
-			CellObject tempObject = cell.get(i);
-			
-			tempObject.tick();
-			
-		}*/
 	}
 	
 	public void render(Graphics g){
@@ -80,16 +72,6 @@ public class Handler {
 			addObject(endPoint);
 		}
 	}
-	/*public boolean exists(ID id){
-		boolean doesExist = false;
-		for(int i = 0; i < object.size(); i++){
-			if(object.get(i).getId() == id){
-				doesExist = true;
-				break;
-			}
-		}
-		return doesExist;
-	}*/
 	
 	public boolean intersects(Rectangle r){
 		for(int i = 0; i < object.size(); i++){

@@ -25,6 +25,11 @@ public class Wood extends GameObject{
 		Health = 100;
 		this.handler = handler;
 		isResource = RESOURCE.Wood;
+		try {
+			img = ImageIO.read(this.getClass().getResource("/tree.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -38,25 +43,13 @@ public class Wood extends GameObject{
 	}
 	@Override
 	public void render(Graphics g) {
-		if(img == null){
-			
-			try {
-				img = ImageIO.read(this.getClass().getResource("/tree.png"));
-				width = img.getWidth(null);
-	            height = img.getHeight(null);
-	            g.drawImage(img,Math.round(x),Math.round(y), width/4, height/4, null);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-            
-		}else{
-			g.drawImage(img,Math.round(x),Math.round(y), width/4, height/4, null);
-		}
+		width = img.getWidth(null) / 4;
+	    height = img.getHeight(null) / 4;
+	    g.drawImage(img,Math.round(x),Math.round(y), width, height, null);
 		
 		if (selected == true){
 			g.setColor(Color.white);
-			g.drawRect((int)x, (int)y, 53,40);
+			g.drawRect((int)x, (int)y, width, height);
 		}
 	}
 	private void collision(){
@@ -81,7 +74,7 @@ public class Wood extends GameObject{
 	}
 	@Override
 	public Rectangle getBoundsTotal() {
-		return new Rectangle((int)x, (int)y, 32,62);
+		return new Rectangle((int)x, (int)y, width, height);
 
 	}
 }
