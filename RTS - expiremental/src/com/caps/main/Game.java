@@ -40,7 +40,6 @@ public class Game extends Canvas implements Runnable{
 	public STATE gameState = STATE.Game;
 	
 	public Game(){
-
 		handler = new Handler();
 		
 		this.addKeyListener(new KeyInput(handler, this));
@@ -56,11 +55,10 @@ public class Game extends Canvas implements Runnable{
 
 		handler.addObject(new Wood(WIDTH/2+200, HEIGHT/2+200, ID.Resource, handler));
 		handler.addObject(new Gold(WIDTH/2+200, HEIGHT/2+400, ID.Resource, handler));
-		handler.addObject(new Sheep(WIDTH/2 - 100, HEIGHT/2+50, ID.Resource, handler));
+		handler.addObject(new Sheep(WIDTH/2 - 100, HEIGHT/2+50, ID.Sheep, handler));
 		
 		this.grid = new Grid(handler);
 		hud = new HUD(this);
-		
 	}
 	
 	public synchronized void start(){
@@ -111,6 +109,7 @@ public class Game extends Canvas implements Runnable{
 	private void tick(){
 		if(!paused){
 			handler.tick();
+			hud.tick();
 		}
 	}
 		
@@ -131,7 +130,7 @@ public class Game extends Canvas implements Runnable{
 			handler.render(g);
 			hud.render(g,this);
 		}
-		if(paused == true){
+		if(paused){
 			
 		}
 		/*g.setColor(Color.black);
@@ -141,8 +140,7 @@ public class Game extends Canvas implements Runnable{
 		g.dispose();
 		bs.show();
 		grid.render(g);
-	}
-		
+	}	
 	public static void main(String args[]){
 			new Game();	
 	}
