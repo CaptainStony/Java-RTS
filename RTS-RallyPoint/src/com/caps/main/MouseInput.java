@@ -62,13 +62,12 @@ public class MouseInput implements MouseListener{
 							
 							if(isEmpty){
 								base.timer = base.getQueue().getTimeFromQueue(1)*60;
-								System.out.println(base.timer);
 							}
 						} else if(tmp.type == TYPE.Tank){
 							if(base.getRallyPoint() != null){
-								base.getQueue().addItemToQueue(new Tank(base.getRallyPoint().getX(), base.getRallyPoint().getY(), ID.Tank, handler, grid), 10);
+								base.getQueue().addItemToQueue(new Tank(base.getRallyPoint().getX(), base.getRallyPoint().getY(), ID.Tank, handler), 10);
 							}else{
-								base.getQueue().addItemToQueue(new Tank(base.x - 20, base.y - 20, ID.Tank, handler, grid), 10);
+								base.getQueue().addItemToQueue(new Tank(base.x - 20, base.y - 20, ID.Tank, handler), 10);
 							}
 							
 							if(base.timer != null && base.timer <= 0){
@@ -110,7 +109,6 @@ public class MouseInput implements MouseListener{
 		if (e.getButton() == 3){
 			for (int i = 0; i < game.selectedObject.size(); i++) {
 				GameObject obj = game.selectedObject.get(i);
-				System.out.println("elle ma");
 				if(obj.id == ID.Base){
 					TownCenter town = (TownCenter) obj;
 					town.setRallyPoint(new Location(worldMouseX, worldMouseY, grid));

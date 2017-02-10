@@ -21,6 +21,7 @@ public class TownCenter extends GameObject{
 	private Handler handler;
 	public Integer timer = null;
 	private Location rallyPoint = null;
+	private RallyFlag rf = null;
 	public TownCenter(float x, float y, ID id, Game game, Handler handler) {
 		super(x, y, id);
 		baseSpeed = 0;
@@ -57,10 +58,18 @@ public class TownCenter extends GameObject{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-			g.setColor(Color.white);
-			if (selected){
-				g.drawRect((int)x, (int)y, 105, 158);
+		g.setColor(Color.white);
+		if (selected){
+			g.drawRect((int)x, (int)y, getBoundsTotal().width, getBoundsTotal().height);
+			if(rallyPoint != null){
+				if(rf == null){
+					rf = new RallyFlag(rallyPoint);
+					rf.render(g, rallyPoint);
+				}else{
+					rf.render(g, rallyPoint);
+				}
 			}
+		}
 
 	}
 	@Override

@@ -13,7 +13,6 @@ public class Location {
 		this.y = y;
 		this.col = x/20;
 		this.row = y/20;
-		this.cell = this.grid.findGridCellByRowAndCol(this.col, this.row);
 	}
 	public int getX(){
 		return this.x;
@@ -31,6 +30,7 @@ public class Location {
 		return String.format("x: {0} y: {1} row: {2} collum: {3}", this.x, this.y, this.row, this.col);
 	}
 	public GridCell getCell(){
+		this.cell = grid.findGridCellByRowAndCol(this.col, this.row);
 		return cell;
 	}
 }

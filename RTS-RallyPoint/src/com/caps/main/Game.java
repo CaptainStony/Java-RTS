@@ -50,7 +50,7 @@ public class Game extends Canvas implements Runnable{
 		
 		new Window(WIDTH, HEIGHT, "RTS shit game", this);
 		handler.addObject(new TownCenter(WIDTH/2, HEIGHT/2, ID.Base, this, handler));
-		handler.addObject(new Tank(WIDTH/2-40, HEIGHT/2-40, ID.Tank, handler,grid));
+		handler.addObject(new Tank(WIDTH/2-40, HEIGHT/2-40, ID.Tank, handler));
 		handler.addObject(new Slave(WIDTH/2+200, HEIGHT/2+50, ID.Slave, handler,grid));
 		handler.addObject(new Slave(WIDTH/2+300, HEIGHT/2+30, ID.Slave, handler,grid));
 
