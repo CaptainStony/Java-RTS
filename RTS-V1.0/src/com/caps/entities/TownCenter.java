@@ -4,25 +4,32 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.caps.main.Game;
 import com.caps.main.GameObject;
 import com.caps.main.Handler;
 import com.caps.main.ID;
+import com.caps.main.Location;
 import com.caps.main.Queue;
 
-public class TownCenter extends GameObject{
+public class TownCenter extends GameObject implements MouseListener{
 
 	private Queue queue;
 	private Handler handler;
 	public Integer timer = null;
-	public TownCenter(float x, float y, ID id, Handler handler) {
+	private Location rallyPoint;
+	private Game game;
+	public TownCenter(float x, float y, ID id, Game game, Handler handler) {
 		super(x, y, id);
 		baseSpeed = 0;
 		this.handler = handler;
 		this.queue = new Queue(this.handler);
+		this.game = game;
 	}
 
 	
@@ -82,6 +89,49 @@ public class TownCenter extends GameObject{
 	}
 	public Queue getQueue(){
 		return this.queue;
+	}
+	public Location getRallyPoint(){
+		return rallyPoint;
+	}
+	public void setRallyPoint(Location rallyPoint){
+		this.rallyPoint = rallyPoint;
+	}
+
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		
+	}
+
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		
+	}
+
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		
+	}
+
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		int worldMouseX = e.getX()-game.cameraX;
+		int worldMouseY = e.getY()-game.cameraY;
+		System.out.println("test");
+		if(this.selected && e.getButton() == 3){
+			rallyPoint = new Location(worldMouseX, worldMouseY, game.getGrid());
+			System.out.println(rallyPoint.toString());
+		}
+		
+	}
+
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		
 	}
 
 }

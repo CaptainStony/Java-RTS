@@ -105,7 +105,7 @@ public class Tank extends GameObject{
 			g.drawRect((int)x-10, (int)y-20, 45, 70);
 		}
 	}
-	private void collision(){
+	/*private void collision(){
 
 		for (int i = 0; i < handler.object.size(); i++) {
 			
@@ -123,7 +123,7 @@ public class Tank extends GameObject{
 			}
 		}
 
-	}
+	}*/
 	@Override
 	public Rectangle getBoundsUp() {
 		return new Rectangle((int)x-8, (int)y-20, 41, 2);

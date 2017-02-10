@@ -14,11 +14,12 @@ import com.caps.main.Button.TYPE;
 public class MouseInput implements MouseListener{
 	private Handler handler;
 	private Game game;
+	private Grid grid;
 
-	public MouseInput(Game game, Handler handler) {
+	public MouseInput(Game game, Handler handler, Grid grid) {
 		this.handler = handler;
 		this.game = game;
-
+		this.grid = grid;
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -53,13 +54,13 @@ public class MouseInput implements MouseListener{
 						}else isEmpty = false;
 						
 						if(tmp.type == TYPE.Slave){
-							base.getQueue().addItemToQueue(new Slave(base.x - 20, base.y - 20, ID.Slave, handler), 5);
+							base.getQueue().addItemToQueue(new Slave(base.x - 20, base.y - 20, ID.Slave, handler, grid), 5);
 							if(isEmpty){
 								base.timer = base.getQueue().getTimeFromQueue(1)*60;
 								System.out.println(base.timer);
 							}
 						} else if(tmp.type == TYPE.Tank){
-							base.getQueue().addItemToQueue(new Tank(base.x - 20, base.y - 20, ID.Tank, handler), 10);
+							base.getQueue().addItemToQueue(new Tank(base.x - 20, base.y - 20, ID.Tank, handler, grid), 10);
 							if(base.timer != null && base.timer <= 0){
 								base.timer = base.getQueue().getFirstTime()*60;
 							}

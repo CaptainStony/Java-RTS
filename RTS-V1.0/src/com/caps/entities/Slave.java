@@ -205,4 +205,7 @@ public class Slave extends GameObject{
 		return new Rectangle((int)x, (int)y, 20, 40);
 
 	}
+	public int getCarry(){
+		return carry;
+	}
 }

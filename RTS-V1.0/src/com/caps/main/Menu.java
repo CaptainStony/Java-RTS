@@ -1,12 +1,7 @@
 package com.caps.main;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import com.caps.main.Game.STATE;
 	
 
 public class Menu extends MouseAdapter{
@@ -18,24 +13,6 @@ public class Menu extends MouseAdapter{
 
 	}
 	
-	public void mousePressed(MouseEvent e){
-		int mx = e.getX();
-		int my = e.getY();
-
-
-	}
-	private boolean mouseOver(int mx, int my, int x,  int y,int width , int height){
-		if(mx > x && mx < x + width){
-			if (my > y && my < y + width) {
-				return true;
-			}return false;
-		}return false;
-		
-	}
-	
-	public void mouseReleased(MouseEvent e){
-		
-	}
 	public void tick(){
 		
 	}
