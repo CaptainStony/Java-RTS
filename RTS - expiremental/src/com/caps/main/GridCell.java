@@ -8,26 +8,40 @@ public class GridCell {
 
 	protected int x, y;
 	protected int row,col;
-	protected int effort;
 	
-	protected boolean isWall = false;
+	protected int G=0,H,F;
+	
 	protected GridCell parent;
+	protected boolean isWall;
 	
-	public GridCell(int x, int y, int row,int col, boolean isWall){
+	public GridCell(int x, int y, int row,int col){
 		this.x = x;
 		this.y = y;
 		this.row = row;
 		this.col = col;
-		this.isWall = isWall;
 	}
 	
 	public void tick(){
 		
 	}
 	public void render(Graphics g){
-		g.setColor(Color.red);
-		g.fillRect(this.x, this.y, 20, 20);
+		if(isWall == true){
+			g.setColor(Color.blue);
+			g.drawRect(x, y, 20, 20);
+			
+		}else{
+			g.setColor(Color.red);
+			g.drawRect(x, y, 20, 20);			
+		}
 	}
+	public boolean isWall() {
+		return isWall;
+	}
+
+	public void setWall(boolean isWall) {
+		this.isWall = isWall;
+	}
+
 	public Rectangle getBoundsTotal(){
 		
 		return new Rectangle(this.x, this.y, 20,20);
@@ -65,10 +79,4 @@ public class GridCell {
 		this.col = col;
 	}
 
-	public void setParent(GridCell parent){
-		this.parent = parent;
-	}
-	public GridCell getParent(){
-		return parent;
-	}
 }

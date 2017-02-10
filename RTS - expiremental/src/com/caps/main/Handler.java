@@ -30,12 +30,7 @@ public class Handler {
 		for (int i = 0; i < object.size(); i++) {
 			object.get(i).tick();
 		}
-		/*for (int i = 0; i < cell.size(); i++) {
-			CellObject tempObject = cell.get(i);
-			
-			tempObject.tick();
-			
-		}*/
+
 	}
 	
 	public void render(Graphics g){

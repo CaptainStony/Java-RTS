@@ -41,23 +41,23 @@ public class Game extends Canvas implements Runnable{
 	
 	public Game(){
 		handler = new Handler();
-		
+		grid = new Grid(handler);
+
 		this.addKeyListener(new KeyInput(handler, this));
 
-		mouseinput = new MouseInput(this, handler);
+		mouseinput = new MouseInput(this, handler,grid);
 		this.addMouseListener(mouseinput);
 		
 		new Window(WIDTH, HEIGHT, "RTS shit game", this);
 		handler.addObject(new TownCenter(WIDTH/2, HEIGHT/2, ID.Base, handler));
-		handler.addObject(new Tank(WIDTH/2-40, HEIGHT/2-40, ID.Tank, handler));
-		handler.addObject(new Slave(WIDTH/2+50, HEIGHT/2+50, ID.Slave, handler));
-		handler.addObject(new Slave(WIDTH/2+30, HEIGHT/2+30, ID.Slave, handler));
+		handler.addObject(new Tank(WIDTH/2-40, HEIGHT/2-40, ID.Tank, handler,grid));
+		handler.addObject(new Slave(WIDTH/2+200, HEIGHT/2+50, ID.Slave, handler,grid));
+		handler.addObject(new Slave(WIDTH/2+300, HEIGHT/2+30, ID.Slave, handler,grid));
 
 		handler.addObject(new Wood(WIDTH/2+200, HEIGHT/2+200, ID.Resource, handler));
 		handler.addObject(new Gold(WIDTH/2+200, HEIGHT/2+400, ID.Resource, handler));
 		handler.addObject(new Sheep(WIDTH/2 - 100, HEIGHT/2+50, ID.Sheep, handler));
 		
-		this.grid = new Grid(handler);
 		hud = new HUD(this);
 	}
 	
@@ -111,6 +111,8 @@ public class Game extends Canvas implements Runnable{
 			handler.tick();
 			hud.tick();
 		}
+		grid.loadGrid();
+
 	}
 		
 	private void render(){
@@ -127,8 +129,14 @@ public class Game extends Canvas implements Runnable{
 		g.translate(cameraX, cameraY);
 
 		if(gameState == STATE.Game){
+			for (int i = 0; i < 75; i++) {
+				for (int j = 0; j < 75; j++) {
+				grid.gridCells[i][j].render(g);
+				}
+			}
 			handler.render(g);
 			hud.render(g,this);
+
 		}
 		if(paused){
 			
@@ -139,7 +147,6 @@ public class Game extends Canvas implements Runnable{
 		
 		g.dispose();
 		bs.show();
-		grid.render(g);
 	}	
 	public static void main(String args[]){
 			new Game();	

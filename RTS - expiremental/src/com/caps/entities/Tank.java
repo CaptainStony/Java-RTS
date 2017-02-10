@@ -5,28 +5,43 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import com.caps.main.GameObject;
+import com.caps.main.Grid;
 import com.caps.main.Handler;
 import com.caps.main.ID;
 
 public class Tank extends GameObject{
 
 	private Handler handler;
+	private Grid grid;
 	
-	public Tank(float x, float y, ID id, Handler handler) {
+	public Tank(float x, float y, ID id, Handler handler,Grid grid) {
 		super(x, y, id);
 		baseSpeed = 2;
 		this.handler = handler;
+		this.grid = grid;
 	}
 	
 	@Override
 	public void tick() {
 		x += velX;
 		y += velY;
+		if(path != null){
+			grid.followPath(path,this);
 
-		collision();
+		}
+		//collision();
 	}
 	@Override
 	public void render(Graphics g) {
+		if(path != null && selected == true){
+			for (int i = 1; i < path.size(); i++) {
+
+				g.setColor(Color.yellow);
+				g.drawLine((int)path.get(i).getX(), (int)path.get(i).getY(), (int)path.get(i-1).getX(), (int)path.get(i-1).getY());
+
+			}
+		}
+		
 		//Made by ThaFartKnight©
 		g.setColor(new Color(17, 71, 17, 255));
 		//body

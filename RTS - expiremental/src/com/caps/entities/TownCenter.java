@@ -57,6 +57,8 @@ public class TownCenter extends GameObject{
 			g.setColor(Color.white);
 			if (selected){
 				g.drawRect((int)x, (int)y, 105, 158);
+				g.drawRect((int)x+getBoundsTotal().width/2-10, (int)y+getBoundsTotal().height+5, 20, 20);
+
 			}
 
 	}
@@ -82,6 +84,9 @@ public class TownCenter extends GameObject{
 	}
 	public Queue getQueue(){
 		return this.queue;
+	}
+	public Rectangle getBoundsResource() {
+		return new Rectangle((int)x+getBoundsTotal().width/2-10, (int)y+getBoundsTotal().height, 20, 20);
 	}
 
 }

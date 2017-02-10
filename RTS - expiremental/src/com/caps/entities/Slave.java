@@ -5,11 +5,14 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 import com.caps.main.GameObject;
+import com.caps.main.Grid;
+import com.caps.main.GridCell;
 import com.caps.main.HUD;
 import com.caps.main.Handler;
 import com.caps.main.ID;
@@ -18,21 +21,18 @@ import com.caps.particles.MiningParticle;
 public class Slave extends GameObject{
 
 	private Handler handler;
-	private boolean isHandling = false;
-	private boolean goToResource = false;
-	private boolean goToBase = false;
 	private boolean first = true;
-	private boolean stop = false;
-	private TownCenter base = null;
 	private int carry = 0;
 	private Image img = null;
 	protected int width = 0;
     protected int height = 0;
-	
-	public Slave(float x, float y, ID id, Handler handler) {
+	private Grid grid;
+
+	public Slave(float x, float y, ID id, Handler handler,Grid grid) {
 		super(x, y, id);
 		baseSpeed = 2;
 		this.handler = handler;
+		this.grid = grid;
 	}
 	long time = System.currentTimeMillis();
 	long future;
@@ -41,76 +41,57 @@ public class Slave extends GameObject{
 		time = System.currentTimeMillis();
 		x += velX;
 		y += velY;
-        if(base == null){
-        	 base = (TownCenter) handler.findObject(ID.Base);
-        }
-		if(getBoundsTotal().intersects(base.getBoundsTotal())){
-			if(isResource == RESOURCE.Wood){
-				HUD.WOOD += carry;
-				carry = 0;
-				isHandling = false;
-			}else if (isResource == RESOURCE.Food){
-				HUD.FOOD += carry;
-				carry = 0;
-				isHandling = false;
-			}else if (isResource == RESOURCE.Gold){
-				HUD.GOLD += carry;
-				carry = 0;
-				isHandling = false;
-			}
-		}
-		if(stop == true){
-			if(getBoundsTotal().intersects(base.getBoundsTotal())){
-				velX = 0;
-				velY = 0;
-				stop = false;
-			}
-		}
-		if(goToBase == true){
-			handler.goToCords(Math.round(base.getX()), Math.round(base.getY()), this);
-			goToBase = false;
-		}
-		if(goToResource == true && isHandling == false){
-			handler.goToCords(Math.round(interactedResource.getX()), Math.round(interactedResource.getY()), this);
-			isHandling = true;
-		}
-		if(interactedResource != null && isHandling == false){
-			goToBase = false;
-			goToResource = true;
-		}
-		if (interactedResource == null){
-			goToBase = false;
-			goToResource = false;
-			isHandling = false;
-			first = true;
-		}
-		if(interactedResource != null && getBoundsTotal().intersects(interactedResource.getBoundsTotal())){
-			if(first == true){
-				isResource = interactedResource.getResource();
-				first = false;
-				future = time + 1500;
-			}
-			if(time >= future){
-				first = true;
-				interactedResource.setHealth(interactedResource.getHealth()-1);
-				for (int i = 0; i < 15; i++) {
-					handler.addObject(new MiningParticle(x+10+randInt(-5, 5), y+20+randInt(-5, 5), ID.Particle, handler,interactedResource.getResource()));
-					
+		if(interactedResource != null){
+			GameObject base = handler.findObject(ID.Base);
+			LinkedList<GridCell> pathToResource = grid.calculatePath(grid.findGridCellByXAndY((int)x, (int)y), grid.findGridCellByXAndY((int)interactedResource.getX(), (int)interactedResource.getY()), this);
+			//LinkedList<GridCell> pathToBase = grid.calculatePath(grid.findGridCellByXAndY((int)x, (int)y), grid.findGridCellByXAndY((int)base.getX(), (int)base.getY()), this);
+
+			if(getBoundsTotal().intersects(interactedResource.getBoundsTotal())){
+				if(first == true){
+					first = false;
+					future = time + 1500;
 				}
-				if(carry >= 15){
-					goToResource = false;
-					goToBase = true;
-				}else if(interactedResource.getHealth() <= 0){
-					goToBase = true;
-					stop = true;
-					interactedResource = null;
-				}else{
-					carry++;
+				if(time >= future){
+					first = true;
+					interactedResource.setHealth(interactedResource.getHealth()-1);
+					for (int i = 0; i < 15; i++) {
+						handler.addObject(new MiningParticle(x+10+randInt(-5, 5), y+20+randInt(-5, 5), ID.Particle, handler,interactedResource.getResource()));
+						
+					}
+					System.out.println(carry);
+					if(carry >= 15){
+						//setPath(pathToBase);
+					}else if(interactedResource.getHealth() <= 0){
+						//setPath(pathToBase);
+						path = null;
+						interactedResource = null;
+					}else{
+						carry++;
+					}
 				}
+			}else if(getBoundsTotal().intersects(handler.findObject(ID.Base).getBoundsTotal())){
+				if(isResource == RESOURCE.Wood){
+					HUD.WOOD += carry;
+					carry = 0;
+				}else if (isResource == RESOURCE.Food){
+					HUD.FOOD += carry;
+					carry = 0;
+				}else if (isResource == RESOURCE.Gold){
+					HUD.GOLD += carry;
+					carry = 0;
+				}
+				setPath(pathToResource);
+
+			}else{
+				setPath(pathToResource);
 			}
 		}
 		
-		collision();
+		if(path != null){
+			grid.followPath(path,this);
+
+		}
+		
 	}
 	
 	private static int randInt(int min, int max) {
@@ -126,7 +107,19 @@ public class Slave extends GameObject{
 	}
 	
 	public void render(Graphics g) {
-		
+		if(path != null && selected == true){
+			for (int i = 0; i < path.size(); i++) {
+				g.setColor(Color.yellow);
+				if(i+1 == path.size()){
+					g.drawLine((int)path.get(i).getX(), (int)path.get(i).getY(), (int)path.get(i).getX(), (int)path.get(i).getY());
+				}else{
+					g.drawLine((int)path.get(i).getX(), (int)path.get(i).getY(), (int)path.get(i+1).getX(), (int)path.get(i+1).getY());
+
+					
+				}
+
+			}
+		}
 		if(img == null){
 			try {
 				img = ImageIO.read(this.getClass().getResource("/peasant.png"));

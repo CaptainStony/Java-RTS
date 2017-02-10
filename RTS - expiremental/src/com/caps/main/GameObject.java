@@ -2,6 +2,7 @@ package com.caps.main;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.LinkedList;
 
 public abstract class GameObject {
 
@@ -10,10 +11,19 @@ public abstract class GameObject {
 	protected float velX, velY;
 	protected boolean selected = false;
 	protected int baseSpeed;
+
+	protected int step = 1;
+	
 	protected int Health;
 	
 
 	protected GameObject endPoint;
+	protected LinkedList<GridCell> path;
+	protected LinkedList<GridCell> closedList = new LinkedList<GridCell>();
+	protected LinkedList<GridCell> openList = new LinkedList<GridCell>();
+
+	protected LinkedList<GridCell> tempPath = new LinkedList<GridCell>();
+
 	protected GameObject interactedResource;
 	
 	protected RESOURCE isResource;
@@ -35,6 +45,16 @@ public abstract class GameObject {
 	public abstract Rectangle getBoundsLeft();
 	public abstract Rectangle getBoundsRight();
 
+	
+	
+	public LinkedList<GridCell> getPath() {
+		return path;
+	}
+
+	public void setPath(LinkedList<GridCell> path) {
+		step = 0;
+		this.path = path;
+	}
 	
 	public int getHealth() {
 		return Health;
