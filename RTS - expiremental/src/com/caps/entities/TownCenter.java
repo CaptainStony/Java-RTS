@@ -8,9 +8,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.caps.main.Game;
 import com.caps.main.GameObject;
 import com.caps.main.Handler;
 import com.caps.main.ID;
+import com.caps.main.Location;
 import com.caps.main.Queue;
 
 public class TownCenter extends GameObject{
@@ -18,7 +20,9 @@ public class TownCenter extends GameObject{
 	private Queue queue;
 	private Handler handler;
 	public Integer timer = null;
-	public TownCenter(float x, float y, ID id, Handler handler) {
+	private Location rallyPoint = null;
+	private RallyFlag rf = null;
+	public TownCenter(float x, float y, ID id, Game game, Handler handler) {
 		super(x, y, id);
 		baseSpeed = 0;
 		this.handler = handler;
@@ -54,12 +58,18 @@ public class TownCenter extends GameObject{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-			g.setColor(Color.white);
-			if (selected){
-				g.drawRect((int)x, (int)y, 105, 158);
-				g.drawRect((int)x+getBoundsTotal().width/2-10, (int)y+getBoundsTotal().height+5, 20, 20);
-
+		g.setColor(Color.white);
+		if (selected){
+			g.drawRect((int)x, (int)y, getBoundsTotal().width, getBoundsTotal().height);
+			if(rallyPoint != null){
+				if(rf == null){
+					rf = new RallyFlag(rallyPoint);
+					rf.render(g, rallyPoint);
+				}else{
+					rf.render(g, rallyPoint);
+				}
 			}
+		}
 
 	}
 	@Override
@@ -85,8 +95,11 @@ public class TownCenter extends GameObject{
 	public Queue getQueue(){
 		return this.queue;
 	}
-	public Rectangle getBoundsResource() {
-		return new Rectangle((int)x+getBoundsTotal().width/2-10, (int)y+getBoundsTotal().height, 20, 20);
+	public Location getRallyPoint(){
+		return rallyPoint;
+	}
+	public void setRallyPoint(Location rallyPoint){
+		this.rallyPoint = rallyPoint;
 	}
 
 }

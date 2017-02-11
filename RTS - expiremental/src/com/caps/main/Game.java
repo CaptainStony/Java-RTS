@@ -32,7 +32,7 @@ public class Game extends Canvas implements Runnable{
 	private boolean running = false;
 	protected Grid grid;
 	public boolean paused = false;
-	
+		
 	public enum STATE{
 		Game,
 	};
@@ -49,7 +49,7 @@ public class Game extends Canvas implements Runnable{
 		this.addMouseListener(mouseinput);
 		
 		new Window(WIDTH, HEIGHT, "RTS shit game", this);
-		handler.addObject(new TownCenter(WIDTH/2, HEIGHT/2, ID.Base, handler));
+		handler.addObject(new TownCenter(WIDTH/2, HEIGHT/2, ID.Base ,this, handler));
 		handler.addObject(new Tank(WIDTH/2-40, HEIGHT/2-40, ID.Tank, handler,grid));
 		handler.addObject(new Slave(WIDTH/2+200, HEIGHT/2+50, ID.Slave, handler,grid));
 		handler.addObject(new Slave(WIDTH/2+300, HEIGHT/2+30, ID.Slave, handler,grid));
@@ -98,7 +98,7 @@ public class Game extends Canvas implements Runnable{
 	             
 	              if(System.currentTimeMillis() - timer > 1000) {
 	                      timer += 1000;
-	                      System.out.println("FPS: " + frames);
+	                      //System.out.println("FPS: " + frames);
 	                      frames = 0;
 	              }
 	             
@@ -144,7 +144,7 @@ public class Game extends Canvas implements Runnable{
 		/*g.setColor(Color.black);
 		g.drawLine(0, -9999, 0, 9999);
 		g.drawLine(-9999, 0, 9999, 0);*/
-		
+
 		g.dispose();
 		bs.show();
 	}	

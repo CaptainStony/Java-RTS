@@ -27,8 +27,8 @@ public class Grid {
 				    	    worldGrid[i][j] = 1;
 				    	    gridCells[i][j].setWall(true);
 				    	}else{
-				    	   	worldGrid[i][j] = 0;
-				    	    gridCells[i][j].setWall(false);
+				    	   	/*worldGrid[i][j] = 0;
+				    	    gridCells[i][j].setWall(false);*/
 		        		}
 			    	 
 		        	}
@@ -37,7 +37,8 @@ public class Grid {
 	    }
 	}
 	public void followPath (LinkedList<GridCell> path,GameObject entity){
-		if (!entity.getBoundsTotal().intersects(path.getLast().getBoundsTotal())) {
+		
+		if (path != null && !entity.getBoundsTotal().intersects(path.getLast().getBoundsTotal())) {
 			GridCell cell = path.get(entity.step);
 			GameObject pointer  = new mousePoint(cell.getX()+10, cell.getY()-10, ID.MousePointer, handler);
 			handler.goToCords((int)pointer.getX(), (int)pointer.getY(), entity);
@@ -50,26 +51,30 @@ public class Grid {
 			}
 		}else{
 			entity.path = null;
+			entity.step = 0;
+			
 		}
 	}
-	
 	public LinkedList<GridCell> calculatePath(GridCell startCell,GridCell endCell,GameObject entity){
 		entity.tempPath.clear();
 		entity.closedList.clear();
 		entity.openList.clear();
 		entity.step = 0;
+		int cnt = 0;
 		if(endCell.isWall == false && endCell != startCell){
 		while (startCell != endCell) {
 			LinkedList<GridCell> allAdjCells = new LinkedList<GridCell>();
 
 			int startRow = startCell.getRow();
 			int startCol = startCell.getCol();
-			entity.closedList.add(startCell);
+			if(!entity.closedList.contains(startCell)){
+				entity.closedList.add(startCell);	
+			}			
 			for (int i = -1; i < 2; i++) {
 				for (int j = -1; j < 2; j++) {
 					GridCell adjCell = findGridCellByRowAndCol(startRow+i, startCol+j);
 					
-					if(!entity.closedList.contains(adjCell) && adjCell.isWall == false && !entity.openList.contains(adjCell)){
+					if(!entity.closedList.contains(adjCell) && adjCell.isWall == false){
 						if(Math.abs(i) == 1 || Math.abs(j) == 1){
 							adjCell.G = startCell.G + 14;
 						}else if(i != 0 && j != 0){
@@ -77,18 +82,13 @@ public class Grid {
 	
 						}
 
-							entity.openList.add(adjCell);
 							adjCell.H = Math.abs(adjCell.getRow() - endCell.getRow()) + Math.abs(adjCell.getCol() - endCell.getCol());
 							adjCell.F = adjCell.G + adjCell.H;
-							if(!allAdjCells.contains(adjCell)){
-								allAdjCells.add(adjCell);	
-							}else{
-								System.out.println(1);
-							}
+
+							allAdjCells.add(adjCell);	
 					}
 				}
 			}
-
 			int lowest = 99999999;
 			GridCell lowestFCell = null;
 			for (int i = 0; i < allAdjCells.size(); i++) {
@@ -98,10 +98,22 @@ public class Grid {
 					lowestFCell = allAdjCells.get(i);
 				}
 			}
-			entity.tempPath.add(lowestFCell);
-			entity.openList.remove(lowestFCell);
-			//findPath(lowestFCell, endCell);
-			startCell = lowestFCell;
+			if(entity.openList.containsAll(allAdjCells)){
+				entity.tempPath.removeLast();
+				entity.closedList.add(lowestFCell);
+				//entity.tempPath.removeLast();
+				entity.openList.removeAll(allAdjCells);
+				System.out.println("Backtracking");
+				cnt++;
+				System.out.println(cnt);
+			}else{
+				entity.tempPath.add(lowestFCell);
+				entity.openList.addAll(allAdjCells);
+				entity.openList.remove(lowestFCell);
+
+				//findPath(lowestFCell, endCell);
+			}
+			startCell = entity.tempPath.getLast();
 			}
 
 

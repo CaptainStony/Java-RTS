@@ -15,12 +15,11 @@ public class MouseInput implements MouseListener{
 	private Handler handler;
 	private Game game;
 	private Grid grid;
-	
+
 	public MouseInput(Game game, Handler handler, Grid grid) {
 		this.handler = handler;
 		this.game = game;
 		this.grid = grid;
-
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -41,32 +40,46 @@ public class MouseInput implements MouseListener{
 		Rectangle mouseBounds = new Rectangle(worldMouseX, worldMouseY, 1, 1);
 		//handler.addObject(new Tank(mouseX, mouseY, ID.Tank, handler));
 		if(e.getButton() == 1){
-			Button bb = (Button) handler.findObject(ID.Button);
+			LinkedList<GameObject> allButtons = handler.getAllByID(ID.Button);
+			Button tmp;
 			TownCenter base = (TownCenter) handler.findObject(ID.Base);
-			if(base.selected && bb != null){
-				if(HUD.FOOD >= 10 && bb.getBoundsTotal().intersects(mouseBounds)){
-					HUD.FOOD -= 10;
-					boolean isEmpty;
-					if(base.getQueue().getQueueSize() == 0){
-						isEmpty = true;
-					}else isEmpty = false;
-					
-					if(bb.type == TYPE.Slave){
-						base.getQueue().addItemToQueue(new Slave(base.x - 20, base.y - 20, ID.Slave, handler,grid), 5);
-						if(isEmpty){
-							base.timer = base.getQueue().getTimeFromQueue(1)*60;
-							System.out.println(base.timer);
+			if(base.selected && allButtons != null){
+				for(GameObject obj : allButtons){
+					tmp = (Button) obj;
+					if(HUD.FOOD >= 10 && tmp.getBoundsTotal().intersects(mouseBounds)){
+						HUD.FOOD -= 10;
+						boolean isEmpty;
+						if(base.getQueue().getQueueSize() == 0){
+							isEmpty = true;
+						}else isEmpty = false;
+						
+						if(tmp.type == TYPE.Slave){
+							if(base.getRallyPoint() != null){
+								base.getQueue().addItemToQueue(new Slave(base.getRallyPoint().getX(), base.getRallyPoint().getY(), ID.Slave, handler, grid), 5);
+							}else{
+								base.getQueue().addItemToQueue(new Slave(base.x - 20, base.y - 20, ID.Slave, handler, grid), 5);
+							}
+							
+							if(isEmpty){
+								base.timer = base.getQueue().getTimeFromQueue(1)*60;
+							}
+						} else if(tmp.type == TYPE.Tank){
+							if(base.getRallyPoint() != null){
+								base.getQueue().addItemToQueue(new Tank(base.getRallyPoint().getX(), base.getRallyPoint().getY(), ID.Tank, handler, grid), 10);
+							}else{
+								base.getQueue().addItemToQueue(new Tank(base.x - 20, base.y - 20, ID.Tank, handler, grid), 10);
+							}
+							
+							if(base.timer != null && base.timer <= 0){
+								base.timer = base.getQueue().getFirstTime()*60;
+							}
 						}
-					} else if(bb.type == TYPE.Tank){
-						base.getQueue().addItemToQueue(new Tank(base.x - 20, base.y - 20, ID.Tank, handler,grid), 10);
-						if(base.timer != null && base.timer <= 0){
-							base.timer = base.getQueue().getFirstTime()*60;
-						}
+					}else{
+						game.selectedObject.clear();
+						handler.object.forEach(gameObj->gameObj.selected = false);
 					}
-				}else{
-					game.selectedObject.clear();
-					handler.object.forEach(obj->obj.selected = false);
 				}
+				
 				
 			}else if(base.selected && !handler.intersects(mouseBounds)){
 				game.selectedObject.clear();
@@ -91,20 +104,25 @@ public class MouseInput implements MouseListener{
 				}
 			}
 				
-		}else if (e.getButton() == 3){
-
+		}
+			
+		if (e.getButton() == 3){
 			for (int i = 0; i < game.selectedObject.size(); i++) {
 				GameObject obj = game.selectedObject.get(i);
+				if(obj.id == ID.Base){
+					TownCenter town = (TownCenter) obj;
+					town.setRallyPoint(new Location(worldMouseX, worldMouseY, grid));
+					System.out.println("Rallypoint set!");
+				}
 				if (obj != null){
 					GameObject endPoint = new mousePoint(worldMouseX, worldMouseY, ID.MousePointer, handler);
 					if(obj.getId() == ID.Slave){
-						if(obj.interactedResource != null){
+						if(obj.interactedResource == null){
 							for (int j = 0; j < handler.object.size(); j++) {
 								GameObject resObj = handler.object.get(j);
 								if(resObj.getId() == ID.Resource){
 									if(endPoint.getBoundsTotal().intersects(resObj.getBoundsTotal())){
 										obj.interactedResource = resObj;
-
 										break;
 									}	
 								}
@@ -113,9 +131,8 @@ public class MouseInput implements MouseListener{
 							obj.interactedResource = null;
 						}
 					}
-					//handler.goToCords(worldMouseX, worldMouseY, obj);
-					LinkedList<GridCell> path = grid.calculatePath(grid.findGridCellByXAndY((int)obj.getX(), (int)obj.getY()), grid.findGridCellByXAndY(worldMouseX, worldMouseY),obj);
-					obj.setPath(path);
+					handler.goToCords(worldMouseX, worldMouseY, obj);
+					
 				}
 			}
 		}

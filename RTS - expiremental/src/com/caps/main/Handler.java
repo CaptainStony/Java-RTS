@@ -32,7 +32,15 @@ public class Handler {
 		}
 
 	}
-	
+	public LinkedList<GameObject> getAllByID(ID id){
+		LinkedList<GameObject> all = new LinkedList<GameObject>();
+		for(GameObject obj : object){
+			if(obj.id == id){
+				all.add(obj);
+			}
+		}
+		return all;
+	}
 	public void render(Graphics g){
 		for (int i = 0; i < object.size(); i++) {
 			object.get(i).render(g);
