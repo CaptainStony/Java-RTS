@@ -29,7 +29,6 @@ public class Tank extends GameObject{
 			grid.followPath(path,this);
 
 		}
-		//collision();
 	}
 	@Override
 	public void render(Graphics g) {
@@ -105,25 +104,7 @@ public class Tank extends GameObject{
 			g.drawRect((int)x-10, (int)y-20, 45, 70);
 		}
 	}
-	private void collision(){
 
-		for (int i = 0; i < handler.object.size(); i++) {
-			
-			GameObject tempObject = handler.object.get(i);
-			if(tempObject.getId() == ID.Base){
-				if(getBoundsUp().intersects(tempObject.getBoundsTotal())){
-					y = tempObject.getY()+178;
-				}else if (getBoundsDown().intersects(tempObject.getBoundsTotal())){
-					y = tempObject.getY()-50;
-				}else if (getBoundsLeft().intersects(tempObject.getBoundsTotal())){
-					x = tempObject.getX()+116;
-				}else if (getBoundsRight().intersects(tempObject.getBoundsTotal())){
-					x = tempObject.getX()-36;
-				}
-			}
-		}
-
-	}
 	@Override
 	public Rectangle getBoundsUp() {
 		return new Rectangle((int)x-8, (int)y-20, 41, 2);

@@ -22,6 +22,7 @@ public class Slave extends GameObject{
 
 	private Handler handler;
 	private boolean first = true;
+	
 	private int carry = 0;
 	private Image img = null;
 	protected int width = 0;
@@ -33,63 +34,75 @@ public class Slave extends GameObject{
 		baseSpeed = 2;
 		this.handler = handler;
 		this.grid = grid;
+		Health = 100;
 	}
 	long time = System.currentTimeMillis();
 	long future;
+	
+	private LinkedList<GridCell> pathToResource;
+	private LinkedList<GridCell> pathToBase;
+	
+	public boolean goToResource;
+	public boolean goToBase;
+	
 	@Override
 	public void tick() {
 		time = System.currentTimeMillis();
 		x += velX;
 		y += velY;
+		TownCenter base = (TownCenter) handler.getAllByID(ID.Base).getFirst();
+		//RESOURCE
+		if(getBoundsTotal().intersects(base.getBoundsDrop())){
+			if(interactedResource.isResource == RESOURCE.Wood){
+				HUD.WOOD += carry;
+				carry = 0;
+			}else if (interactedResource.isResource == RESOURCE.Food){
+				HUD.FOOD += carry;
+				carry = 0;
+			}else if (interactedResource.isResource == RESOURCE.Gold){
+				HUD.GOLD += carry;
+				carry = 0;
+			}
+		}
 		if(interactedResource != null){
-			GameObject base = handler.findObject(ID.Base);
-			LinkedList<GridCell> pathToResource = grid.calculatePath(grid.findGridCellByXAndY((int)x, (int)y), grid.findGridCellByXAndY((int)interactedResource.getX(), (int)interactedResource.getY()), this);
-			//LinkedList<GridCell> pathToBase = grid.calculatePath(grid.findGridCellByXAndY((int)x, (int)y), grid.findGridCellByXAndY((int)base.getX(), (int)base.getY()), this);
-
-			if(getBoundsTotal().intersects(interactedResource.getBoundsTotal())){
+			//System.out.println("handling resource");
+			if(goToResource == true){
+				pathToResource = grid.calculatePath(grid.findGridCellByXAndY((int)getBoundsTotal().getMaxX(), (int)getBoundsTotal().getMaxY()), grid.findGridCellByXAndY((int)interactedResource.getBoundsTotal().getMaxX(), (int)interactedResource.getBoundsTotal().getMaxY()), this);
+				setPath(pathToResource);
+				goToResource = false;
+			}else if (goToBase == true){
+				pathToBase = grid.calculatePath(grid.findGridCellByXAndY((int)x, (int)y), grid.findGridCellByXAndY((int)base.getBoundsDrop().getMaxX(), (int)base.getBoundsDrop().getMaxY()), this);
+				setPath(pathToBase);
+				goToBase = false;
+			}
+			if(interactedResource.getBoundsTotal().intersects(getBoundsTotal())){
 				if(first == true){
 					first = false;
 					future = time + 1500;
 				}
-				if(time >= future){
+				if(time >= future && goToBase == false){
 					first = true;
 					interactedResource.setHealth(interactedResource.getHealth()-1);
 					for (int i = 0; i < 15; i++) {
 						handler.addObject(new MiningParticle(x+10+randInt(-5, 5), y+20+randInt(-5, 5), ID.Particle, handler,interactedResource.getResource()));
-						
 					}
-					System.out.println(carry);
 					if(carry >= 15){
-						//setPath(pathToBase);
+						goToBase = true;
 					}else if(interactedResource.getHealth() <= 0){
-						//setPath(pathToBase);
-						path = null;
+						goToBase = true;
 						interactedResource = null;
 					}else{
 						carry++;
 					}
 				}
-			}else if(getBoundsTotal().intersects(handler.findObject(ID.Base).getBoundsTotal())){
-				if(isResource == RESOURCE.Wood){
-					HUD.WOOD += carry;
-					carry = 0;
-				}else if (isResource == RESOURCE.Food){
-					HUD.FOOD += carry;
-					carry = 0;
-				}else if (isResource == RESOURCE.Gold){
-					HUD.GOLD += carry;
-					carry = 0;
-				}
-				setPath(pathToResource);
-
-			}else{
-				setPath(pathToResource);
+			}else if(base.getBoundsDrop().intersects(getBoundsTotal())){
+				goToResource = true;
 			}
-		}
-		
-		if(path != null){
-			grid.followPath(path,this);
 
+			
+		}
+		if(path != null){
+			grid.followPath(path, this);
 		}
 		
 	}
@@ -141,25 +154,6 @@ public class Slave extends GameObject{
 		}
 		
 	}
-	private void collision(){
-
-		for (int i = 0; i < handler.object.size(); i++) {
-			
-			GameObject tempObject = handler.object.get(i);
-			if(tempObject.getId() == ID.Base){
-				if(getBoundsUp().intersects(tempObject.getBoundsTotal())){
-					y = tempObject.getY()+158;
-				}else if (getBoundsDown().intersects(tempObject.getBoundsTotal())){
-					y = tempObject.getY()-40;
-				}else if (getBoundsLeft().intersects(tempObject.getBoundsTotal())){
-					x = tempObject.getX()+106;
-				}else if (getBoundsRight().intersects(tempObject.getBoundsTotal())){
-					x = tempObject.getX()-20;
-				}
-			}
-		}
-
-	}
 	@Override
 	public Rectangle getBoundsUp() {
 		return new Rectangle((int)x+2, (int)y, 16, 2);
@@ -183,5 +177,8 @@ public class Slave extends GameObject{
 	}
 	public int getCarry(){
 		return carry;
+	}
+	public void setCarry(int carry){
+		this.carry = carry;
 	}
 }

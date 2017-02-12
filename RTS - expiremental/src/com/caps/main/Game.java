@@ -6,10 +6,12 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.util.LinkedList;
 
+import com.caps.entities.BuildingObject;
 import com.caps.entities.Sheep;
 import com.caps.entities.Slave;
 import com.caps.entities.Tank;
 import com.caps.entities.TownCenter;
+import com.caps.entities.Wall;
 import com.caps.resource.Gold;
 import com.caps.resource.Wood;
 
@@ -47,16 +49,15 @@ public class Game extends Canvas implements Runnable{
 
 		mouseinput = new MouseInput(this, handler,grid);
 		this.addMouseListener(mouseinput);
-		
+		this.addMouseMotionListener(mouseinput);
 		new Window(WIDTH, HEIGHT, "RTS shit game", this);
-		handler.addObject(new TownCenter(WIDTH/2, HEIGHT/2, ID.Base ,this, handler));
+		handler.addObject(new TownCenter(WIDTH/2, HEIGHT/2-5, ID.Base ,this, handler));
 		handler.addObject(new Tank(WIDTH/2-40, HEIGHT/2-40, ID.Tank, handler,grid));
 		handler.addObject(new Slave(WIDTH/2+200, HEIGHT/2+50, ID.Slave, handler,grid));
 		handler.addObject(new Slave(WIDTH/2+300, HEIGHT/2+30, ID.Slave, handler,grid));
 
-		handler.addObject(new Wood(WIDTH/2+200, HEIGHT/2+200, ID.Resource, handler));
-		handler.addObject(new Gold(WIDTH/2+200, HEIGHT/2+400, ID.Resource, handler));
 		handler.addObject(new Sheep(WIDTH/2 - 100, HEIGHT/2+50, ID.Sheep, handler));
+		
 		
 		hud = new HUD(this);
 	}
@@ -107,11 +108,12 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	private void tick(){
+		grid.loadGrid();
+
 		if(!paused){
 			handler.tick();
-			hud.tick();
+			//hud.tick(); <3
 		}
-		grid.loadGrid();
 
 	}
 		
@@ -134,6 +136,7 @@ public class Game extends Canvas implements Runnable{
 				grid.gridCells[i][j].render(g);
 				}
 			}
+
 			handler.render(g);
 			hud.render(g,this);
 

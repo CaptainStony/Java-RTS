@@ -24,7 +24,6 @@ public class TownCenter extends GameObject{
 	private RallyFlag rf = null;
 	public TownCenter(float x, float y, ID id, Game game, Handler handler) {
 		super(x, y, id);
-		baseSpeed = 0;
 		this.handler = handler;
 		this.queue = new Queue(this.handler);
 	}
@@ -32,8 +31,7 @@ public class TownCenter extends GameObject{
 	
 	@Override
 	public void tick() {
-		x += velX;
-		y += velY;
+
 		if(queue.getQueueSize() > 0 && timer == null){
 			timer = queue.getFirstTime()*60;
 			System.out.println("Timer initialized");
@@ -72,7 +70,10 @@ public class TownCenter extends GameObject{
 		}
 
 	}
-	@Override
+	
+	public Rectangle getBoundsDrop() {
+		return new Rectangle((int)x+56, (int)y+157, 20, 20);
+	}
 	public Rectangle getBoundsUp() {
 		return new Rectangle((int)x+2, (int)y, 101, 2);
 	}

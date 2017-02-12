@@ -10,7 +10,7 @@ public class Button extends GameObject{
 	protected int posX;
 	protected int posY;
 	protected static enum TYPE{
-		Slave(), Tank(),
+		Slave(), Tank(),Wall()
 	}
 	protected TYPE type;
 	public Button(float x, float y, ID id, TYPE type, int posX, int posY) {

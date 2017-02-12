@@ -3,7 +3,9 @@ package com.caps.main;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Random;
 
 import com.caps.entities.Slave;
 import com.caps.entities.TownCenter;
@@ -16,9 +18,17 @@ public class HUD{
 	protected LinkedList<GameObject> b = new LinkedList<GameObject>();
 	private TownCenter base;
 	private Handler handler;
+	private WorldGenerator OSN;
 	public HUD(Game game){
 		base = (TownCenter) game.handler.findObject(ID.Base);
 		this.handler = game.handler;
+		try {
+			OSN = new WorldGenerator();
+			OSN.run(handler, game.grid, new Random().nextInt(20));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void tick(){
 	}
@@ -35,15 +45,19 @@ public class HUD{
 		g.drawString("GOLD: "+GOLD, x-1070, y-780);
 		g.drawString("WOOD: "+WOOD, x-1070, y-760);
 		g.drawString("FOOD: "+FOOD, x-1070, y-740);
+		
+		
 		if(!game.selectedObject.isEmpty()){
 		    g.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-		    g.drawString("Name: "+game.selectedObject.getLast().getId().toString(), x-1070, y-130);
+		    g.drawString("Name: "+game.selectedObject.getLast().getId().toString(), x-1070, y-107);
+		    g.drawString("Health: "+game.selectedObject.getLast().getHealth(), x-1070, y-90);
+
 		}
 		if(game.selectedObject.size() > 0 && game.selectedObject.get(0).id == ID.Slave){
 			Slave slav = (Slave) game.selectedObject.get(0);
 			if(slav.getCarry() > 0){
-				g.setFont(new Font("TimesRoman", Font.PLAIN, 13));
-				g.drawString("Carrying: " + slav.getCarry() + " " + slav.isResource , x-1060, y-100);
+				g.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+				g.drawString("Carrying: " + slav.getCarry() + " " + slav.interactedResource.isResource , x-1070, y-44);
 			}
 		}
 		if(b == null && base.selected ){
@@ -53,8 +67,9 @@ public class HUD{
 			b = handler.getAllByID(ID.Button);
 			for(GameObject button : b){
 				Button bbb = (Button) button;
-				bbb.render(g, x - bbb.posX, y - bbb.posY);
-				
+				if(bbb.type == TYPE.Slave || bbb.type == TYPE.Tank){
+				     bbb.render(g, x - bbb.posX, y - bbb.posY);
+				}				
 			}
 		    g.setColor(Color.white);
 		    g.drawRect(x - 600, y-800, 100, 30);
@@ -62,8 +77,9 @@ public class HUD{
 			b = handler.getAllByID(ID.Button);
 			for(GameObject button : b){
 				Button bbb = (Button) button;
-				bbb.render(g, x - bbb.posX, y - bbb.posY);
-				
+				if(bbb.type == TYPE.Slave || bbb.type == TYPE.Tank){
+				     bbb.render(g, x - bbb.posX, y - bbb.posY);
+				}				
 			}
 			if(base.getQueue().getQueueSize() > 0 && base.timer != null && base.timer > 0){
 				float fac = (float) (base.timer/(base.getQueue().getFirstTime()*60.00));

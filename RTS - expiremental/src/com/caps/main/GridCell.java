@@ -11,9 +11,10 @@ public class GridCell {
 	
 	protected int G=0,H,F;
 	
-	protected GridCell parent;
+	//protected GridCell parent;
 	protected boolean isWall;
 	
+
 	public GridCell(int x, int y, int row,int col){
 		this.x = x;
 		this.y = y;
@@ -25,14 +26,15 @@ public class GridCell {
 		
 	}
 	public void render(Graphics g){
-		if(isWall == true){
+
+		/*if(isWall == true){
 			g.setColor(Color.blue);
 			g.drawRect(x, y, 20, 20);
 			
 		}else{
 			g.setColor(Color.red);
 			g.drawRect(x, y, 20, 20);			
-		}
+		}*/
 	}
 	public boolean isWall() {
 		return isWall;
@@ -78,5 +80,13 @@ public class GridCell {
 	public void setCol(int col) {
 		this.col = col;
 	}
-
+	
+	public boolean intersects(Handler handler, GridCell cell){
+		for(int i = 0; i < handler.object.size(); i++){
+			if(cell.getBoundsTotal().intersects(handler.object.get(i).getBoundsTotal())){
+				return true;
+			}
+		}
+		return false;
+	}
 }

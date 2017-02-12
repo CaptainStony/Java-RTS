@@ -90,7 +90,7 @@ private Handler handler;
 	}
 	@Override
 	public Rectangle getBoundsTotal() {
-		return new Rectangle((int)x, (int)y, width, height);
+		return new Rectangle((int)x, (int)y, 53,40);
 
 	}
 

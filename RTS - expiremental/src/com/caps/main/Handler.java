@@ -4,12 +4,16 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
+import com.caps.entities.BuildingObject;
+import com.caps.entities.Wall;
 import com.caps.entities.mousePoint;
 
 public class Handler {
 
 	public LinkedList<GameObject> object = new LinkedList<GameObject>();
-	//public LinkedList<CellObject> cell = new LinkedList<CellObject>();
+	public LinkedList<BuildingObject> buildingObject = new LinkedList<BuildingObject>();
+	public LinkedList<GameObject> resourceObject = new LinkedList<GameObject>();
+
 	//private HUD hud = new HUD();
 	public GameObject findObject(ID id){
 
@@ -27,9 +31,16 @@ public class Handler {
 	}
 	
 	public void tick(){
+		for (int i = 0; i < buildingObject.size(); i++) {
+			buildingObject.get(i).tick();
+		}
 		for (int i = 0; i < object.size(); i++) {
 			object.get(i).tick();
 		}
+		/*for(int i = 0; i < resourceObject.size(); i++){
+			resourceObject.get(i).tick();
+		}*/
+
 
 	}
 	public LinkedList<GameObject> getAllByID(ID id){
@@ -42,24 +53,50 @@ public class Handler {
 		return all;
 	}
 	public void render(Graphics g){
+		for (int i = 0; i < buildingObject.size(); i++) {
+			buildingObject.get(i).render(g);
+		}
 		for (int i = 0; i < object.size(); i++) {
 			object.get(i).render(g);
 		}
+		for(int i = 0; i < resourceObject.size(); i++){
+			resourceObject.get(i).render(g);
+		}
+
 	}
 	
 	public void addObject(GameObject object){
-		this.object.add(object);
+		if(object.id == ID.Resource){
+			this.resourceObject.add(object);
+		}else{
+			this.object.add(object);
+		}
+	}
+	public void addObject(BuildingObject object){
+		this.buildingObject.add(object);
 	}
 	public void removeObject(GameObject object){
-		this.object.remove(object);
+		if(object.getId() == ID.Resource){
+			resourceObject.remove(object);
+		}else{
+			this.object.remove(object);
+		}
 	}
-    public void removeByID(ID id){
-    	for(int i = 0; i < object.size(); i++){
-    		if(object.get(i).id == id){
-    			object.remove(i);
-    		}
-    	}
-    }
+	public void removeObject(BuildingObject object){
+		this.buildingObject.remove(object);
+	}
+	
+	public void removeByID(ID id){
+	     if(id == ID.Resource){
+	      resourceObject.clear();
+	     }else{
+	      for(int i = 0; i < object.size(); i++){
+	          if(object.get(i).id == id){
+	           object.remove(i);
+	          }
+	         }
+	     }
+	    }
 	public void goToCords(int worldMouseX,int worldMouseY,GameObject obj){
 		GameObject endPoint = new mousePoint(worldMouseX, worldMouseY, ID.MousePointer, this);
 		float difX = worldMouseX - obj.getX();
@@ -102,4 +139,6 @@ public class Handler {
 		}
 		return false;
 	}
+
+
 }

@@ -14,9 +14,26 @@ import com.caps.main.ID;
 
 public class Wood extends GameObject{
 
-	private Image img;
-	private int width;
-	private int height;
+	private static int width;
+	private static int height;
+	private static Image img = null;
+	static {
+	    try {
+	      img = ImageIO.read(Wood.class.getResource("/tree.png"));
+	    } catch (Exception e) {
+	      // catch exception - do other stuff
+	    	System.exit(0);
+	    } finally {
+	      if (img != null) {
+	        width = img.getWidth(null);
+	        height = img.getHeight(null);
+	      } else {
+	        // initialise default values
+	        width = 0;
+	        height = 0;
+	      }
+	    }
+	  }
 	private Handler handler;
 	
 	public Wood(float x, float y, ID id, Handler handler) {
@@ -29,40 +46,22 @@ public class Wood extends GameObject{
 	
 	@Override
 	public void tick() {
-		x += velX;
-		y += velY;
+
 		if(Health <= 0){
 			handler.removeObject(this);
 		}
-		collision();
+
 	}
 	@Override
 	public void render(Graphics g) {
-		if(img == null){
-			
-			try {
-				img = ImageIO.read(this.getClass().getResource("/tree.png"));
-				width = img.getWidth(null);
-	            height = img.getHeight(null);
-	            g.drawImage(img,Math.round(x),Math.round(y), width/4, height/4, null);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-            
-		}else{
-			g.drawImage(img,Math.round(x),Math.round(y), width/4, height/4, null);
-		}
-		
+		g.drawImage(img,Math.round(x),Math.round(y), width/4, height/4, null);
+
 		if (selected == true){
 			g.setColor(Color.white);
-			g.drawRect((int)x, (int)y, 53,40);
+			g.drawRect((int)x, (int)y, 32,62);
 		}
 	}
-	private void collision(){
 
-
-	}
 	@Override
 	public Rectangle getBoundsUp() {
 		return null;

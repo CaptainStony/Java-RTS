@@ -21,12 +21,12 @@ public abstract class GameObject {
 	protected LinkedList<GridCell> path;
 	protected LinkedList<GridCell> closedList = new LinkedList<GridCell>();
 	protected LinkedList<GridCell> openList = new LinkedList<GridCell>();
-
+	protected int cnt = 0;
 	protected LinkedList<GridCell> tempPath = new LinkedList<GridCell>();
 
 	protected GameObject interactedResource;
 	
-	protected RESOURCE isResource;
+	public RESOURCE isResource;
 	
 	protected static enum RESOURCE{
 		Wood,Gold,Food,

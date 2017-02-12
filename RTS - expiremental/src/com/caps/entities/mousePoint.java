@@ -1,5 +1,6 @@
 package com.caps.entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -27,8 +28,8 @@ public class mousePoint extends GameObject{
 	@Override
 	public void render(Graphics g) {
 			/*g.setColor(Color.black);
-			g.fillRect((int)x, (int)y, 4, 4);*/
-			 
+			g.fillRect((int)x, (int)y, 4, 4);
+			*/ 
 	}
 	private void collision(){
 

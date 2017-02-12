@@ -3,15 +3,18 @@ package com.caps.main;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.LinkedList;
 
 import com.caps.entities.Slave;
 import com.caps.entities.Tank;
 import com.caps.entities.TownCenter;
+import com.caps.entities.Wall;
 import com.caps.entities.mousePoint;
+import com.caps.entities.BuildingObject.BUILDINGTYPE;
 import com.caps.main.Button.TYPE;
 
-public class MouseInput implements MouseListener{
+public class MouseInput implements MouseListener,MouseMotionListener {
 	private Handler handler;
 	private Game game;
 	private Grid grid;
@@ -20,6 +23,7 @@ public class MouseInput implements MouseListener{
 		this.handler = handler;
 		this.game = game;
 		this.grid = grid;
+
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -103,42 +107,57 @@ public class MouseInput implements MouseListener{
 						}	
 				}
 			}
-				
-		}
-			
-		if (e.getButton() == 3){
+
+		}else if (e.getButton() == 3){
 			for (int i = 0; i < game.selectedObject.size(); i++) {
 				GameObject obj = game.selectedObject.get(i);
 				if(obj.id == ID.Base){
 					TownCenter town = (TownCenter) obj;
 					town.setRallyPoint(new Location(worldMouseX, worldMouseY, grid));
-					System.out.println("Rallypoint set!");
+					//System.out.println("Rallypoint set!");
 				}
+			}
+			for (int i = 0; i < game.selectedObject.size(); i++) {
+				GameObject obj = game.selectedObject.get(i);
 				if (obj != null){
 					GameObject endPoint = new mousePoint(worldMouseX, worldMouseY, ID.MousePointer, handler);
 					if(obj.getId() == ID.Slave){
-						if(obj.interactedResource == null){
-							for (int j = 0; j < handler.object.size(); j++) {
-								GameObject resObj = handler.object.get(j);
-								if(resObj.getId() == ID.Resource){
-									if(endPoint.getBoundsTotal().intersects(resObj.getBoundsTotal())){
-										obj.interactedResource = resObj;
-										break;
-									}	
+						Slave slave = (Slave) obj;
+						
+						for (int j = 0; j < handler.resourceObject.size(); j++) {
+							GameObject resObj = handler.resourceObject.get(j);
+								if(endPoint.getBoundsTotal().intersects(resObj.getBoundsTotal())){
+									slave.interactedResource = resObj;
+									break;
+								}else{
+									slave.interactedResource = null;
+									slave.setCarry(0);
 								}
-							}	
-						}else{
-							obj.interactedResource = null;
 						}
+	
+						LinkedList<GridCell> path = grid.calculatePath(grid.findGridCellByXAndY((int)obj.getX(), (int)obj.getY()), grid.findGridCellByXAndY(worldMouseX, worldMouseY),obj);
+						slave.setPath(path);
+						
 					}
-					handler.goToCords(worldMouseX, worldMouseY, obj);
-					
+
 				}
 			}
+		}else if (e.getButton() == 2){
+			handler.addObject(new Wall((int)grid.findGridCellByXAndY(worldMouseX, worldMouseY).getX(), (int)grid.findGridCellByXAndY(worldMouseX, worldMouseY).getY(), game, handler, BUILDINGTYPE.Wall));
+
 		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		
+	}
+	@Override
+	public void mouseMoved(MouseEvent e) {
 		
 	}
 }
