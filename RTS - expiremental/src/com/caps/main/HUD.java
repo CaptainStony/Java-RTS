@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
 
+import javax.swing.JButton;
+
 import com.caps.entities.Slave;
 import com.caps.entities.TownCenter;
 import com.caps.main.Button.TYPE;
@@ -19,9 +21,18 @@ public class HUD{
 	private TownCenter base;
 	private Handler handler;
 	private WorldGenerator OSN;
-	public HUD(Game game){
+	private Grid grid;
+	private Window window;
+	
+	public HUD(Game game,Grid grid,Window window){
 		base = (TownCenter) game.handler.findObject(ID.Base);
 		this.handler = game.handler;
+		this.grid = grid;
+		this.window = window;
+		
+		window.b.setVisible(true);
+		window.b.setText("elle moema");
+		
 		try {
 			OSN = new WorldGenerator();
 			OSN.run(handler, game.grid, new Random().nextInt(20));
@@ -31,11 +42,13 @@ public class HUD{
 		}
 	}
 	public void tick(){
+
 	}
 	public void render(Graphics g,Game game){
 		int x = Game.WIDTH-game.cameraX;
 		int y = Game.HEIGHT-game.cameraY;
-	    g.setFont(new Font("default", Font.PLAIN, 15));
+
+		g.setFont(new Font("default", Font.PLAIN, 15));
 
 		g.setColor(Color.orange);
 		g.fillRect(x-1070, y-120, 1050, 80);
@@ -94,6 +107,23 @@ public class HUD{
 			game.handler.removeByID(ID.Button);
 			b = null;
 		}
+		
+		// mini map 1337
+		for (int i = 0; i < 75; i++) {
+			for (int j = 0; j < 75; j++) {
+				GridCell cell = grid.gridCells[i][j];
+				
+				if(cell.isWall == true){
+					g.setColor(Color.black);
+				}else{
+					g.setColor(Color.white);
+				}
+				g.fillRect(x-(i*2)-20, y-(j*2)-650, 2, 2);
+			}
+		}
+		g.setColor(Color.black);
+		g.drawRect(x-168, y-798, 75*2, 75*2);
+		
 	}
 
 }

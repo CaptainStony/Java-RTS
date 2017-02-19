@@ -1,7 +1,7 @@
 package com.caps.main;
 
 import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.KeyEvent;import javax.xml.crypto.dsig.CanonicalizationMethod;
 
 import com.caps.entities.TownCenter;
 
@@ -30,19 +30,27 @@ public class KeyInput extends KeyAdapter{
 			System.out.println("Time: "+base.getQueue().getFirstTime());
 			System.out.println("Queue size: "+base.getQueue().getQueueSize());
 		}
-		
-		if(keyPress[0] == true){
-			game.cameraY+=5;
+		if(game.cameraX <= 0){
+			if(keyPress[2] == true){
+				game.cameraX+=5;
+			}
+			if(keyPress[3] == true){
+				game.cameraX-=5;
+			}
+		}else{
+			game.cameraX = 0;
 		}
-		if(keyPress[1] == true){
-			game.cameraY-=5;
+		if(game.cameraY <= 0){
+			if(keyPress[0] == true){
+				game.cameraY+=5;
+			}
+			if(keyPress[1] == true){
+				game.cameraY-=5;
+			}	
+		}else{
+			game.cameraY = 0;
 		}
-		if(keyPress[2] == true){
-			game.cameraX+=5;
-		}
-		if(keyPress[3] == true){
-			game.cameraX-=5;
-		}
+
 		
 		if(key == KeyEvent.VK_ESCAPE) {
 			if(game.paused == false){

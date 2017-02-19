@@ -28,8 +28,8 @@ public class mousePoint extends GameObject{
 	@Override
 	public void render(Graphics g) {
 			/*g.setColor(Color.black);
-			g.fillRect((int)x, (int)y, 4, 4);
-			*/ 
+			g.fillRect((int)x, (int)y, 4, 4);*/
+			
 	}
 	private void collision(){
 
@@ -47,23 +47,7 @@ public class mousePoint extends GameObject{
 		}
 
 	}
-	@Override
-	public Rectangle getBoundsUp() {
-		return null;
-	}
-	@Override
-	public Rectangle getBoundsDown() {
-		return null;
-	}
-	@Override
-	public Rectangle getBoundsLeft() {
-		return null;
-	}
-	@Override
-	public Rectangle getBoundsRight() {
-		return null;
-	}
-	@Override
+
 	public Rectangle getBoundsTotal() {
 		return new Rectangle((int)x, (int)y, 4, 4);
 

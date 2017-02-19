@@ -11,6 +11,7 @@ import com.caps.entities.Tank;
 import com.caps.entities.TownCenter;
 import com.caps.entities.Wall;
 import com.caps.entities.mousePoint;
+import com.caps.entities.Archer;
 import com.caps.entities.BuildingObject.BUILDINGTYPE;
 import com.caps.main.Button.TYPE;
 
@@ -96,7 +97,8 @@ public class MouseInput implements MouseListener,MouseMotionListener {
 			
 			for (int i = 0; i < handler.object.size(); i++) {
 				GameObject tempObject = handler.object.get(i);
-				if (tempObject.getBoundsTotal().intersects(mouseBounds)){
+				if (tempObject.getBoundsTotal().intersects(mouseBounds) 
+						&& tempObject.id != ID.Particle && tempObject.id != ID.Projectile && tempObject.id != ID.MousePointer){
 						if (tempObject.selected){
 							tempObject.selected = false;
 							game.selectedObject.remove(tempObject);
@@ -135,9 +137,31 @@ public class MouseInput implements MouseListener,MouseMotionListener {
 								}
 						}
 	
-						LinkedList<GridCell> path = grid.calculatePath(grid.findGridCellByXAndY((int)obj.getX(), (int)obj.getY()), grid.findGridCellByXAndY(worldMouseX, worldMouseY),obj);
+						LinkedList<GridCell> path = grid.calculatePath(grid.findGridCellByXAndY((int) ((int)obj.getX()+obj.getBoundsTotal().getWidth()/2), (int) ((int)obj.getY()+obj.getBoundsTotal().getHeight()/2)), grid.findGridCellByXAndY(worldMouseX, worldMouseY),obj);
 						slave.setPath(path);
 						
+					}else if (obj.getId() == ID.Archer){
+						Archer archer = (Archer) obj;
+						boolean noEnemy = true;
+						for (int j = 0; j < handler.object.size(); j++) {
+							GameObject enemy = handler.object.get(j);
+								if(endPoint.getBoundsTotal().intersects(enemy.getBoundsTotal())){
+									archer.target = enemy;
+									noEnemy = false;
+									archer.velX = 0;
+									archer.velY = 0;
+									archer.path = null;
+									break;
+								}else{
+									archer.target = null;
+									noEnemy = true;
+
+								}
+						}
+						if(noEnemy == true){
+							LinkedList<GridCell> path = grid.calculatePath(grid.findGridCellByXAndY((int)obj.getX(), (int)obj.getY()), grid.findGridCellByXAndY(worldMouseX, worldMouseY),obj);
+							archer.setPath(path);	
+						}
 					}
 
 				}

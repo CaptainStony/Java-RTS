@@ -9,18 +9,18 @@ import com.caps.main.GameObject;
 import com.caps.main.Handler;
 import com.caps.main.ID;
 
-public class MiningParticle extends GameObject{
+public class BloodParticle extends GameObject{
 
 	private Handler handler;
-	
-	public MiningParticle(float x, float y, ID id, Handler handler, RESOURCE resource) {
+	private Color color;
+	public BloodParticle(float x, float y, ID id, Handler handler) {
 		super(x, y, id);
-		isResource = resource;
 		baseSpeed = 0;
-		Health = 30;
+		Health = 100;
 		this.handler = handler;
 		velY = -1;
 		velX = (float)randInt(-6, 6)/10;
+		color = new Color(randInt(62, 255), 0, 0);
 	}
 	private static int randInt(int min, int max) {
 
@@ -40,19 +40,16 @@ public class MiningParticle extends GameObject{
 		velY +=0.1;
 		if(Health <= 0){
 			handler.removeObject(this);
+		}else if(Health < 70){
+			velX = 0;
+			velY = 0;
 		}
 		Health--;
 	}
 	
 	@Override
 	public void render(Graphics g) {
-		if(isResource == RESOURCE.Wood){
-			g.setColor(new Color(102, 65, 32, 255));			
-		}else if (isResource == RESOURCE.Food){
-			g.setColor(new Color(135, 69, 64, 255));			
-		}else if (isResource == RESOURCE.Gold){
-			g.setColor(new Color( 226, 166, 68, 255));			
-		}
+		g.setColor(color);
 		g.fillRect((int)x, (int)y, 5, 5);
 	}
 

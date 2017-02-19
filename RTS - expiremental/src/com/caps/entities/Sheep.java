@@ -18,9 +18,12 @@ public class Sheep extends GameObject{
 	private Image img = null;
 	private int width = 0;
 	private int height = 0;
+	private Handler handler;
 	public Sheep(int x, int y, ID id, Handler handler){
 		super(x, y, id);
 		baseSpeed = 2;
+		Health = 50;
+		this.handler = handler;
 	}
 
 	@Override
@@ -28,6 +31,9 @@ public class Sheep extends GameObject{
 		x += velX;
 		y += velY;
 		isResource = RESOURCE.Food;
+		if(Health <= 0){
+			handler.removeObject(this);
+		}
 	}
 
 	@Override
@@ -55,29 +61,6 @@ public class Sheep extends GameObject{
 		return new Rectangle((int) this.x, (int) this.y, width, height);
 	}
 
-	@Override
-	public Rectangle getBoundsUp() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Rectangle getBoundsDown() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Rectangle getBoundsLeft() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Rectangle getBoundsRight() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	/*private static int randInt(int min, int max) {
 
 	    Random rand = new Random();

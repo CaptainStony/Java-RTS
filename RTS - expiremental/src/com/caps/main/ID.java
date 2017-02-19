@@ -11,4 +11,7 @@ public enum ID {
 	Particle(),
 	Button(),
 	Sheep(),
+	Archer(),
+	
+	Projectile(),
 }

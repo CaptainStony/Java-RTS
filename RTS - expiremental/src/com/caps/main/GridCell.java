@@ -1,8 +1,11 @@
 package com.caps.main;
 
-import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class GridCell {
 
@@ -13,8 +16,13 @@ public class GridCell {
 	
 	//protected GridCell parent;
 	protected boolean isWall;
+	protected boolean render;
 	
+	private Image img = null;
 
+	protected int width = 0;
+    protected int height = 0;
+    
 	public GridCell(int x, int y, int row,int col){
 		this.x = x;
 		this.y = y;
@@ -26,7 +34,18 @@ public class GridCell {
 		
 	}
 	public void render(Graphics g){
-
+		if(img == null){
+			try {
+				img = ImageIO.read(this.getClass().getResource("/grass.png"));
+	            width = img.getWidth(null);
+	            height = img.getHeight(null);
+	            g.drawImage(img,Math.round(x),Math.round(y), width, height, null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			g.drawImage(img, Math.round(x), Math.round(y), width, height, null);
+		}
 		/*if(isWall == true){
 			g.setColor(Color.blue);
 			g.drawRect(x, y, 20, 20);
@@ -49,7 +68,14 @@ public class GridCell {
 		return new Rectangle(this.x, this.y, 20,20);
 	}
 	
-	
+	public boolean isRender() {
+		return render;
+	}
+
+	public void setRender(boolean render) {
+		this.render = render;
+	}
+
 	public void setX(int x){
 		this.x = x;
 	}

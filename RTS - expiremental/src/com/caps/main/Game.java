@@ -3,17 +3,20 @@ package com.caps.main;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.PopupMenu;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
 import java.util.LinkedList;
 
-import com.caps.entities.BuildingObject;
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
+
+import com.caps.entities.Archer;
 import com.caps.entities.Sheep;
 import com.caps.entities.Slave;
 import com.caps.entities.Tank;
 import com.caps.entities.TownCenter;
-import com.caps.entities.Wall;
-import com.caps.resource.Gold;
-import com.caps.resource.Wood;
 
 public class Game extends Canvas implements Runnable{
 
@@ -33,6 +36,7 @@ public class Game extends Canvas implements Runnable{
 	private Thread thread;
 	private boolean running = false;
 	protected Grid grid;
+	protected Window window;
 	public boolean paused = false;
 		
 	public enum STATE{
@@ -50,16 +54,16 @@ public class Game extends Canvas implements Runnable{
 		mouseinput = new MouseInput(this, handler,grid);
 		this.addMouseListener(mouseinput);
 		this.addMouseMotionListener(mouseinput);
-		new Window(WIDTH, HEIGHT, "RTS shit game", this);
+		window = new Window(WIDTH, HEIGHT, this);
 		handler.addObject(new TownCenter(WIDTH/2, HEIGHT/2-5, ID.Base ,this, handler));
 		handler.addObject(new Tank(WIDTH/2-40, HEIGHT/2-40, ID.Tank, handler,grid));
 		handler.addObject(new Slave(WIDTH/2+200, HEIGHT/2+50, ID.Slave, handler,grid));
 		handler.addObject(new Slave(WIDTH/2+300, HEIGHT/2+30, ID.Slave, handler,grid));
 
 		handler.addObject(new Sheep(WIDTH/2 - 100, HEIGHT/2+50, ID.Sheep, handler));
-		
-		
-		hud = new HUD(this);
+		handler.addObject(new Archer(WIDTH/2 - 500, HEIGHT/2+50, ID.Archer, handler, grid));
+
+		hud = new HUD(this,grid,window);
 	}
 	
 	public synchronized void start(){
@@ -116,7 +120,8 @@ public class Game extends Canvas implements Runnable{
 		}
 
 	}
-		
+	private Image img = null;
+
 	private void render(){
 		BufferStrategy bs = this.getBufferStrategy();
 		
@@ -126,16 +131,21 @@ public class Game extends Canvas implements Runnable{
 		}
 
 		Graphics g = bs.getDrawGraphics();
-		g.setColor(Color.gray);
-		g.fillRect(0, 0, WIDTH, HEIGHT);	
+		g.setColor(Color.black);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
+		
 		g.translate(cameraX, cameraY);
-
-		if(gameState == STATE.Game){
-			for (int i = 0; i < 75; i++) {
-				for (int j = 0; j < 75; j++) {
-				grid.gridCells[i][j].render(g);
-				}
+		if(img == null){
+			try {
+				img = ImageIO.read(this.getClass().getResource("/grass.png"));
+	            g.drawImage(img, 0,0, 1500, 1500, null);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
+		} else {
+			g.drawImage(img, 0, 0, 1500, 1500, null);
+		}
+		if(gameState == STATE.Game){
 
 			handler.render(g);
 			hud.render(g,this);
