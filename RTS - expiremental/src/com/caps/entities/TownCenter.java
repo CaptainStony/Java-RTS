@@ -34,11 +34,11 @@ public class TownCenter extends GameObject{
 
 		if(queue.getQueueSize() > 0 && timer == null){
 			timer = queue.getFirstTime()*60;
-			System.out.println("Timer initialized");
+			//System.out.println("Timer initialized");
 		}else if(queue.getQueueSize() > 0 && timer > 0){
 			timer--;
 		}else if(queue.getQueueSize() > 0 && timer <= 0){
-			System.out.println("Spawning object");
+			//System.out.println("Spawning object");
 			queue.removeFromQueue();
 			if(queue.getQueueSize() > 0){
 				timer = queue.getFirstTime()*60;
@@ -77,18 +77,7 @@ public class TownCenter extends GameObject{
 	public Rectangle getBoundsUp() {
 		return new Rectangle((int)x+2, (int)y, 101, 2);
 	}
-	@Override
-	public Rectangle getBoundsDown() {
-		return new Rectangle((int)x+2, (int)y+156, 101, 2);
-	}
-	@Override
-	public Rectangle getBoundsLeft() {
-		return new Rectangle((int)x, (int)y, 2, 154);
-	}
-	@Override
-	public Rectangle getBoundsRight() {
-		return new Rectangle((int)x+103, (int)y, 2, 154);
-	}
+	
 	@Override
 	public Rectangle getBoundsTotal() {
 		return new Rectangle((int)x, (int)y, 105, 158);

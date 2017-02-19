@@ -72,22 +72,7 @@ private Handler handler;
 
 
 	}
-	@Override
-	public Rectangle getBoundsUp() {
-		return null;
-	}
-	@Override
-	public Rectangle getBoundsDown() {
-		return null;
-	}
-	@Override
-	public Rectangle getBoundsLeft() {
-		return null;
-	}
-	@Override
-	public Rectangle getBoundsRight() {
-		return null;
-	}
+
 	@Override
 	public Rectangle getBoundsTotal() {
 		return new Rectangle((int)x, (int)y, 53,40);

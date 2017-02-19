@@ -105,22 +105,7 @@ public class Tank extends GameObject{
 		}
 	}
 
-	@Override
-	public Rectangle getBoundsUp() {
-		return new Rectangle((int)x-8, (int)y-20, 41, 2);
-	}
-	@Override
-	public Rectangle getBoundsDown() {
-		return new Rectangle((int)x-8, (int)y+50, 41, 2);
-	}
-	@Override
-	public Rectangle getBoundsLeft() {
-		return new Rectangle((int)x-10, (int)y-20, 2, 70);
-	}
-	@Override
-	public Rectangle getBoundsRight() {
-		return new Rectangle((int)x+33, (int)y-20, 2, 70);
-	}
+
 	@Override
 	public Rectangle getBoundsTotal() {
 		return new Rectangle((int)x-10, (int)y-20, 45, 70);

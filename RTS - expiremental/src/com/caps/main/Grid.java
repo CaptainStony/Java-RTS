@@ -30,7 +30,7 @@ public class Grid {
 				}
 		        for(int k = 0; k < handler.object.size(); k++){
 		        	if(gridCells[i][j].getBoundsTotal().intersects(handler.object.get(k).getBoundsTotal())){
-
+		        		
 		        		if(handler.object.get(k).getId() == ID.Base){
 				    	    worldGrid[i][j] = 1;
 				    	    gridCells[i][j].setWall(true);
@@ -41,6 +41,7 @@ public class Grid {
 			    	 
 		        	}
 		        }
+
 		    }
 	    }
 	}
@@ -48,9 +49,9 @@ public class Grid {
 		Rectangle interRect = entity.getBoundsTotal();
 		if (path.size() > entity.step && !interRect.intersects(path.getLast().getBoundsTotal())) {
 			GridCell cell = path.get(entity.step);
-			GameObject pointer  = new mousePoint(cell.getX()+10, cell.getY()-10, ID.MousePointer, handler);
-			handler.goToCords((int)pointer.getX(), (int)pointer.getY(), entity);
-
+			GameObject pointer  = new mousePoint(cell.getX()+10, cell.getY()+10, ID.MousePointer, handler);
+			handler.goToCords((int)pointer.getX()+10, (int)pointer.getY()+10, entity);
+			
 			if(interRect.intersects(pointer.getBoundsTotal())){
 				entity.step++;
 			}else{
@@ -59,10 +60,14 @@ public class Grid {
 			}
 		}else{
 			entity.path = null;
+			entity.setVelX(0);
+			entity.setVelY(0);
 			entity.step = 0;
 			
 		}
 	}
+
+	
 	public LinkedList<GridCell> calculatePath(GridCell startCell,GridCell endCell,GameObject entity){
 		entity.tempPath.clear();
 		entity.closedList.clear();
@@ -91,9 +96,12 @@ public class Grid {
 							}
 	
 								adjCell.H = Math.abs(adjCell.getRow() - endCell.getRow()) + Math.abs(adjCell.getCol() - endCell.getCol());
+								//adjCell.H = adjCell.H*2;
 								adjCell.F = adjCell.G + adjCell.H;
 	
-								allAdjCells.add(adjCell);	
+								allAdjCells.add(adjCell);
+								adjCell.setRender(true);
+
 						}
 					}
 				}
@@ -125,7 +133,9 @@ public class Grid {
 			return entity.tempPath;
 		}else{
 			return null;
+			
 		}
+		
 	}
 	public GridCell findGridCellByRowAndCol(int row,int col){
 		GridCell curCell = gridCells[row][col];

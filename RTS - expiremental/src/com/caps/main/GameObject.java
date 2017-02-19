@@ -12,10 +12,9 @@ public abstract class GameObject {
 	protected boolean selected = false;
 	protected int baseSpeed;
 
-	protected int step = 1;
+	protected int step = 0;
 	
 	protected int Health;
-	
 
 	protected GameObject endPoint;
 	protected LinkedList<GridCell> path;
@@ -25,6 +24,7 @@ public abstract class GameObject {
 	protected LinkedList<GridCell> tempPath = new LinkedList<GridCell>();
 
 	protected GameObject interactedResource;
+	
 	
 	public RESOURCE isResource;
 	
@@ -40,17 +40,12 @@ public abstract class GameObject {
 	public abstract void tick();
 	public abstract void render(Graphics g);
 	public abstract Rectangle getBoundsTotal();
-	public abstract Rectangle getBoundsUp();
-	public abstract Rectangle getBoundsDown();
-	public abstract Rectangle getBoundsLeft();
-	public abstract Rectangle getBoundsRight();
 
 	
 	
 	public LinkedList<GridCell> getPath() {
 		return path;
 	}
-
 	public void setPath(LinkedList<GridCell> path) {
 		step = 0;
 		this.path = path;

@@ -50,24 +50,33 @@ public class Slave extends GameObject{
 		time = System.currentTimeMillis();
 		x += velX;
 		y += velY;
+		if(Health <= 0){
+			handler.removeObject(this);
+		}
 		TownCenter base = (TownCenter) handler.getAllByID(ID.Base).getFirst();
 		//RESOURCE
-		if(getBoundsTotal().intersects(base.getBoundsDrop())){
-			if(interactedResource.isResource == RESOURCE.Wood){
-				HUD.WOOD += carry;
-				carry = 0;
-			}else if (interactedResource.isResource == RESOURCE.Food){
-				HUD.FOOD += carry;
-				carry = 0;
-			}else if (interactedResource.isResource == RESOURCE.Gold){
-				HUD.GOLD += carry;
-				carry = 0;
-			}
-		}
 		if(interactedResource != null){
+			if(getBoundsTotal().intersects(base.getBoundsDrop())){
+				if(interactedResource.isResource == RESOURCE.Wood){
+					HUD.WOOD += carry;
+					carry = 0;
+				}else if (interactedResource.isResource == RESOURCE.Food){
+					HUD.FOOD += carry;
+					carry = 0;
+				}else if (interactedResource.isResource == RESOURCE.Gold){
+					HUD.GOLD += carry;
+					carry = 0;
+				}
+			}
 			//System.out.println("handling resource");
 			if(goToResource == true){
-				pathToResource = grid.calculatePath(grid.findGridCellByXAndY((int)getBoundsTotal().getMaxX(), (int)getBoundsTotal().getMaxY()), grid.findGridCellByXAndY((int)interactedResource.getBoundsTotal().getMaxX(), (int)interactedResource.getBoundsTotal().getMaxY()), this);
+				int resourceX = (int) ((interactedResource.getX() + interactedResource.getBoundsTotal().getMaxX())/2);
+				int resourceY = (int) ((interactedResource.getY() + interactedResource.getBoundsTotal().getMaxY())/2);
+				
+				int thisX = (int) ((getX() + getBoundsTotal().getMaxX())/2);
+				int thisY = (int) ((getY() + getBoundsTotal().getMaxY())/2);
+
+				pathToResource = grid.calculatePath(grid.findGridCellByXAndY(thisX, thisY), grid.findGridCellByXAndY(resourceX, resourceY), this);
 				setPath(pathToResource);
 				goToResource = false;
 			}else if (goToBase == true){
@@ -86,7 +95,7 @@ public class Slave extends GameObject{
 					for (int i = 0; i < 15; i++) {
 						handler.addObject(new MiningParticle(x+10+randInt(-5, 5), y+20+randInt(-5, 5), ID.Particle, handler,interactedResource.getResource()));
 					}
-					if(carry >= 15){
+					if(carry >= 3){
 						goToBase = true;
 					}else if(interactedResource.getHealth() <= 0){
 						goToBase = true;
@@ -153,22 +162,6 @@ public class Slave extends GameObject{
 
 		}
 		
-	}
-	@Override
-	public Rectangle getBoundsUp() {
-		return new Rectangle((int)x+2, (int)y, 16, 2);
-	}
-	@Override
-	public Rectangle getBoundsDown() {
-		return new Rectangle((int)x+2, (int)y+38, 16, 2);
-	}
-	@Override
-	public Rectangle getBoundsLeft() {
-		return new Rectangle((int)x, (int)y, 2, 40);
-	}
-	@Override
-	public Rectangle getBoundsRight() {
-		return new Rectangle((int)x+18, (int)y, 2, 40);
 	}
 	@Override
 	public Rectangle getBoundsTotal() {

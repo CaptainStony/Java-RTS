@@ -45,25 +45,6 @@ public class Button extends GameObject{
 		return new Rectangle((int) this.x, (int) this.y, 50, 50);
 	}
 
-	@Override
-	public Rectangle getBoundsUp() {
-		return null;
-	}
-
-	@Override
-	public Rectangle getBoundsDown() {
-		return null;
-	}
-
-	@Override
-	public Rectangle getBoundsLeft() {
-		return null;
-	}
-
-	@Override
-	public Rectangle getBoundsRight() {
-		return null;
-	}
 
 	@Override
 	public void render(Graphics g) {

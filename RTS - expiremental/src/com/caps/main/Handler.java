@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.caps.entities.BuildingObject;
-import com.caps.entities.Wall;
 import com.caps.entities.mousePoint;
 
 public class Handler {
@@ -13,6 +12,7 @@ public class Handler {
 	public LinkedList<GameObject> object = new LinkedList<GameObject>();
 	public LinkedList<BuildingObject> buildingObject = new LinkedList<BuildingObject>();
 	public LinkedList<GameObject> resourceObject = new LinkedList<GameObject>();
+	public LinkedList<GameObject> pointers = new LinkedList<GameObject>();
 
 	//private HUD hud = new HUD();
 	public GameObject findObject(ID id){
@@ -35,6 +35,9 @@ public class Handler {
 			buildingObject.get(i).tick();
 		}
 		for (int i = 0; i < object.size(); i++) {
+			object.get(i).tick();
+		}
+		for (int i = 0; i < pointers.size(); i++) {
 			object.get(i).tick();
 		}
 		/*for(int i = 0; i < resourceObject.size(); i++){
@@ -63,11 +66,14 @@ public class Handler {
 			resourceObject.get(i).render(g);
 		}
 
+
 	}
 	
 	public void addObject(GameObject object){
 		if(object.id == ID.Resource){
 			this.resourceObject.add(object);
+		}else if(object.id == ID.MousePointer){
+			this.pointers.add(object);
 		}else{
 			this.object.add(object);
 		}
@@ -78,6 +84,8 @@ public class Handler {
 	public void removeObject(GameObject object){
 		if(object.getId() == ID.Resource){
 			resourceObject.remove(object);
+		}else if(object.id == ID.MousePointer){
+			this.pointers.remove(object);
 		}else{
 			this.object.remove(object);
 		}
