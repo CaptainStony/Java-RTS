@@ -20,7 +20,6 @@ public class HUD{
 	protected LinkedList<GameObject> b = new LinkedList<GameObject>();
 	private TownCenter base;
 	private Handler handler;
-	private WorldGenerator OSN;
 	private Grid grid;
 	private Window window;
 	
@@ -30,16 +29,9 @@ public class HUD{
 		this.grid = grid;
 		this.window = window;
 		
-		window.b.setVisible(true);
+		window.b.setVisible(false);
 		window.b.setText("elle moema");
 		
-		try {
-			OSN = new WorldGenerator();
-			OSN.run(handler, game.grid, new Random().nextInt(20));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	public void tick(){
 
