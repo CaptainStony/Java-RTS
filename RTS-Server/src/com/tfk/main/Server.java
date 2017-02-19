@@ -92,7 +92,6 @@ public class Server extends Thread{
 							sendData(String.format("Server: %s", serverID[i]).getBytes(), packet.getAddress(), packet.getPort());
 							try {
 								new WorldGenerator().run(map, this, players.get(i));
-								System.out.println("test");
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
@@ -103,20 +102,27 @@ public class Server extends Thread{
 				}else{
 					serverID[0] = UUID.randomUUID().toString();
 					players.add(new Player(message[1], packet.getAddress(), packet.getPort(), serverID[0]));
+					String str = new String( "Server: " + serverID[0]);
+					sendData(str.getBytes(), packet.getAddress(), packet.getPort());
 					try {
 						new WorldGenerator().run(map, this, players.get(0));
-						System.out.println("test");
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 					addServerText("Player 1 connected");
-					System.out.println(message[1]);
 				}
 			}
 		}
 	}
 	public void sendData(byte[] data, InetAddress ipAddress, int port){
 		DatagramPacket packet = new DatagramPacket(data,  data.length, ipAddress, port);
+		try {
+			socket.send(packet);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public void sendData(DatagramPacket packet){
 		try {
 			socket.send(packet);
 		} catch (IOException e) {

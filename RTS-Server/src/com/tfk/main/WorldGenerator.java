@@ -18,7 +18,7 @@ public class WorldGenerator
 			{
 				double value = noise.eval(x / FEATURE_SIZE, y / FEATURE_SIZE, 0.0);
 				if(value > 0.1 && value < 0.5 && y % 2 == 0){
-					server.sendData(String.format("Server: %s\nWorldGenerator: tree \nx: %d y: %d", p.serverID(), x * 20, y * 20).getBytes(), p.getIP(), p.getPort());
+					server.sendData(new String(String.format("Server: %s\nWorldGenerator: tree\nx: %d y: %d", p.serverID(), x * 20, y * 20)).getBytes(), p.getIP(), p.getPort());
 				}else if(value < -0.1 && value > -0.14 && x % 2 == 0  && j < 30){
 					
 				}

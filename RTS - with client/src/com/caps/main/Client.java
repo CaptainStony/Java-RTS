@@ -28,6 +28,7 @@ public class Client extends Thread{
 	}
 	public void run(){
 		do{
+			
 			byte[] data = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(data, data.length);
 			try{
@@ -35,19 +36,18 @@ public class Client extends Thread{
 			}catch(IOException e){
 				e.printStackTrace();
 			}
-			String[] message = packet.getData().toString().trim().split("\n");
-			System.out.println(packet.getData().toString());
-			if(packet.getAddress().toString().contains("" + ipAddress)){
-				System.out.println(packet.getData().toString());
+			String[] message = new String(packet.getData()).trim().split("\n");
+			if(packet.getAddress().toString().contains("" + ipAddress.toString()) && message[0].split(" ")[0].equalsIgnoreCase("server:")){
 				if(Game.serverID == null && message[0].split(" ")[0].equalsIgnoreCase("server:")){
 					Game.serverID = message[0].split(" ")[1];
 					isConnected = true;
-				}else if(message[0].split(" ")[1].equals(Game.serverID) && message[0].split(" ")[0].equalsIgnoreCase("worldgenerator:")){
-					String[] obj = message[1].split(" ");
-					game.handler.addObject(new Wood(Float.parseFloat(obj[2]), Float.parseFloat(obj[4]), ID.Resource, game.handler));
+				}else if(message[0].split(" ")[1].equals(Game.serverID) && message[1].split(" ")[0].equalsIgnoreCase("worldgenerator:")){
+					System.out.println("test");
+					if(message[1].split(" ")[1].equalsIgnoreCase("tree")){
+						String[] obj = message[2].split(" ");
+						game.handler.addObject(new Wood(Float.parseFloat(obj[1]), Float.parseFloat(obj[3]), ID.Resource, game.handler));
+					}
 				}
-			}else{
-				System.out.println(packet.getAddress().toString());
 			}
 		}while(isConnected);
 	}
