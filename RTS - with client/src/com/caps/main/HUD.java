@@ -3,9 +3,7 @@ package com.caps.main;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.io.IOException;
 import java.util.LinkedList;
-import java.util.Random;
 
 import com.caps.entities.Slave;
 import com.caps.entities.TownCenter;
@@ -18,17 +16,9 @@ public class HUD{
 	protected LinkedList<GameObject> b = new LinkedList<GameObject>();
 	private TownCenter base;
 	private Handler handler;
-	private WorldGenerator OSN;
 	public HUD(Game game){
 		base = (TownCenter) game.handler.findObject(ID.Base);
 		this.handler = game.handler;
-		try {
-			OSN = new WorldGenerator();
-			OSN.run(handler, game.grid, new Random().nextInt(20));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	public void tick(){
 	}

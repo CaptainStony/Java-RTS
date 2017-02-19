@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.util.LinkedList;
+import java.util.UUID;
 
 import com.caps.entities.Sheep;
 import com.caps.entities.Slave;
@@ -19,6 +20,8 @@ public class Game extends Canvas implements Runnable{
 	//private Random r;
 	protected HUD hud;
 	private static final long serialVersionUID = 1L;
+	private static final String uniqueID = UUID.randomUUID().toString();
+	protected static String serverID;
 	
 	public int cameraX = 0;
 	public int cameraY = 0;
@@ -57,21 +60,21 @@ public class Game extends Canvas implements Runnable{
 		
 		
 		hud = new HUD(this);
-		client.sendData("ping".getBytes());
+		client.sendData(String.format("Player: %s", uniqueID).getBytes());
+		
 	}
 	
 	public synchronized void start(){
 		thread = new Thread(this);
 		thread.start();
 		running = true;
-		client = new Client(this, "localhost");
+		client = new Client(this, "127.0.0.1");
 		client.start();
 	}
 	public synchronized void stop(){
 		try{
 			thread.join();
 			running = false;
-			client.stop();
 		}catch(Exception e){
 			e.printStackTrace();
 		}

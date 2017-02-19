@@ -87,10 +87,12 @@ public class Server extends Thread{
 					for(int i = 0; i < players.size(); i++){
 						if(players.get(i).getID().equals(message[1])){
 							players.add(new Player(message[1], packet.getAddress(), packet.getPort(), serverID[i]));
+							addServerText("Player " + (i+1) + " connected");
 							serverID[i] = UUID.randomUUID().toString();
 							sendData(String.format("Server: %s", serverID[i]).getBytes(), packet.getAddress(), packet.getPort());
 							try {
 								new WorldGenerator().run(map, this, players.get(i));
+								System.out.println("test");
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
@@ -101,6 +103,13 @@ public class Server extends Thread{
 				}else{
 					serverID[0] = UUID.randomUUID().toString();
 					players.add(new Player(message[1], packet.getAddress(), packet.getPort(), serverID[0]));
+					try {
+						new WorldGenerator().run(map, this, players.get(0));
+						System.out.println("test");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					addServerText("Player 1 connected");
 					System.out.println(message[1]);
 				}
 			}
