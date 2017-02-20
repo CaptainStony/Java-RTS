@@ -3,12 +3,7 @@ package com.caps.main;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.io.IOException;
 import java.util.LinkedList;
-import java.util.Random;
-
-import javax.swing.JButton;
-
 import com.caps.entities.Slave;
 import com.caps.entities.TownCenter;
 import com.caps.main.Button.TYPE;
@@ -21,13 +16,11 @@ public class HUD{
 	private TownCenter base;
 	private Handler handler;
 	private Grid grid;
-	private Window window;
 	
 	public HUD(Game game,Grid grid,Window window){
 		base = (TownCenter) game.handler.findObject(ID.Base);
 		this.handler = game.handler;
 		this.grid = grid;
-		this.window = window;
 		
 		window.b.setVisible(false);
 		window.b.setText("elle moema");

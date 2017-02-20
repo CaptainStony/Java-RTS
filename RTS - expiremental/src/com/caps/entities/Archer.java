@@ -5,22 +5,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 import com.caps.main.GameObject;
 import com.caps.main.Grid;
-import com.caps.main.GridCell;
-import com.caps.main.HUD;
 import com.caps.main.Handler;
 import com.caps.main.ID;
-import com.caps.particles.MiningParticle;
 
 public class Archer extends GameObject{
 
@@ -76,18 +70,6 @@ public class Archer extends GameObject{
 			}
 		}
 		
-	}
-	
-	private static int randInt(int min, int max) {
-
-	    // Usually this can be a field rather than a method variable
-	    Random rand = new Random();
-
-	    // nextInt is normally exclusive of the top value,
-	    // so add 1 to make it inclusive
-	    int randomNum = rand.nextInt((max - min) + 1) + min;
-
-	    return randomNum;
 	}
 	
 	public void render(Graphics g) {

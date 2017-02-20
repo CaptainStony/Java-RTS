@@ -11,13 +11,11 @@ import com.caps.main.ID;
 
 public class Tank extends GameObject{
 
-	private Handler handler;
 	private Grid grid;
 	
 	public Tank(float x, float y, ID id, Handler handler,Grid grid) {
 		super(x, y, id);
 		baseSpeed = 2;
-		this.handler = handler;
 		this.grid = grid;
 	}
 	

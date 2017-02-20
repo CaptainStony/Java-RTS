@@ -12,9 +12,6 @@ import com.caps.main.Handler;
 
 public class Wall extends BuildingObject{
 
-	private Game game;
-	private Handler handler;
-	private BUILDINGTYPE type;
 	private Image img;
 	
 	public Wall(int x, int y, Game game, Handler handler, BUILDINGTYPE type) {

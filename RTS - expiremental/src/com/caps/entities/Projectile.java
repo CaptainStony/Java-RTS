@@ -2,13 +2,11 @@ package com.caps.entities;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.Random;
 
 import com.caps.main.GameObject;
-import com.caps.main.Grid;
 import com.caps.main.Handler;
 import com.caps.main.ID;
 import com.caps.particles.BloodParticle;
@@ -17,12 +15,9 @@ public class Projectile extends GameObject{
 
 	private Handler handler;
 	
-	private Image img = null;
 	protected int width = 0;
     protected int height = 0;
-	private Grid grid;
 	public GameObject target;
-	private int endX,endY;
 	private int timer = 400;
 	private boolean hit = false;
 	private LinkedList<GameObject> pointers = new LinkedList<GameObject>();
@@ -33,8 +28,6 @@ public class Projectile extends GameObject{
 		super(x, y, id);
 		baseSpeed = 6;
 		this.handler = handler;
-		this.endX = endX;
-		this.endY = endY;
 		this.target = target;
 		this.damage = damage;
 		goToCords(endX, endY);

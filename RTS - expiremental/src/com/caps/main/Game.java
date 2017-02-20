@@ -4,14 +4,12 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.PopupMenu;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
 
 import com.caps.entities.Archer;
 import com.caps.entities.Sheep;
@@ -97,7 +95,6 @@ public class Game extends Canvas implements Runnable{
 	      double ns = 1000000000 / amountofTicks;
 	      double delta = 0;
 	      long timer = System.currentTimeMillis();
-	      int frames = 0;
 	      while(running) {
 	              long now = System.nanoTime();
 	              delta += (now - lastTime) / ns;
@@ -106,13 +103,10 @@ public class Game extends Canvas implements Runnable{
 	                      tick();
 	                      delta--;
 	                      render();
-	                      frames++;
 	              }
 	             
 	              if(System.currentTimeMillis() - timer > 1000) {
 	                      timer += 1000;
-	                      //System.out.println("FPS: " + frames);
-	                      frames = 0;
 	              }
 	             
 	      }

@@ -1,7 +1,7 @@
 package com.caps.main;
 
 import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;import javax.xml.crypto.dsig.CanonicalizationMethod;
+import java.awt.event.KeyEvent;
 
 import com.caps.entities.TownCenter;
 
