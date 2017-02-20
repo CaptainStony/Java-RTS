@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import com.caps.entities.TownCenter;
 import com.caps.resource.Wood;
 
 public class Client extends Thread{
@@ -37,22 +38,25 @@ public class Client extends Thread{
 				e.printStackTrace();
 			}
 			String[] message = new String(packet.getData()).trim().split("\n");
+			String servID = message[0].split(" ")[1];
 			if(packet.getAddress().toString().contains("" + ipAddress.toString()) && message[0].split(" ")[0].equalsIgnoreCase("server:")){
 				if(Game.serverID == null && message[0].split(" ")[0].equalsIgnoreCase("server:")){
 					Game.serverID = message[0].split(" ")[1];
 					isConnected = true;
-				}else if(message[0].split(" ")[1].equals(Game.serverID) && message[1].split(" ")[0].equalsIgnoreCase("worldgenerator:")){
-					System.out.println("test");
+				}else if(servID.equals(Game.serverID) && message[1].split(" ")[0].equalsIgnoreCase("worldgenerator:")){
 					if(message[1].split(" ")[1].equalsIgnoreCase("tree")){
 						String[] obj = message[2].split(" ");
 						game.handler.addObject(new Wood(Float.parseFloat(obj[1]), Float.parseFloat(obj[3]), ID.Resource, game.handler));
+					}else if(message[1].split(" ")[1].equalsIgnoreCase("base")){
+						String[] obj = message[2].split(" ");
+						game.handler.addObject(new TownCenter(Float.parseFloat(obj[1]), Float.parseFloat(obj[3]), ID.Base, game, game.handler));
 					}
 				}
 			}
 		}while(isConnected);
 	}
 	public void sendData(byte[] data){
-		DatagramPacket packet = new DatagramPacket(data,  data.length, ipAddress, 1331);
+		DatagramPacket packet = new DatagramPacket(data,  data.length, ipAddress, 15504);
 		try {
 			socket.send(packet);
 		} catch (IOException e) {

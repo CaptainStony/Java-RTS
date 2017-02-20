@@ -15,7 +15,6 @@ import com.caps.entities.Archer;
 import com.caps.entities.Sheep;
 import com.caps.entities.Slave;
 import com.caps.entities.Tank;
-import com.caps.entities.TownCenter;
 
 public class Game extends Canvas implements Runnable{
 
@@ -57,7 +56,6 @@ public class Game extends Canvas implements Runnable{
 		this.addMouseListener(mouseinput);
 		this.addMouseMotionListener(mouseinput);
 		window = new Window(WIDTH, HEIGHT, this);
-		handler.addObject(new TownCenter(WIDTH/2, HEIGHT/2-5, ID.Base ,this, handler));
 		handler.addObject(new Tank(WIDTH/2-40, HEIGHT/2-40, ID.Tank, handler,grid));
 		handler.addObject(new Slave(WIDTH/2+200, HEIGHT/2+50, ID.Slave, handler,grid));
 		handler.addObject(new Slave(WIDTH/2+300, HEIGHT/2+30, ID.Slave, handler,grid));
@@ -67,7 +65,6 @@ public class Game extends Canvas implements Runnable{
 
 		hud = new HUD(this,grid,window);
 		client.sendData(String.format("Player: %s", uniqueID).getBytes());
-
 	}
 	
 	public synchronized void start(){

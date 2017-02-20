@@ -22,7 +22,6 @@ public class WorldGenerator
 				}else if(value < -0.1 && value > -0.14 && x % 2 == 0  && j < 30){
 					
 				}
-				
 			}
 		}
 	}

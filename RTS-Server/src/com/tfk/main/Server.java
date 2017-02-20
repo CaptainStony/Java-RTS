@@ -11,8 +11,11 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -21,20 +24,36 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+interface serverListener{
+	void playerConnected(Player player);
+}
 public class Server extends Thread{
+	
 	private DatagramSocket socket;
+	
 	private final String[] serverID = new String[4];
 	protected LinkedList<Player> players = new LinkedList<Player>();
+	
 	private long map = new Random().nextInt(25);
+	
 	private String serverOut = "";
 	private JTextField textField = new JTextField();
 	private JTextArea viewField = new JTextArea();
+	
+	private List<serverListener> listeners = new ArrayList<serverListener>();
+	public void addListener(serverListener listener){
+		listeners.add(listener);
+	}
 	public Server(){
 		createWindow();
 		addServerText("Server Starting");
+		addListener(new EventListener(players, this));
 		try {
-			this.socket = new DatagramSocket(1331);
+			this.socket = new DatagramSocket( 15504, InetAddress.getByName("127.0.0.1"));
+			System.out.println(InetAddress.getLocalHost().toString());
 		} catch (SocketException e) {
+			e.printStackTrace();
+		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 		start();
@@ -90,6 +109,9 @@ public class Server extends Thread{
 							addServerText("Player " + (i+1) + " connected");
 							serverID[i] = UUID.randomUUID().toString();
 							sendData(String.format("Server: %s", serverID[i]).getBytes(), packet.getAddress(), packet.getPort());
+							for(serverListener sl : listeners){
+								sl.playerConnected(players.get(i));
+							}
 							try {
 								new WorldGenerator().run(map, this, players.get(i));
 							} catch (IOException e) {
@@ -109,7 +131,10 @@ public class Server extends Thread{
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					addServerText("Player 1 connected");
+					addServerText("[" + packet.getAddress() +"]Player 1 connected");
+					for(serverListener sl : listeners){
+						sl.playerConnected(players.get(0));
+					}
 				}
 			}
 		}
