@@ -8,6 +8,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import com.caps.entities.TownCenter;
+import com.caps.main.Game.STATE;
 import com.caps.resource.Wood;
 
 public class Client extends Thread{
@@ -50,6 +51,7 @@ public class Client extends Thread{
 					}else if(message[1].split(" ")[1].equalsIgnoreCase("base")){
 						String[] obj = message[2].split(" ");
 						game.handler.addObject(new TownCenter(Float.parseFloat(obj[1]), Float.parseFloat(obj[3]), ID.Base, game, game.handler));
+						game.gameState = STATE.Game;
 					}
 				}
 			}

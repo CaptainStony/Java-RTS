@@ -53,9 +53,10 @@ public class Slave extends GameObject{
 		if(Health <= 0){
 			handler.removeObject(this);
 		}
-		TownCenter base = (TownCenter) handler.getAllByID(ID.Base).getFirst();
 		//RESOURCE
 		if(interactedResource != null){
+			TownCenter base = (TownCenter) handler.getAllByID(ID.Base).getFirst();
+
 			if(getBoundsTotal().intersects(base.getBoundsDrop())){
 				if(interactedResource.isResource == RESOURCE.Wood){
 					HUD.WOOD += carry;

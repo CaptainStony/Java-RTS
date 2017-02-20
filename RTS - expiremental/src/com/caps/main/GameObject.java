@@ -13,7 +13,7 @@ public abstract class GameObject {
 	protected int baseSpeed;
 
 	protected int step = 0;
-	
+
 	protected int Health;
 
 	protected GameObject endPoint;

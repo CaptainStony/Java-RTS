@@ -5,11 +5,20 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferStrategy;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.caps.entities.Archer;
 import com.caps.entities.Sheep;
@@ -40,16 +49,19 @@ public class Game extends Canvas implements Runnable{
 	public boolean paused = false;
 	private Client client;
 
+	
 	public enum STATE{
 		Game,
+		Connecting,
 	};
 	
-	public STATE gameState = STATE.Game;
+	public STATE gameState = STATE.Connecting;
 	
 	public Game(){
+
 		handler = new Handler();
 		grid = new Grid(handler);
-
+        
 		this.addKeyListener(new KeyInput(handler, this));
 
 		mouseinput = new MouseInput(this, handler,grid);
@@ -111,12 +123,12 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	private void tick(){
-		grid.loadGrid();
-
-		if(!paused){
-			handler.tick();
-			//hud.tick(); <3
+		if(gameState == STATE.Game){
+			grid.loadGrid();
+			handler.tick();	
 		}
+		//hud.tick(); <3
+		
 
 	}
 	private Image img = null;
@@ -134,25 +146,23 @@ public class Game extends Canvas implements Runnable{
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		g.translate(cameraX, cameraY);
-		if(img == null){
-			try {
-				img = ImageIO.read(this.getClass().getResource("/grass.png"));
-	            g.drawImage(img, 0,0, 1500, 1500, null);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} else {
-			g.drawImage(img, 0, 0, 1500, 1500, null);
-		}
-		if(gameState == STATE.Game){
 
+		if(gameState == STATE.Game){
+			if(img == null){
+				try {
+					img = ImageIO.read(this.getClass().getResource("/grass.png"));
+		            g.drawImage(img, 0,0, 1500, 1500, null);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				g.drawImage(img, 0, 0, 1500, 1500, null);
+			}
 			handler.render(g);
 			hud.render(g,this);
 
 		}
-		if(paused){
-			
-		}
+
 		/*g.setColor(Color.black);
 		g.drawLine(0, -9999, 0, 9999);
 		g.drawLine(-9999, 0, 9999, 0);*/
