@@ -15,7 +15,6 @@ public class Client extends Thread{
 	private InetAddress ipAddress;
 	private DatagramSocket socket;
 	private Game game;
-	private boolean isConnected = false;
 	
 	public Client(Game game, String ipAdress){
 		this.game = game;
@@ -41,9 +40,13 @@ public class Client extends Thread{
 			String[] message = new String(packet.getData()).trim().split("\n");
 			String servID = message[0].split(" ")[1];
 			if(packet.getAddress().toString().contains("" + ipAddress.toString()) && message[0].split(" ")[0].equalsIgnoreCase("server:")){
+				if(servID.equals(Game.serverID) && game.gameState == STATE.Connecting){
+					if(message[1].trim().contains("Connected")){
+						game.gameState = STATE.Game;
+					}
+				}
 				if(Game.serverID == null && message[0].split(" ")[0].equalsIgnoreCase("server:")){
 					Game.serverID = message[0].split(" ")[1];
-					isConnected = true;
 				}else if(servID.equals(Game.serverID) && message[1].split(" ")[0].equalsIgnoreCase("worldgenerator:")){
 					if(message[1].split(" ")[1].equalsIgnoreCase("tree")){
 						String[] obj = message[2].split(" ");
@@ -51,11 +54,10 @@ public class Client extends Thread{
 					}else if(message[1].split(" ")[1].equalsIgnoreCase("base")){
 						String[] obj = message[2].split(" ");
 						game.handler.addObject(new TownCenter(Float.parseFloat(obj[1]), Float.parseFloat(obj[3]), ID.Base, game, game.handler));
-						game.gameState = STATE.Game;
 					}
 				}
 			}
-		}while(isConnected);
+		}while(true);
 	}
 	public void sendData(byte[] data){
 		DatagramPacket packet = new DatagramPacket(data,  data.length, ipAddress, 15504);

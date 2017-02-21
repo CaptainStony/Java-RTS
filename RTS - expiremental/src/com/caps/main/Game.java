@@ -5,20 +5,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferStrategy;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.caps.entities.Archer;
 import com.caps.entities.Sheep;
@@ -68,6 +59,7 @@ public class Game extends Canvas implements Runnable{
 		this.addMouseListener(mouseinput);
 		this.addMouseMotionListener(mouseinput);
 		window = new Window(WIDTH, HEIGHT, this);
+		client.sendData(String.format("Player: %s", uniqueID).getBytes());
 		handler.addObject(new Tank(WIDTH/2-40, HEIGHT/2-40, ID.Tank, handler,grid));
 		handler.addObject(new Slave(WIDTH/2+200, HEIGHT/2+50, ID.Slave, handler,grid));
 		handler.addObject(new Slave(WIDTH/2+300, HEIGHT/2+30, ID.Slave, handler,grid));
@@ -76,7 +68,6 @@ public class Game extends Canvas implements Runnable{
 		handler.addObject(new Archer(WIDTH/2 - 500, HEIGHT/2+50, ID.Archer, handler, grid));
 
 		hud = new HUD(this,grid,window);
-		client.sendData(String.format("Player: %s", uniqueID).getBytes());
 	}
 	
 	public synchronized void start(){
@@ -85,7 +76,6 @@ public class Game extends Canvas implements Runnable{
 		running = true;
 		client = new Client(this, "127.0.0.1");
 		client.start();
-		
 	}
 	public synchronized void stop(){
 		try{

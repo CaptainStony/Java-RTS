@@ -47,7 +47,7 @@ public class Server extends Thread{
 	public Server(){
 		createWindow();
 		addServerText("Server Starting");
-		addListener(new EventListener(players, this));
+		addListener(new EventHandler(players, this));
 		try {
 			this.socket = new DatagramSocket( 15504, InetAddress.getByName("127.0.0.1"));
 			System.out.println(InetAddress.getLocalHost().toString());
@@ -109,13 +109,13 @@ public class Server extends Thread{
 							addServerText("Player " + (i+1) + " connected");
 							serverID[i] = UUID.randomUUID().toString();
 							sendData(String.format("Server: %s", serverID[i]).getBytes(), packet.getAddress(), packet.getPort());
-							for(serverListener sl : listeners){
-								sl.playerConnected(players.get(i));
-							}
 							try {
 								new WorldGenerator().run(map, this, players.get(i));
 							} catch (IOException e) {
 								e.printStackTrace();
+							}
+							for(serverListener sl : listeners){
+								sl.playerConnected(players.get(i));
 							}
 						}else{
 							System.out.println("fak u haxing cunt");
@@ -178,6 +178,18 @@ public class Server extends Thread{
 			System.exit(1);
 		}else if(cmd.equals("help")){
 			addServerText("quit/exit - Stop the server and close window.");
+		}else if(cmd.equals("reset")){
+			listeners.clear();
+			addListener(new EventHandler(players, this));
+			map = new Random().nextInt(25);
+			players.clear();
+			serverOut="";
+			viewField.setText(serverOut);
+			addServerText("Server reset!");
+		}else{
+			viewField.setDisabledTextColor(Color.red);
+			addServerText("Unknown command!");
+			viewField.setDisabledTextColor(Color.black);
 		}
 	}
 	public static void main(String args[]){

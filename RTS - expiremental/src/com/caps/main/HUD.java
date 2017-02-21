@@ -58,7 +58,7 @@ public class HUD{
 				g.drawString("Carrying: " + slav.getCarry() + " " + slav.interactedResource.isResource , x-1070, y-44);
 			}
 		}
-		if(b == null && base.selected ){
+		if(b == null && base != null && base.selected ){
 			handler.addObject(new Button(x, y -105, ID.Button, TYPE.Slave, 1060, 105));
 			handler.addObject(new Button(x, y - 105, ID.Button, TYPE.Tank, 1000, 105));
 			base = (TownCenter) game.handler.findObject(ID.Base);
@@ -71,7 +71,7 @@ public class HUD{
 			}
 		    g.setColor(Color.white);
 		    g.drawRect(x - 600, y-800, 100, 30);
-		}else if(base.selected){
+		}else if(base != null && base.selected){
 			b = handler.getAllByID(ID.Button);
 			for(GameObject button : b){
 				Button bbb = (Button) button;
