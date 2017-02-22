@@ -25,8 +25,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 interface serverListener{
+	
 	void playerConnected(Player player);
 	void packetReceived(DatagramPacket p);
+
 }
 public class Server extends Thread{
 	
