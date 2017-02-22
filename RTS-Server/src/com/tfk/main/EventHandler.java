@@ -15,11 +15,20 @@ public class EventHandler implements serverListener{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		server.sendData(String.format("Server: %s\nWorldGenerator: base\nx: %d y: %d", player.serverID(), 0, 0).getBytes(), player.getIP(), player.getPort());
-		server.sendData(String.format("Server: %s\nConnected", player.serverID()).getBytes(), player.getIP(), player.getPort());
-		server.sendData(String.format("Server: %s\nAddGameObject: slave\nx: %d y: %d", player.serverID(), 200, 200).getBytes(), player.getIP(), player.getPort());
-		
-		server.addServerText("Connection packet sent.");
+
+		if (server.players.size() == 1) {
+			server.sendData(String.format("Server: %s\nWorldGenerator: base\nx: %d y: %d", player.serverID(), 0, 0).getBytes(), player.getIP(), player.getPort());
+			server.sendData(String.format("Server: %s\nConnected", player.serverID()).getBytes(), player.getIP(), player.getPort());
+			server.sendData(String.format("Server: %s\nAddGameObject: slave\nx: %d y: %d", player.serverID(), 200, 200).getBytes(), player.getIP(), player.getPort());
+			
+			server.addServerText("Connection packet sent.");
+		}else if(server.players.size() == 2){
+			server.sendData(String.format("Server: %s\nWorldGenerator: base\nx: %d y: %d", player.serverID(), 1300, 1300).getBytes(), player.getIP(), player.getPort());
+			server.sendData(String.format("Server: %s\nConnected", player.serverID()).getBytes(), player.getIP(), player.getPort());
+			server.sendData(String.format("Server: %s\nAddGameObject: slave\nx: %d y: %d", player.serverID(), 1200, 1200).getBytes(), player.getIP(), player.getPort());
+			
+			server.addServerText("Connection packet sent.");
+		}
 	}
 	@Override
 	public void packetReceived(DatagramPacket p) {
