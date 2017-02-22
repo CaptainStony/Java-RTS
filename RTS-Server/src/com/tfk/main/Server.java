@@ -48,7 +48,7 @@ public class Server extends Thread{
 	public Server(){
 		createWindow();
 		addServerText("Server Starting");
-		addListener(new EventHandler(players, this));
+		addListener(new EventHandler(this));
 		try {
 			this.socket = new DatagramSocket( 15504, InetAddress.getLocalHost());
 			System.out.println(InetAddress.getLocalHost().toString());
@@ -106,17 +106,17 @@ public class Server extends Thread{
 			}
 			if(message[0].equals("Player:")){
 				if(players.size() > 0){
-					if(message.length >= 3 && message[2].trim().contains("\nConnecting")){
+					if(message.length >= 3 && message[2].trim().contains("Connecting")){
 						Boolean playerExists = false;
-						for(String ID : serverID){
-							if(ID.equals(message[1])){
+						for(int i = 0; i > players.size(); i++){
+							if(players.get(i).getID().equals(message[1])){
 								playerExists = true;
 								break;
 							}else{
 								playerExists = false;
 							}
 						}
-						if(playerExists){
+						if(!playerExists){
 							System.out.println("Player connecting");
 							serverID[players.size()-1] = UUID.randomUUID().toString();
 							players.add(new Player(message[1], packet.getAddress(), packet.getPort(), serverID[0]));
@@ -127,7 +127,6 @@ public class Server extends Thread{
 						}
 						
 					}else{
-						System.out.println(new String(packet.getData()));
 						for(serverListener sl : listeners){
 							sl.packetReceived(packet);
 						}
@@ -191,7 +190,7 @@ public class Server extends Thread{
 			}
 		}else if(cmd.equals("reset")){
 			listeners.clear();
-			addListener(new EventHandler(players, this));
+			addListener(new EventHandler(this));
 			map = new Random().nextInt(25);
 			players.clear();
 			serverOut="";

@@ -2,18 +2,14 @@ package com.tfk.main;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.util.LinkedList;
 
 public class EventHandler implements serverListener{
-	private LinkedList<Player> allPlayers = new LinkedList<Player>();
 	private Server server;
-	public EventHandler(LinkedList<Player> allPlayers, Server server){
-		this.allPlayers = allPlayers;
+	public EventHandler(Server server){;
 		this.server = server;
 	}
 	@Override
 	public void playerConnected(Player player) {
-		allPlayers.add(player);
 		try {
 			new WorldGenerator().run(Server.map, server, player);
 		} catch (IOException e) {
