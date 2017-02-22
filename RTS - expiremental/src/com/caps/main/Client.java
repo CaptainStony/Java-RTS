@@ -60,7 +60,7 @@ public class Client extends Thread{
 		}while(true);
 	}
 	public void sendData(byte[] data){
-		DatagramPacket packet = new DatagramPacket(data,  data.length, ipAddress, 15504);
+		DatagramPacket packet = new DatagramPacket(data,  data.length, ipAddress, game.serverPort);
 		try {
 			socket.send(packet);
 		} catch (IOException e) {

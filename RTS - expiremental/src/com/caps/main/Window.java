@@ -1,20 +1,40 @@
 package com.caps.main;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 
 public class Window extends Canvas{
 
 	private static final long serialVersionUID = 1L;
 	private JFrame frame = new JFrame("rts shit game");
-	public JButton b = new JButton("boi");
-	public Window(int width, int height , Game game){		
-		b.setSize(100, 50);
-		b.setLocation(30, 710);
-		frame.add(b);
+	public JButton serverEnter = new JButton("Connect");
+	public JTextField serverIP = new JTextField();
+	public JFormattedTextField serverPort = new JFormattedTextField();
+
+	
+	public Window(int width, int height , Game game){
+		serverIP.setVisible(true);
+		serverPort.setVisible(true);
+		serverIP.setBackground(Color.white);
+		serverIP.setSize(200, 50);
+		serverIP.setLocation(450,200);
+		serverIP.setText("127.0.0.1");
+		
+		serverPort.setBackground(Color.white);
+		serverPort.setSize(200, 50);
+		serverPort.setLocation(450,400);
+		serverPort.setText("15504");
+		serverEnter.setSize(200, 50);
+		serverEnter.setLocation(450, 470);
+		frame.add(serverEnter);
+		frame.add(serverIP);
+		frame.add(serverPort);
 		frame.setPreferredSize(new Dimension(width , height));
 		frame.setMaximumSize(new Dimension(width , height));
 		frame.setMinimumSize(new Dimension(width , height));

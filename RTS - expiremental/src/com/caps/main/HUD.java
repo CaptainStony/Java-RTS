@@ -22,9 +22,6 @@ public class HUD{
 		this.handler = game.handler;
 		this.grid = grid;
 		
-		window.b.setVisible(false);
-		window.b.setText("elle moema");
-		
 	}
 	public void tick(){
 

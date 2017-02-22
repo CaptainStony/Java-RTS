@@ -3,52 +3,68 @@ package com.caps.main;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import javax.imageio.ImageIO;
 
 import com.caps.main.Game.STATE;
 	
 
-public class Menu extends MouseAdapter{
+public class Menu{
 	private Game game;
+	private Window window;
+	private Image back = null;
 
-
-	public Menu(Game game, Handler handler){		
+	public Menu(Game game,Window window){
 		this.game = game;
-
+		this.window = window;
 	}
 	
-	public void mousePressed(MouseEvent e){
-		int mx = e.getX();
-		int my = e.getY();
-
-
-	}
-	private boolean mouseOver(int mx, int my, int x,  int y,int width , int height){
-		if(mx > x && mx < x + width){
-			if (my > y && my < y + width) {
-				return true;
-			}return false;
-		}return false;
-		
-	}
-	
-	public void mouseReleased(MouseEvent e){
-		
-	}
 	public void tick(){
-		
+		window.serverEnter.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					game.serverIP = InetAddress.getByName(window.serverIP.getText().trim());
+				} catch (UnknownHostException e1) {
+					e1.printStackTrace();
+				}
+				game.serverPort = Integer.parseInt(window.serverPort.getText().trim());
+				game.gameState = STATE.Connecting;
+				game.client = new Client(game, game.serverIP.getHostAddress());
+				game.client.start();
+				game.client.sendData(String.format("Player: %s", Game.uniqueID).getBytes());
+				//game.grid.loadGrid();
+				
+			}
+		});
 	}
 
 	public void render(Graphics g){
-
-/*
-			for (int i = 0; i < 10; i++) {
-				handler.addObject(new MenuGuy(300, 50, ID.MenuGuy , handler));
-
-			}*/
-
-
+		if(back == null){
+			try {
+				back = ImageIO.read(this.getClass().getResource("/menuBack.png"));
+	            g.drawImage(back, 0,0, 1500, 1500, null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			g.drawImage(back, 0, 0, 1100, 800, null);
+		}
+		Font orgFont = g.getFont();
+		g.setColor(Color.black);
+		g.setFont(new Font("Verdana", Font.BOLD, 30));
+		g.drawString("Server IP", 470, 190);
+		g.drawString("Server Port", 450, 380);
+		g.setFont(orgFont);
 	}
 
 }
