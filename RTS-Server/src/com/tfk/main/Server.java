@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 
 interface serverListener{
 	void playerConnected(Player player);
+	void packetReceived(DatagramPacket p);
 }
 public class Server extends Thread{
 	
@@ -49,7 +50,7 @@ public class Server extends Thread{
 		addServerText("Server Starting");
 		addListener(new EventHandler(players, this));
 		try {
-			this.socket = new DatagramSocket( 15504, InetAddress.getByName("127.0.0.1"));
+			this.socket = new DatagramSocket( 15504, InetAddress.getLocalHost());
 			System.out.println(InetAddress.getLocalHost().toString());
 		} catch (SocketException e) {
 			e.printStackTrace();
@@ -103,22 +104,11 @@ public class Server extends Thread{
 			
 			if(message[0].equals("Player:")){
 				if(players.size() > 0){
-					for(int i = 0; i < players.size(); i++){
-						if(players.get(i).getID().equals(message[1])){
-							players.add(new Player(message[1], packet.getAddress(), packet.getPort(), serverID[i]));
-							addServerText("Player " + (i+1) + " connected");
-							serverID[i] = UUID.randomUUID().toString();
-							sendData(String.format("Server: %s", serverID[i]).getBytes(), packet.getAddress(), packet.getPort());
-							try {
-								new WorldGenerator().run(map, this, players.get(i));
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-							for(serverListener sl : listeners){
-								sl.playerConnected(players.get(i));
-							}
-						}else{
-							System.out.println("fak u haxing cunt");
+					if(message.length >= 3 && message[2].equalsIgnoreCase("connecting")){
+						serverID[serverID.length] = message[1];
+					}else{
+						for(serverListener sl : listeners){
+							sl.packetReceived(packet);
 						}
 					}
 				}else{
