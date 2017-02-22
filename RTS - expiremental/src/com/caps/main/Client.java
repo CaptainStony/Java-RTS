@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import com.caps.entities.Slave;
 import com.caps.entities.TownCenter;
 import com.caps.main.Game.STATE;
 import com.caps.resource.Wood;
@@ -55,9 +56,17 @@ public class Client extends Thread{
 						String[] obj = message[2].split(" ");
 						game.handler.addObject(new TownCenter(Float.parseFloat(obj[1]), Float.parseFloat(obj[3]), ID.Base, game, game.handler));
 					}
+				}else if (servID.equals(Game.serverID) && message[1].split(" ")[0].equalsIgnoreCase("addgameobject:")){
+					addObject(message[1].split(" ")[1], Integer.parseInt(message[2].split(" ")[1]), Integer.parseInt(message[2].split(" ")[3]));
+
 				}
 			}
 		}while(true);
+	}
+	private void addObject(String name, int x, int y){
+		if(name.equals("slave")){
+			game.handler.addObject(new Slave(x, y, ID.Slave, game.handler, game.grid));
+		}
 	}
 	public void sendData(byte[] data){
 		DatagramPacket packet = new DatagramPacket(data,  data.length, ipAddress, game.serverPort);

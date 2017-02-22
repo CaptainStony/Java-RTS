@@ -90,6 +90,7 @@ public class MouseInput implements MouseListener,MouseMotionListener {
 					
 				}else if(base.selected && !handler.intersects(mouseBounds)){
 					game.selectedObject.clear();
+					handler.object.forEach(obj->obj.selected = false);
 					game.selectedObject.add(base);
 				}else{
 					game.selectedObject.clear();

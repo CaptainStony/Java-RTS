@@ -12,11 +12,6 @@ import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
-import com.caps.entities.Archer;
-import com.caps.entities.Sheep;
-import com.caps.entities.Slave;
-import com.caps.entities.Tank;
-
 public class Game extends Canvas implements Runnable{
 
 	protected Handler handler;
@@ -30,7 +25,7 @@ public class Game extends Canvas implements Runnable{
 	
 	public int cameraX = 0;
 	public int cameraY = 0;
-
+	
 	public LinkedList<GameObject> selectedObject = new LinkedList<GameObject>();
 	
 	public static final int WIDTH = 1080, HEIGHT = WIDTH /12 * 9;
@@ -63,12 +58,6 @@ public class Game extends Canvas implements Runnable{
 		this.addKeyListener(new KeyInput(handler, this));
 
 		mouseinput = new MouseInput(this, handler,grid);
-		handler.addObject(new Tank(WIDTH/2-40, HEIGHT/2-40, ID.Tank, handler,grid));
-		handler.addObject(new Slave(WIDTH/2+200, HEIGHT/2+50, ID.Slave, handler,grid));
-		handler.addObject(new Slave(WIDTH/2+300, HEIGHT/2+30, ID.Slave, handler,grid));
-
-		handler.addObject(new Sheep(WIDTH/2 - 100, HEIGHT/2+50, ID.Sheep, handler));
-		handler.addObject(new Archer(WIDTH/2 - 500, HEIGHT/2+50, ID.Archer, handler, grid));
 
 		hud = new HUD(this,grid,window);
 		

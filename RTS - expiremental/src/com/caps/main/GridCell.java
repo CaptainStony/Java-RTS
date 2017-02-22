@@ -11,7 +11,6 @@ public class GridCell {
 
 	protected int x, y;
 	protected int row,col;
-	
 	protected int G=0,H,F;
 	
 	//protected GridCell parent;

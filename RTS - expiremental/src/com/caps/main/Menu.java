@@ -6,8 +6,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -25,27 +23,32 @@ public class Menu{
 	public Menu(Game game,Window window){
 		this.game = game;
 		this.window = window;
-	}
-	
-	public void tick(){
 		window.serverEnter.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
 					game.serverIP = InetAddress.getByName(window.serverIP.getText().trim());
 				} catch (UnknownHostException e1) {
 					e1.printStackTrace();
 				}
+				
 				game.serverPort = Integer.parseInt(window.serverPort.getText().trim());
-				game.gameState = STATE.Connecting;
 				game.client = new Client(game, game.serverIP.getHostAddress());
 				game.client.start();
-				game.client.sendData(String.format("Player: %s", Game.uniqueID).getBytes());
+				game.client.sendData(String.format("Player: %s \nConnecting", Game.uniqueID).getBytes());
+				
+				game.gameState = STATE.Connecting;
+
 				//game.grid.loadGrid();
 				
 			}
 		});
+	}
+	
+	public void tick(){
+		
 	}
 
 	public void render(Graphics g){
@@ -59,6 +62,7 @@ public class Menu{
 		} else {
 			g.drawImage(back, 0, 0, 1100, 800, null);
 		}
+		
 		Font orgFont = g.getFont();
 		g.setColor(Color.black);
 		g.setFont(new Font("Verdana", Font.BOLD, 30));
