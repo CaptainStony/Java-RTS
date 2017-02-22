@@ -1,5 +1,6 @@
 package com.tfk.main;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.util.LinkedList;
 
@@ -13,6 +14,11 @@ public class EventHandler implements serverListener{
 	@Override
 	public void playerConnected(Player player) {
 		allPlayers.add(player);
+		try {
+			new WorldGenerator().run(Server.map, server, player);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		server.sendData(String.format("Server: %s\nWorldGenerator: base\nx: %d y: %d", player.serverID(), 0, 0).getBytes(), player.getIP(), player.getPort());
 		server.sendData(String.format("Server: %s\nConnected", player.serverID()).getBytes(), player.getIP(), player.getPort());
 		server.addServerText("Connection packet sent.");

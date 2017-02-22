@@ -35,7 +35,7 @@ public class Server extends Thread{
 	private final String[] serverID = new String[4];
 	protected LinkedList<Player> players = new LinkedList<Player>();
 	
-	private long map = new Random().nextInt(25);
+	protected static long map = new Random().nextInt(25);
 	
 	private String serverOut = "";
 	private JTextField textField = new JTextField();
@@ -101,12 +101,33 @@ public class Server extends Thread{
 				e.printStackTrace();
 			}
 			String message[] = new String(packet.getData()).trim().split(" ");
-			
+			for(String msg : message){
+				msg = msg.trim();
+			}
 			if(message[0].equals("Player:")){
 				if(players.size() > 0){
-					if(message.length >= 3 && message[2].equalsIgnoreCase("connecting")){
-						serverID[serverID.length] = message[1];
+					if(message.length >= 3 && message[2].trim().contains("\nConnecting")){
+						Boolean playerExists = false;
+						for(String ID : serverID){
+							if(ID.equals(message[1])){
+								playerExists = true;
+								break;
+							}else{
+								playerExists = false;
+							}
+						}
+						if(playerExists){
+							System.out.println("Player connecting");
+							serverID[players.size()-1] = UUID.randomUUID().toString();
+							players.add(new Player(message[1], packet.getAddress(), packet.getPort(), serverID[0]));
+							addServerText("[" + packet.getAddress() +"]Player "+ players.size() +" connected");
+							for(serverListener sl : listeners){
+								sl.playerConnected(players.getLast());
+							}
+						}
+						
 					}else{
+						System.out.println(new String(packet.getData()));
 						for(serverListener sl : listeners){
 							sl.packetReceived(packet);
 						}
@@ -116,12 +137,7 @@ public class Server extends Thread{
 					players.add(new Player(message[1], packet.getAddress(), packet.getPort(), serverID[0]));
 					String str = new String( "Server: " + serverID[0]);
 					sendData(str.getBytes(), packet.getAddress(), packet.getPort());
-					try {
-						new WorldGenerator().run(map, this, players.get(0));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					addServerText("[" + packet.getAddress() +"]Player 1 connected");
+					addServerText("[" + packet.getAddress() +"]Player " + players.size() +" connected");
 					for(serverListener sl : listeners){
 						sl.playerConnected(players.get(0));
 					}
@@ -168,6 +184,11 @@ public class Server extends Thread{
 			System.exit(1);
 		}else if(cmd.equals("help")){
 			addServerText("quit/exit - Stop the server and close window.");
+		}else if(cmd.equals("players")){
+			addServerText("There are " + players.size() + " players on the server");
+			for(Player p : players){
+				addServerText(p.getIP().toString());
+			}
 		}else if(cmd.equals("reset")){
 			listeners.clear();
 			addListener(new EventHandler(players, this));
