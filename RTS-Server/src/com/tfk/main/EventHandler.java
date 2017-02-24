@@ -2,7 +2,6 @@ package com.tfk.main;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.util.Date;
 
 public class EventHandler implements serverListener{
 	private Server server;
@@ -33,16 +32,6 @@ public class EventHandler implements serverListener{
 	}
 	@Override
 	public void packetReceived(DatagramPacket p) {
-		Player ply = null;
-		String[] message = new String(p.getData()).trim().split(" ");
-		for(Player player : server.players){
-			if(player.getID().equals(message[1].trim())){
-				ply = player;
-				break;
-			}
-		}
-		if(ply != null){
-			ply.lastPacketRec = new Date().getTime();
-		}
+		
 	}
 }

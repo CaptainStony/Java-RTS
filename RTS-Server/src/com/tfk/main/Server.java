@@ -29,6 +29,7 @@ interface serverListener{
 	void playerConnected(Player player);
 	void packetReceived(DatagramPacket p);
 }
+
 public class Server extends Thread{
 	
 	private DatagramSocket socket;
@@ -41,10 +42,9 @@ public class Server extends Thread{
 	private String serverOut = "";
 	private JTextField textField = new JTextField();
 	private JTextArea viewField = new JTextArea();
+	private Handler handler;
 	
 	private List<serverListener> listeners = new ArrayList<serverListener>();
-	private long curTime = new Date().getTime();
-	private boolean running = true;
 	public void addListener(serverListener listener){
 		listeners.add(listener);
 	}
@@ -60,6 +60,7 @@ public class Server extends Thread{
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
+		handler = new Handler();
 		start();
 	}
 	private void createWindow(){
@@ -96,27 +97,6 @@ public class Server extends Thread{
 	}
 	public void run(){
 		while (true){
-			//Ticker
-			
-			long lastTime = System.nanoTime();
-		    double amountofTicks = 60.0;
-		    double ns = 1000000000 / amountofTicks;
-		    double delta = 0;
-		    long timer = System.currentTimeMillis();
-		    while(running) {
-		    	long now = System.nanoTime();
-		    	delta += (now - lastTime) / ns;
-		        lastTime = now;
-		        while(delta >= 1) {
-		        	tick();
-		        	delta--;
-		        }
-		        if(System.currentTimeMillis() - timer > 1000) {
-		        	timer += 1000;
-		        }    
-		    }
-			
-			//End Ticker
 			byte[] data = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(data, data.length);
 			try{
@@ -227,16 +207,6 @@ public class Server extends Thread{
 			viewField.setDisabledTextColor(Color.red);
 			addServerText("Unknown command!");
 			viewField.setDisabledTextColor(Color.black);
-		}
-	}
-	public void tick(){
-		curTime = new Date().getTime();
-		for(int i = 0; i < players.size(); i++){
-			if(curTime - 5000 > players.get(i).lastPacketRec){
-				addServerText("Player " + i + " has timed out!");
-			}else{
-				System.out.println(players.get(i).lastPacketRec);
-			}
 		}
 	}
 	public static void main(String args[]){
