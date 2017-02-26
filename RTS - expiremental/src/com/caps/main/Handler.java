@@ -95,16 +95,16 @@ public class Handler {
 	}
 	
 	public void removeByID(ID id){
-	     if(id == ID.Resource){
-	      resourceObject.clear();
-	     }else{
-	      for(int i = 0; i < object.size(); i++){
-	          if(object.get(i).id == id){
-	           object.remove(i);
-	          }
-	         }
-	     }
+		if(id == ID.Resource){
+			resourceObject.clear();
+	    }else{
+	    	for(int i = 0; i < object.size(); i++){
+	    		if(object.get(i).id == id){
+	    			object.remove(i);
+	    		}
+	    	}
 	    }
+	}
 	public void goToCords(int worldMouseX,int worldMouseY,GameObject obj){
 		GameObject endPoint = new mousePoint(worldMouseX, worldMouseY, ID.MousePointer, this);
 		float difX = worldMouseX - obj.getX();

@@ -16,13 +16,9 @@ import com.caps.main.Game.STATE;
 	
 
 public class Menu{
-	private Game game;
-	private Window window;
 	private Image back = null;
 
 	public Menu(Game game,Window window){
-		this.game = game;
-		this.window = window;
 		window.serverEnter.addActionListener(new ActionListener() {
 			
 			@Override

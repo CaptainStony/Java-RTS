@@ -7,7 +7,6 @@ public class Player {
 	private InetAddress ipAddress;
 	private int port;
 	private String serverID;
-	protected long lastPacketRec;
 	
 	public Player(String uniqueID, InetAddress ipAddress, int port, String serverID){
 		this.uniqueID = uniqueID;

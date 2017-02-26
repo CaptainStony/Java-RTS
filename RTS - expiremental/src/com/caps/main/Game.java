@@ -21,7 +21,7 @@ public class Game extends Canvas implements Runnable{
 	protected HUD hud;
 	private static final long serialVersionUID = 1L;
 	static final String uniqueID = UUID.randomUUID().toString();
-	protected static String serverID;
+	protected static String serverID = null;
 	
 	public int cameraX = 0;
 	public int cameraY = 0;

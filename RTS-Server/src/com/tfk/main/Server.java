@@ -14,7 +14,6 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -42,7 +41,8 @@ public class Server extends Thread{
 	private String serverOut = "";
 	private JTextField textField = new JTextField();
 	private JTextArea viewField = new JTextArea();
-	private Handler handler;
+	protected Handler handler;
+	protected Grid grid;
 	
 	private List<serverListener> listeners = new ArrayList<serverListener>();
 	public void addListener(serverListener listener){
@@ -61,6 +61,12 @@ public class Server extends Thread{
 			e.printStackTrace();
 		}
 		handler = new Handler();
+		grid = new Grid(handler);
+		try {
+			new WorldGenerator().run(map, this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		};
 		start();
 	}
 	private void createWindow(){
@@ -121,10 +127,10 @@ public class Server extends Thread{
 							}
 						}
 						if(!playerExists){
-							System.out.println("Player connecting");
 							serverID[players.size()-1] = UUID.randomUUID().toString();
-							players.add(new Player(message[1], packet.getAddress(), packet.getPort(), serverID[0]));
-							players.getLast().lastPacketRec = new Date().getTime();
+							players.add(new Player(message[1], packet.getAddress(), packet.getPort(), serverID[players.size()-1]));
+							String str = new String( "00Server: " + serverID[players.size()-1]);
+							sendData(str.getBytes(), packet.getAddress(), packet.getPort());
 							addServerText("[" + packet.getAddress() +"]Player "+ players.size() +" connected");
 							for(serverListener sl : listeners){
 								sl.playerConnected(players.getLast());
@@ -139,8 +145,7 @@ public class Server extends Thread{
 				}else{
 					serverID[0] = UUID.randomUUID().toString();
 					players.add(new Player(message[1], packet.getAddress(), packet.getPort(), serverID[0]));
-					players.getLast().lastPacketRec = new Date().getTime();
-					String str = new String( "Server: " + serverID[0]);
+					String str = new String( "00Server: " + serverID[0]);
 					sendData(str.getBytes(), packet.getAddress(), packet.getPort());
 					addServerText("[" + packet.getAddress() +"]Player " + players.size() +" connected");
 					for(serverListener sl : listeners){

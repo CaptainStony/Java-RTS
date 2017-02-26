@@ -6,17 +6,19 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
 
 import com.caps.entities.Slave;
-import com.caps.entities.TownCenter;
-import com.caps.main.Game.STATE;
-import com.caps.resource.Wood;
 
 public class Client extends Thread{
 	private InetAddress ipAddress;
 	private DatagramSocket socket;
 	private Game game;
 	
+	interface clientListener{
+		void packetRecieved(DatagramPacket p, Game game);
+	}
+	private LinkedList<clientListener> packetHandlers = new LinkedList<clientListener>();
 	public Client(Game game, String ipAdress){
 		this.game = game;
 		try {
@@ -27,10 +29,10 @@ public class Client extends Thread{
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
+		addListener(new PacketHandler());
 	}
 	public void run(){
 		do{
-			
 			byte[] data = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(data, data.length);
 			try{
@@ -38,35 +40,18 @@ public class Client extends Thread{
 			}catch(IOException e){
 				e.printStackTrace();
 			}
-			String[] message = new String(packet.getData()).trim().split("\n");
-			String servID = message[0].split(" ")[1];
-			if(packet.getAddress().toString().contains("" + ipAddress.toString()) && message[0].split(" ")[0].equalsIgnoreCase("server:")){
-				if(servID.equals(Game.serverID) && game.gameState == STATE.Connecting){
-					if(message[1].trim().contains("Connected")){
-						game.gameState = STATE.Game;
-					}
-				}
-				if(Game.serverID == null && message[0].split(" ")[0].equalsIgnoreCase("server:")){
-					Game.serverID = message[0].split(" ")[1];
-				}else if(servID.equals(Game.serverID) && message[1].split(" ")[0].equalsIgnoreCase("worldgenerator:")){
-					if(message[1].split(" ")[1].equalsIgnoreCase("tree")){
-						String[] obj = message[2].split(" ");
-						game.handler.addObject(new Wood(Float.parseFloat(obj[1]), Float.parseFloat(obj[3]), ID.Resource, game.handler));
-					}else if(message[1].split(" ")[1].equalsIgnoreCase("base")){
-						String[] obj = message[2].split(" ");
-						game.handler.addObject(new TownCenter(Float.parseFloat(obj[1]), Float.parseFloat(obj[3]), ID.Base, game, game.handler));
-					}
-				}else if (servID.equals(Game.serverID) && message[1].split(" ")[0].equalsIgnoreCase("addgameobject:")){
-					addObject(message[1].split(" ")[1], Integer.parseInt(message[2].split(" ")[1]), Integer.parseInt(message[2].split(" ")[3]));
-
-				}
+			for(clientListener cl : packetHandlers){
+				cl.packetRecieved(packet, game);
 			}
 		}while(true);
 	}
-	private void addObject(String name, int x, int y){
+	protected void addObject(String name, int x, int y){
 		if(name.equals("slave")){
 			game.handler.addObject(new Slave(x, y, ID.Slave, game.handler, game.grid));
 		}
+	}
+	public void addListener(clientListener listener){
+		packetHandlers.add(listener);
 	}
 	public void sendData(byte[] data){
 		DatagramPacket packet = new DatagramPacket(data,  data.length, ipAddress, game.serverPort);
