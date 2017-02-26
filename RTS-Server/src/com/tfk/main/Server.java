@@ -128,7 +128,7 @@ public class Server extends Thread{
 						}
 						if(!playerExists){
 							serverID[players.size()-1] = UUID.randomUUID().toString();
-							players.add(new Player(message[1], packet.getAddress(), packet.getPort(), serverID[players.size()-1]));
+							players.add(new Player(message[1], packet.getAddress(), packet.getPort(), serverID[players.size()]));
 							String str = new String( "00Server: " + serverID[players.size()-1]);
 							sendData(str.getBytes(), packet.getAddress(), packet.getPort());
 							addServerText("[" + packet.getAddress() +"]Player "+ players.size() +" connected");
@@ -147,7 +147,7 @@ public class Server extends Thread{
 					players.add(new Player(message[1], packet.getAddress(), packet.getPort(), serverID[0]));
 					String str = new String( "00Server: " + serverID[0]);
 					sendData(str.getBytes(), packet.getAddress(), packet.getPort());
-					addServerText("[" + packet.getAddress() +"]Player " + players.size() +" connected");
+					addServerText("[" + packet.getAddress() +"]Player 1 connected");
 					for(serverListener sl : listeners){
 						sl.playerConnected(players.get(0));
 					}
