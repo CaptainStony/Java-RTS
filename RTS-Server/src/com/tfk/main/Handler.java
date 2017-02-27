@@ -12,6 +12,7 @@ public class Handler {
 	public LinkedList<GameObject> resourceObject = new LinkedList<GameObject>();
 	public LinkedList<GameObject> pointers = new LinkedList<GameObject>();
 	public LinkedList<Coordinate> cords = new LinkedList<Coordinate>();
+	private Server server;
 
 	public GameObject findObject(ID id){
 
@@ -27,7 +28,9 @@ public class Handler {
 		}
 		return returnObj;
 	}
-	
+	public Handler(Server server){
+		this.server = server;
+	}
 	public void tick(){
 		for (int i = 0; i < buildingObject.size(); i++) {
 			buildingObject.get(i).tick();
@@ -38,11 +41,6 @@ public class Handler {
 		for (int i = 0; i < pointers.size(); i++) {
 			object.get(i).tick();
 		}
-		/*for(int i = 0; i < resourceObject.size(); i++){
-			resourceObject.get(i).tick();
-		}*/
-
-
 	}
 	public LinkedList<GameObject> getAllByID(ID id){
 		LinkedList<GameObject> all = new LinkedList<GameObject>();
@@ -123,5 +121,12 @@ public class Handler {
 		return false;
 	}
 
-
+	/*public void updatePos(){
+		for(int i = 0; i < object.size(); i++){
+			for(Player p : server.players){
+				server.sendData(String.format("04Server: %s\n", p.serverID(), object.get(i).), ipAddress, port);
+			}
+			
+		}
+	}*/
 }

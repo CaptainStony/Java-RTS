@@ -60,7 +60,7 @@ public class Server extends Thread{
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-		handler = new Handler();
+		handler = new Handler(this);
 		grid = new Grid(handler);
 		try {
 			new WorldGenerator().run(map, this);

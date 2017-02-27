@@ -65,8 +65,6 @@ public class Handler {
 		for(int i = 0; i < resourceObject.size(); i++){
 			resourceObject.get(i).render(g);
 		}
-
-
 	}
 	
 	public void addObject(GameObject object){
@@ -128,16 +126,16 @@ public class Handler {
 			addObject(endPoint);
 		}
 	}
-	/*public boolean exists(ID id){
-		boolean doesExist = false;
+	public GameObject getByPos(int x, int y){
+		GameObject obj = null;
 		for(int i = 0; i < object.size(); i++){
-			if(object.get(i).getId() == id){
-				doesExist = true;
-				break;
+			obj = object.get(i);
+			if( (int) obj.getX() == x && (int) obj.getY() == y){
+				return obj;
 			}
 		}
-		return doesExist;
-	}*/
+		return obj;
+	}
 	
 	public boolean intersects(Rectangle r){
 		for(int i = 0; i < object.size(); i++){

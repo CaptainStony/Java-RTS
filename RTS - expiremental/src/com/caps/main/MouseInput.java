@@ -20,6 +20,7 @@ public class MouseInput implements MouseListener,MouseMotionListener {
 	private Handler handler;
 	private Game game;
 	private Grid grid;
+	private Client client = game.client;
 
 	public MouseInput(Game game, Handler handler, Grid grid) {
 		this.handler = handler;
@@ -114,8 +115,9 @@ public class MouseInput implements MouseListener,MouseMotionListener {
 				}
 
 			}else if (e.getButton() == 3){
+				GameObject obj;
 				for (int i = 0; i < game.selectedObject.size(); i++) {
-					GameObject obj = game.selectedObject.get(i);
+					obj = game.selectedObject.get(i);
 					if(obj.id == ID.Base){
 						TownCenter town = (TownCenter) obj;
 						town.setRallyPoint(new Location(worldMouseX, worldMouseY, grid));
@@ -123,7 +125,7 @@ public class MouseInput implements MouseListener,MouseMotionListener {
 					}
 				}
 				for (int i = 0; i < game.selectedObject.size(); i++) {
-					GameObject obj = game.selectedObject.get(i);
+					obj = game.selectedObject.get(i);
 					if (obj != null){
 						GameObject endPoint = new mousePoint(worldMouseX, worldMouseY, ID.MousePointer, handler);
 						if(obj.getId() == ID.Slave){
