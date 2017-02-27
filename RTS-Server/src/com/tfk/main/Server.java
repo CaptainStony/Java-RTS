@@ -24,6 +24,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.tfk.structures.TownCenter;
+import com.tfk.structures.BuildingObject.BUILDINGTYPE;
+
 interface serverListener{
 	void playerConnected(Player player);
 	void packetReceived(DatagramPacket p);
@@ -62,6 +65,8 @@ public class Server extends Thread{
 		}
 		handler = new Handler(this);
 		grid = new Grid(handler);
+		handler.addObject(new TownCenter(0,0,BUILDINGTYPE.Base, handler));
+		grid.loadGrid();
 		try {
 			new WorldGenerator().run(map, this);
 		} catch (IOException e) {
@@ -114,7 +119,7 @@ public class Server extends Thread{
 			for(String msg : message){
 				msg = msg.trim();
 			}
-			if(message[0].equals("Player:")){
+			if(message[0].equals("00Player:")){
 				if(players.size() > 0){
 					if(message.length >= 3 && message[2].trim().contains("Connecting")){
 						Boolean playerExists = false;
@@ -137,10 +142,6 @@ public class Server extends Thread{
 							}
 						}
 						
-					}else{
-						for(serverListener sl : listeners){
-							sl.packetReceived(packet);
-						}
 					}
 				}else{
 					serverID[0] = UUID.randomUUID().toString();
@@ -152,6 +153,9 @@ public class Server extends Thread{
 						sl.playerConnected(players.get(0));
 					}
 				}
+			}
+			for(serverListener sl : listeners){
+				sl.packetReceived(packet);
 			}
 			
 		}

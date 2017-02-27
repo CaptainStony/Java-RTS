@@ -113,10 +113,6 @@ public class Game extends Canvas implements Runnable{
 		}else if(gameState == STATE.Menu){
 			menu.tick();
 		}
-		
-		//hud.tick(); <3
-		
-
 	}
 	private Image img = null;
 

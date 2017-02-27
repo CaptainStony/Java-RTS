@@ -33,7 +33,7 @@ public class Menu{
 				game.serverPort = Integer.parseInt(window.serverPort.getText().trim());
 				game.client = new Client(game, game.serverIP.getHostAddress());
 				game.client.start();
-				game.client.sendData(String.format("Player: %s \nConnecting", Game.uniqueID).getBytes());
+				game.client.sendData(String.format("00Player: %s \nConnecting", Game.uniqueID).getBytes());
 				
 				game.gameState = STATE.Connecting;
 

@@ -43,23 +43,25 @@ public class Grid {
 		    }
 	    }
 	}
-	public void followPath (LinkedList<GridCell> path, GameObject entity, int endX, int endY){
+	public void followPath (LinkedList<GridCell> path,GameObject entity){
 		Rectangle interRect = entity.getBoundsTotal();
 		if (path.size() > entity.step && !interRect.intersects(path.getLast().getBoundsTotal())) {
-			handler.goToCords(endX+10, endX+10, entity);
-			
-			if(interRect.intersects(new Rectangle(endX, endY, 4, 4))){
-				entity.step++;
-			}else{
-				handler.goToCords(endX, endY, entity);
-				
-			}
+			GridCell cell = path.get(entity.step);
+		    Coordinate pointer  = new Coordinate((int) cell.getX()+10, (int) cell.getY()+10, 4, 4);
+		    handler.goToCords(pointer.getX()+10, pointer.getY()+10, entity);
+		   
+		    if(interRect.intersects(pointer.rect)){
+		    	entity.step++;
+		    }else{
+		    	handler.goToCords((int)pointer.getX(), (int)pointer.getY(), entity);
+		    
+		    }
 		}else{
 			entity.path = null;
-			entity.setVelX(0);
-			entity.setVelY(0);
-			entity.step = 0;
-			
+		    entity.setVelX(0);
+		    entity.setVelY(0);
+		    entity.step = 0;
+		   
 		}
 	}
 

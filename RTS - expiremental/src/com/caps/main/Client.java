@@ -8,8 +8,6 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
 
-import com.caps.entities.Slave;
-
 public class Client extends Thread{
 	private InetAddress ipAddress;
 	private DatagramSocket socket;
@@ -44,11 +42,6 @@ public class Client extends Thread{
 				cl.packetRecieved(packet, game);
 			}
 		}while(true);
-	}
-	protected void addObject(String name, int x, int y){
-		if(name.equals("slave")){
-			game.handler.addObject(new Slave(x, y, ID.Slave, game.handler, game.grid));
-		}
 	}
 	public void addListener(clientListener listener){
 		packetHandlers.add(listener);

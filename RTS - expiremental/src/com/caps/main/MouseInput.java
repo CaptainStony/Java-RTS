@@ -9,24 +9,20 @@ import java.util.LinkedList;
 import com.caps.entities.Archer;
 import com.caps.entities.BuildingObject.BUILDINGTYPE;
 import com.caps.entities.Slave;
-import com.caps.entities.Tank;
 import com.caps.entities.TownCenter;
 import com.caps.entities.Wall;
 import com.caps.entities.mousePoint;
-import com.caps.main.Button.TYPE;
 import com.caps.main.Game.STATE;
 
 public class MouseInput implements MouseListener,MouseMotionListener {
 	private Handler handler;
 	private Game game;
 	private Grid grid;
-	private Client client = game.client;
 
 	public MouseInput(Game game, Handler handler, Grid grid) {
 		this.handler = handler;
 		this.game = game;
 		this.grid = grid;
-
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -48,58 +44,31 @@ public class MouseInput implements MouseListener,MouseMotionListener {
 			Rectangle mouseBounds = new Rectangle(worldMouseX, worldMouseY, 1, 1);
 			//handler.addObject(new Tank(mouseX, mouseY, ID.Tank, handler));
 			if(e.getButton() == 1){
-				LinkedList<GameObject> allButtons = handler.getAllByID(ID.Button);
-				Button tmp;
 				TownCenter base = (TownCenter) handler.findObject(ID.Base);
-				if(base.selected && allButtons != null){
-					for(GameObject obj : allButtons){
-						tmp = (Button) obj;
-						if(HUD.FOOD >= 10 && tmp.getBoundsTotal().intersects(mouseBounds)){
-							HUD.FOOD -= 10;
-							boolean isEmpty;
-							if(base.getQueue().getQueueSize() == 0){
-								isEmpty = true;
-							}else isEmpty = false;
-							
-							if(tmp.type == TYPE.Slave){
-								if(base.getRallyPoint() != null){
-									base.getQueue().addItemToQueue(new Slave(base.getRallyPoint().getX(), base.getRallyPoint().getY(), ID.Slave, handler, grid), 5);
-								}else{
-									base.getQueue().addItemToQueue(new Slave(base.x - 20, base.y - 20, ID.Slave, handler, grid), 5);
-								}
-								
-								if(isEmpty){
-									base.timer = base.getQueue().getTimeFromQueue(1)*60;
-								}
-							} else if(tmp.type == TYPE.Tank){
-								if(base.getRallyPoint() != null){
-									base.getQueue().addItemToQueue(new Tank(base.getRallyPoint().getX(), base.getRallyPoint().getY(), ID.Tank, handler, grid), 10);
-								}else{
-									base.getQueue().addItemToQueue(new Tank(base.x - 20, base.y - 20, ID.Tank, handler, grid), 10);
-								}
-								
-								if(base.timer != null && base.timer <= 0){
-									base.timer = base.getQueue().getFirstTime()*60;
-								}
-							}
-						}else{
-							game.selectedObject.clear();
-							handler.object.forEach(gameObj->gameObj.selected = false);
-						}
-					}
-					
-					
-				}else if(base.selected && !handler.intersects(mouseBounds)){
+				if(base.selected && !handler.intersects(mouseBounds)){
 					game.selectedObject.clear();
 					handler.object.forEach(obj->obj.selected = false);
-					game.selectedObject.add(base);
+					base.selected = false;
+				}else if(!base.selected ){
+					boolean intersects = false;
+					for(int i = 0; i < handler.object.size(); i++){
+						if(handler.object.get(i).getBoundsTotal().intersects(mouseBounds)){
+							handler.object.get(i).selected = true;
+							intersects = true;
+							break;
+						}
+					}
+					if(!intersects){
+						for(int i = 0; i < handler.object.size(); i++){
+							handler.object.get(i).selected = false;
+						}
+					}
 				}else{
 					game.selectedObject.clear();
 					handler.object.forEach(obj->obj.selected = false);
 				}
-
 				
-				for (int i = 0; i < handler.object.size(); i++) {
+				/*for (int i = 0; i < handler.object.size(); i++) {
 					GameObject tempObject = handler.object.get(i);
 					if (tempObject.getBoundsTotal().intersects(mouseBounds) 
 							&& tempObject.id != ID.Particle && tempObject.id != ID.Projectile && tempObject.id != ID.MousePointer){
@@ -112,7 +81,7 @@ public class MouseInput implements MouseListener,MouseMotionListener {
 		
 							}	
 					}
-				}
+				}*/
 
 			}else if (e.getButton() == 3){
 				GameObject obj;
@@ -124,9 +93,9 @@ public class MouseInput implements MouseListener,MouseMotionListener {
 						//System.out.println("Rallypoint set!");
 					}
 				}
-				for (int i = 0; i < game.selectedObject.size(); i++) {
-					obj = game.selectedObject.get(i);
-					if (obj != null){
+				for (int i = 0; i < game.handler.object.size(); i++) {
+					obj = game.handler.object.get(i);
+					if (obj.selected && obj != null){
 						GameObject endPoint = new mousePoint(worldMouseX, worldMouseY, ID.MousePointer, handler);
 						if(obj.getId() == ID.Slave){
 							Slave slave = (Slave) obj;
@@ -141,9 +110,11 @@ public class MouseInput implements MouseListener,MouseMotionListener {
 										slave.setCarry(0);
 									}
 							}
-		
-							LinkedList<GridCell> path = grid.calculatePath(grid.findGridCellByXAndY((int) ((int)obj.getX()+obj.getBoundsTotal().getWidth()/2), (int) ((int)obj.getY()+obj.getBoundsTotal().getHeight()/2)), grid.findGridCellByXAndY(worldMouseX, worldMouseY),obj);
-							slave.setPath(path);
+							System.out.println(slave.x +":"+slave.y);
+							System.out.println(worldMouseX+":"+worldMouseY);
+							game.client.sendData(String.format("04Server: %s\n%s\nx: %d %d y: %d %d", Game.uniqueID, "slave", (int)slave.x, (int) worldMouseX, (int) slave.y, (int) worldMouseY).getBytes()); 
+							//LinkedList<GridCell> path = grid.calculatePath(grid.findGridCellByXAndY((int) ((int)obj.getX()+obj.getBoundsTotal().getWidth()/2), (int) ((int)obj.getY()+obj.getBoundsTotal().getHeight()/2)), grid.findGridCellByXAndY(worldMouseX, worldMouseY),obj);
+							//slave.setPath(path);
 							
 						}else if (obj.getId() == ID.Archer){
 							Archer archer = (Archer) obj;

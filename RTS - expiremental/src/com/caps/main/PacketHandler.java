@@ -23,10 +23,6 @@ public class PacketHandler implements clientListener{
 				Game.serverID = serverID.trim();
 			}else if(serverID.equals(Game.serverID) && msg[1].trim().equalsIgnoreCase("connected")){
 				game.gameState = STATE.Game;
-			}else{
-				System.out.println(Game.serverID);
-				System.out.println(serverID);
-				System.out.println(new String(p.getData()).trim());
 			}
 			break;
 		case "01":
@@ -43,7 +39,7 @@ public class PacketHandler implements clientListener{
 				case "slave":
 					x = Integer.parseInt(msg[2].split(" ")[1].trim());
 					y = Integer.parseInt(msg[2].split(" ")[3].trim());
-					game.handler.addObject(new Slave(x, y, ID.Resource, game.handler, game.grid));
+					game.handler.addObject(new Slave(x, y, ID.Slave, game.handler, game.grid));
 					break;
 				case "base":
 					x = Integer.parseInt(msg[2].split(" ")[1].trim());

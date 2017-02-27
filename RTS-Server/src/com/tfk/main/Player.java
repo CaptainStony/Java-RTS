@@ -7,6 +7,7 @@ public class Player {
 	private InetAddress ipAddress;
 	private int port;
 	private String serverID;
+	protected int WOOD = 0, FOOD = 0, GOLD = 0;
 	
 	public Player(String uniqueID, InetAddress ipAddress, int port, String serverID){
 		this.uniqueID = uniqueID;

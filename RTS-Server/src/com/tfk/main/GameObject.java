@@ -21,6 +21,7 @@ public abstract class GameObject {
 	protected LinkedList<GridCell> openList = new LinkedList<GridCell>();
 	protected int cnt = 0;
 	protected LinkedList<GridCell> tempPath = new LinkedList<GridCell>();
+	protected String owner;
 
 	protected GameObject interactedResource;
 	
@@ -30,10 +31,11 @@ public abstract class GameObject {
 	protected static enum RESOURCE{
 		Wood,Gold,Food,
 	};		
-	public GameObject(float x, float y, ID id){
+	public GameObject(float x, float y, ID id, String owner){
 		this.x = x;
 		this.y = y;
 		this.id = id;
+		this.owner = owner;
 	}
 	
 	public abstract void tick();
