@@ -12,10 +12,14 @@ public class TownCenter extends BuildingObject{
 	private Handler handler;
 	public Integer timer = null;
 	private Coordinate rallyPoint = null;
-	public TownCenter(float x, float y, BUILDINGTYPE type, Handler handler) {
-		super((int) x, (int) y, handler, type);
+	protected BUILDINGTYPE buildingType = BUILDINGTYPE.Base;
+	
+	public TownCenter(float x, float y, BUILDINGTYPE type, Handler handler, String owner) {
+		super((int) x, (int) y, handler, type,owner);
 		this.handler = handler;
 		this.queue = new Queue(this.handler);
+		this.type = buildingType;
+
 	}
 
 	

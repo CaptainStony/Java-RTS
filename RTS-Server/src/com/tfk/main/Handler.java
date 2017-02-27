@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.tfk.structures.BuildingObject;
+import com.tfk.structures.TownCenter;
 
 public class Handler {
 
@@ -12,7 +13,7 @@ public class Handler {
 	public LinkedList<GameObject> resourceObject = new LinkedList<GameObject>();
 	public LinkedList<GameObject> pointers = new LinkedList<GameObject>();
 	public LinkedList<Coordinate> cords = new LinkedList<Coordinate>();
-	//private Server server;
+	private Server server;
 
 	public GameObject findObject(ID id, String owner){
 
@@ -29,7 +30,7 @@ public class Handler {
 		return returnObj;
 	}
 	public Handler(Server server){
-		//this.server = server;
+		this.server = server;
 	}
 	public void tick(){
 		for (int i = 0; i < buildingObject.size(); i++) {
@@ -42,7 +43,17 @@ public class Handler {
 			object.get(i).tick();
 		}
 	}
-	public LinkedList<GameObject> getAllByID(ID id){
+	
+	public Player getPlayer(String uniqueID){
+		for(int i = 0; i < server.players.size(); i++){
+			if(server.players.get(i).getID() == uniqueID){
+				return server.players.get(i);
+			}
+		}
+		return null;
+	}
+	
+	public LinkedList<GameObject> getAllByIDGameObject(ID id){
 		LinkedList<GameObject> all = new LinkedList<GameObject>();
 		for(GameObject obj : object){
 			if(obj.id == id){
@@ -51,6 +62,16 @@ public class Handler {
 		}
 		return all;
 	}
+	
+	public TownCenter getTownCenter(String owner){
+		for(BuildingObject obj : buildingObject){
+			if(obj instanceof TownCenter && obj.getOwner() == owner){
+				return (TownCenter) obj;
+			}
+		}
+		return null;
+	}
+	
 	public void addObject(GameObject object){
 		if(object.id == ID.Resource){
 			this.resourceObject.add(object);

@@ -25,18 +25,18 @@ public class EventHandler implements serverListener{
 			}
 			server.sendData(String.format("00Server: %s\nConnected", player.serverID()).getBytes(), player.getIP(), player.getPort());
 			server.sendData(String.format("01Server: %s\nslave\nx: %d y: %d", player.serverID(), 200, 200).getBytes(), player.getIP(), player.getPort());
-			server.handler.addObject(new Slave(200,200, ID.Slave, server.handler, server.grid, player.serverID()));
+			server.handler.addObject(new Slave(200,200, ID.Slave, server.handler, server.grid, player.getID()));
 			
 		}else if(server.players.size() == 2){
 			server.sendData(String.format("01Server: %s\nbase\nx: %d y: %d", player.serverID(), 1300, 1300).getBytes(), player.getIP(), player.getPort());
-			server.handler.addObject(new TownCenter(1300,1300,BUILDINGTYPE.Base, server.handler));
+			server.handler.addObject(new TownCenter(1300,1300,BUILDINGTYPE.Base, server.handler,player.getID()));
 			for(int i = 0; i < server.handler.resourceObject.size(); i++){
 				obj = server.handler.resourceObject.get(i);
 				server.sendData(String.format("01Server: %s\ntree\nx: %d y: %d", player.serverID(), (int) obj.getX(), (int) obj.getY()).getBytes(), player.getIP(), player.getPort());
 			}
 			server.sendData(String.format("00Server: %s\nConnected", player.serverID()).getBytes(), player.getIP(), player.getPort());
 			server.sendData(String.format("01Server: %s\nslave\nx: %d y: %d", player.serverID(), 1200, 1200).getBytes(), player.getIP(), player.getPort());
-			server.handler.addObject(new Slave(1200, 1200, ID.Slave, server.handler, server.grid, player.serverID()));
+			server.handler.addObject(new Slave(1200, 1200, ID.Slave, server.handler, server.grid, player.getID()));
 			server.addServerText("Connection packet sent.");
 		}
 	}

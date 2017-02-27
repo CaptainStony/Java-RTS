@@ -1,20 +1,15 @@
 package com.tfk.entities;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
-import java.io.IOException;
 import java.util.LinkedList;
-import java.util.Random;
+
 import com.tfk.main.GameObject;
 import com.tfk.main.Grid;
 import com.tfk.main.GridCell;
 import com.tfk.main.Handler;
 import com.tfk.main.ID;
+import com.tfk.main.Player;
 import com.tfk.structures.TownCenter;
-
-import javax.imageio.ImageIO;
 
 public class Slave extends GameObject{
 
@@ -25,6 +20,7 @@ public class Slave extends GameObject{
 	protected int width = 0;
     protected int height = 0;
 	private Grid grid;
+	private Player player;
 
 	public Slave(float x, float y, ID id, Handler handler,Grid grid, String owner) {
 		super(x, y, id, owner);
@@ -32,6 +28,7 @@ public class Slave extends GameObject{
 		this.handler = handler;
 		this.grid = grid;
 		Health = 100;
+		player = handler.getPlayer(owner);
 	}
 	long time = System.currentTimeMillis();
 	long future;
@@ -52,16 +49,17 @@ public class Slave extends GameObject{
 		}
 		//RESOURCE
 		if(interactedResource != null){
-
+			TownCenter base = handler.getTownCenter(owner);
+			
 			if(getBoundsTotal().intersects(base.getBoundsDrop())){
 				if(interactedResource.isResource == RESOURCE.Wood){
-					HUD.WOOD += carry;
+					player.setWOOD(player.getWOOD()+carry);
 					carry = 0;
 				}else if (interactedResource.isResource == RESOURCE.Food){
-					HUD.FOOD += carry;
+					player.setFOOD(player.getFOOD()+carry);
 					carry = 0;
 				}else if (interactedResource.isResource == RESOURCE.Gold){
-					HUD.GOLD += carry;
+					player.setGOLD(player.getGOLD()+carry);
 					carry = 0;
 				}
 			}

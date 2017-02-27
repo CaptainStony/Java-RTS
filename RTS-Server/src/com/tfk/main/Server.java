@@ -65,7 +65,7 @@ public class Server extends Thread{
 		}
 		handler = new Handler(this);
 		grid = new Grid(handler);
-		handler.addObject(new TownCenter(0,0,BUILDINGTYPE.Base, handler));
+		handler.addObject(new TownCenter(0,0,BUILDINGTYPE.Base, handler,"server"));
 		grid.loadGrid();
 		try {
 			new WorldGenerator().run(map, this);
