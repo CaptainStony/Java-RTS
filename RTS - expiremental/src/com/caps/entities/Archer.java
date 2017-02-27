@@ -30,8 +30,8 @@ public class Archer extends GameObject{
 	private long time = System.currentTimeMillis();
 	private long future;
 	private boolean first = true;
-	public Archer(float x, float y, ID id, Handler handler,Grid grid) {
-		super(x, y, id);
+	public Archer(float x, float y, ID id, Handler handler, Grid grid, int objID) {
+		super(x, y, id, objID);
 		baseSpeed = 3;
 		this.handler = handler;
 		this.grid = grid;
@@ -60,7 +60,7 @@ public class Archer extends GameObject{
 				}
 				if(time >= future){
 					first = true;
-					handler.addObject(new Projectile(x, y, (int)(target.getX()+target.getBoundsTotal().getMaxX())/2, (int)(target.getY()+target.getBoundsTotal().getMaxY())/2, ID.Projectile, handler,target,5));
+					//handler.addObject(new Projectile(x, y, (int)(target.getX()+target.getBoundsTotal().getMaxX())/2, (int)(target.getY()+target.getBoundsTotal().getMaxY())/2, ID.Projectile, handler,target,5));
 					if(target.getHealth() <=0){
 						target = null;
 					}

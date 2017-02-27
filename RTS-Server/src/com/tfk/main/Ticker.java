@@ -14,7 +14,7 @@ public class Ticker extends Thread{
 		server.handler.tick();
 		if(i % 3 == 0){
 			i = 0;
-			
+			server.handler.updatePos();
 		}
 	}
 	public void run(){

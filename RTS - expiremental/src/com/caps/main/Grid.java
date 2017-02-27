@@ -3,8 +3,6 @@ package com.caps.main;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
-import com.caps.entities.mousePoint;
-
 public class Grid {
 	protected int[][] worldGrid = new int[75][75];
 	protected GridCell[][] gridCells = new GridCell[75][75];
@@ -49,10 +47,10 @@ public class Grid {
 		Rectangle interRect = entity.getBoundsTotal();
 		if (path.size() > entity.step && !interRect.intersects(path.getLast().getBoundsTotal())) {
 			GridCell cell = path.get(entity.step);
-			GameObject pointer  = new mousePoint(cell.getX()+10, cell.getY()+10, ID.MousePointer, handler);
+			Coordinate pointer  = new Coordinate((int) (cell.getX()+10), (int) cell.getY()+10, 4, 4);
 			handler.goToCords((int)pointer.getX()+10, (int)pointer.getY()+10, entity);
 			
-			if(interRect.intersects(pointer.getBoundsTotal())){
+			if(interRect.intersects(pointer.rect)){
 				entity.step++;
 			}else{
 				handler.goToCords((int)pointer.getX(), (int)pointer.getY(), entity);

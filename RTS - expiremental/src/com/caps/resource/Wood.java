@@ -35,8 +35,8 @@ public class Wood extends GameObject{
 	  }
 	private Handler handler;
 	
-	public Wood(float x, float y, ID id, Handler handler) {
-		super(x, y, id);
+	public Wood(float x, float y, ID id, Handler handler, int objID) {
+		super(x, y, id, objID);
 		baseSpeed = 0;
 		Health = 100;
 		this.handler = handler;

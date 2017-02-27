@@ -11,7 +11,6 @@ import com.caps.entities.BuildingObject.BUILDINGTYPE;
 import com.caps.entities.Slave;
 import com.caps.entities.TownCenter;
 import com.caps.entities.Wall;
-import com.caps.entities.mousePoint;
 import com.caps.main.Game.STATE;
 
 public class MouseInput implements MouseListener,MouseMotionListener {
@@ -96,13 +95,13 @@ public class MouseInput implements MouseListener,MouseMotionListener {
 				for (int i = 0; i < game.handler.object.size(); i++) {
 					obj = game.handler.object.get(i);
 					if (obj.selected && obj != null){
-						GameObject endPoint = new mousePoint(worldMouseX, worldMouseY, ID.MousePointer, handler);
+						Coordinate endPoint = new Coordinate(worldMouseX, worldMouseY, 4, 4);
 						if(obj.getId() == ID.Slave){
 							Slave slave = (Slave) obj;
 							
 							for (int j = 0; j < handler.resourceObject.size(); j++) {
 								GameObject resObj = handler.resourceObject.get(j);
-									if(endPoint.getBoundsTotal().intersects(resObj.getBoundsTotal())){
+									if(endPoint.rect.intersects(resObj.getBoundsTotal())){
 										slave.interactedResource = resObj;
 										break;
 									}else{
@@ -110,9 +109,7 @@ public class MouseInput implements MouseListener,MouseMotionListener {
 										slave.setCarry(0);
 									}
 							}
-							System.out.println(slave.x +":"+slave.y);
-							System.out.println(worldMouseX+":"+worldMouseY);
-							game.client.sendData(String.format("04Server: %s\n%s\nx: %d %d y: %d %d", Game.uniqueID, "slave", (int)slave.x, (int) worldMouseX, (int) slave.y, (int) worldMouseY).getBytes()); 
+							game.client.sendData(String.format("04Server: %s\n%s\nx: %d y: %d\n%d", Game.uniqueID, "slave", (int) worldMouseX, (int) worldMouseY, slave.objID).getBytes()); 
 							//LinkedList<GridCell> path = grid.calculatePath(grid.findGridCellByXAndY((int) ((int)obj.getX()+obj.getBoundsTotal().getWidth()/2), (int) ((int)obj.getY()+obj.getBoundsTotal().getHeight()/2)), grid.findGridCellByXAndY(worldMouseX, worldMouseY),obj);
 							//slave.setPath(path);
 							
@@ -121,7 +118,7 @@ public class MouseInput implements MouseListener,MouseMotionListener {
 							boolean noEnemy = true;
 							for (int j = 0; j < handler.object.size(); j++) {
 								GameObject enemy = handler.object.get(j);
-									if(endPoint.getBoundsTotal().intersects(enemy.getBoundsTotal())){
+									if(endPoint.rect.intersects(enemy.getBoundsTotal())){
 										archer.target = enemy;
 										noEnemy = false;
 										archer.velX = 0;

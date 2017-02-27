@@ -13,8 +13,8 @@ public class Button extends GameObject{
 		Slave(), Tank(),Wall(), Menu()
 	}
 	protected TYPE type;
-	public Button(float x, float y, ID id, TYPE type, int posX, int posY) {
-		super(x, y, id);
+	public Button(float x, float y, ID id, TYPE type, int posX, int posY, int objID) {
+		super(x, y, id, objID);
 		this.type = type;
 		this.posX = posX;
 		this.posY = posY;

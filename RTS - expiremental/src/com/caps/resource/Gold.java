@@ -18,8 +18,8 @@ private Handler handler;
 	Image img = null;
 	private int width;
 	private int height;
-	public Gold(float x, float y, ID id, Handler handler) {
-		super(x, y, id);
+	public Gold(float x, float y, ID id, Handler handler, int objID) {
+		super(x, y, id, objID);
 		baseSpeed = 0;
 		Health = 115;
 		this.handler = handler;

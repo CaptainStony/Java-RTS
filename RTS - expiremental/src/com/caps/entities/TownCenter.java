@@ -22,8 +22,8 @@ public class TownCenter extends GameObject{
 	public Integer timer = null;
 	private Location rallyPoint = null;
 	private RallyFlag rf = null;
-	public TownCenter(float x, float y, ID id, Game game, Handler handler) {
-		super(x, y, id);
+	public TownCenter(float x, float y, ID id, Game game, Handler handler, int objID) {
+		super(x, y, id, objID);
 		this.handler = handler;
 		this.queue = new Queue(this.handler);
 	}

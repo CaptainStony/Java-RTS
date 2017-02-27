@@ -19,8 +19,8 @@ public class Sheep extends GameObject{
 	private int width = 0;
 	private int height = 0;
 	private Handler handler;
-	public Sheep(int x, int y, ID id, Handler handler){
-		super(x, y, id);
+	public Sheep(int x, int y, ID id, Handler handler, int objID){
+		super(x, y, id, objID);
 		baseSpeed = 2;
 		Health = 50;
 		this.handler = handler;

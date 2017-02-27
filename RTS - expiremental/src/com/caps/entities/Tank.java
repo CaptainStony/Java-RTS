@@ -13,8 +13,8 @@ public class Tank extends GameObject{
 
 	private Grid grid;
 	
-	public Tank(float x, float y, ID id, Handler handler,Grid grid) {
-		super(x, y, id);
+	public Tank(float x, float y, ID id, Handler handler, Grid grid, int objID) {
+		super(x, y, id, objID);
 		baseSpeed = 2;
 		this.grid = grid;
 	}

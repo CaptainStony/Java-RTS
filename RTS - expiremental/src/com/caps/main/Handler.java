@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.caps.entities.BuildingObject;
-import com.caps.entities.mousePoint;
+import com.caps.main.GameObject;
 
 public class Handler {
 
@@ -104,7 +104,7 @@ public class Handler {
 	    }
 	}
 	public void goToCords(int worldMouseX,int worldMouseY,GameObject obj){
-		GameObject endPoint = new mousePoint(worldMouseX, worldMouseY, ID.MousePointer, this);
+		Coordinate endPoint = new Coordinate(worldMouseX, worldMouseY);
 		float difX = worldMouseX - obj.getX();
 		float difY = worldMouseY - obj.getY();
 		float angle = (float) Math.atan(difY/difX);
@@ -118,12 +118,9 @@ public class Handler {
 			obj.velY = (float) -(obj.baseSpeed * Math.sin(angle));
 		}
 		if (obj.getEndPoint() == null){
-			addObject(endPoint);
 			obj.setEndPoint(endPoint);
 		}else{
-			removeObject(obj.getEndPoint());
 			obj.setEndPoint(endPoint);
-			addObject(endPoint);
 		}
 	}
 	public GameObject getByPos(int x, int y){
@@ -136,7 +133,19 @@ public class Handler {
 		}
 		return obj;
 	}
-	
+	public GameObject getByObjID(int objID){
+		for(int i = 0; i < object.size(); i++){
+			if(object.get(i).objID == objID){
+				return object.get(i);
+			}
+		}
+		for(int i = 0; i < resourceObject.size(); i++){
+			if(resourceObject.get(i).objID == objID){
+				return resourceObject.get(i);
+			}
+		}
+		return null;
+	}
 	public boolean intersects(Rectangle r){
 		for(int i = 0; i < object.size(); i++){
 			if(r.intersects(object.get(i).getBoundsTotal())){

@@ -11,12 +11,13 @@ public abstract class GameObject {
 	protected float velX, velY;
 	protected boolean selected = false;
 	protected int baseSpeed;
+	protected int objID;
 
 	protected int step = 0;
 
 	protected int Health;
 
-	protected GameObject endPoint;
+	protected Coordinate endPoint;
 	protected LinkedList<GridCell> path;
 	protected LinkedList<GridCell> closedList = new LinkedList<GridCell>();
 	protected LinkedList<GridCell> openList = new LinkedList<GridCell>();
@@ -31,10 +32,11 @@ public abstract class GameObject {
 	protected static enum RESOURCE{
 		Wood,Gold,Food,
 	};		
-	public GameObject(float x, float y, ID id){
+	public GameObject(float x, float y, ID id, int objID){
 		this.x = x;
 		this.y = y;
 		this.id = id;
+		this.objID = objID;
 	}
 	
 	public abstract void tick();
@@ -62,11 +64,11 @@ public abstract class GameObject {
 		return isResource;
 	}
 	
-	public void setEndPoint(GameObject endPoint){
+	public void setEndPoint(Coordinate endPoint){
 		this.endPoint = endPoint;
 
 	}
-	public GameObject getEndPoint(){
+	public Coordinate getEndPoint(){
 		return endPoint;
 	}
 	
@@ -109,5 +111,11 @@ public abstract class GameObject {
 	public float getVelY(){
 		return velY;
 	}
+	public int getObjID() {
+		return objID;
+	}
 
+	public void setObjID(int objID) {
+		this.objID = objID;
+	}
 }

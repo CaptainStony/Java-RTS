@@ -10,6 +10,7 @@ public abstract class GameObject {
 	protected float velX, velY;
 	protected boolean selected = false;
 	protected int baseSpeed;
+	protected int objID;
 
 	protected int step = 0;
 
@@ -36,6 +37,7 @@ public abstract class GameObject {
 		this.y = y;
 		this.id = id;
 		this.owner = owner;
+		objID = Server.at.getAndIncrement();
 	}
 	
 	public abstract void tick();

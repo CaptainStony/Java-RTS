@@ -46,6 +46,7 @@ public class Server extends Thread{
 	private JTextArea viewField = new JTextArea();
 	protected Handler handler;
 	protected Grid grid;
+	public static AtomicInteger at = new AtomicInteger(0);
 	
 	private List<serverListener> listeners = new ArrayList<serverListener>();
 	public void addListener(serverListener listener){
@@ -72,6 +73,7 @@ public class Server extends Thread{
 		} catch (IOException e) {
 			e.printStackTrace();
 		};
+		new Ticker(this);
 		start();
 	}
 	private void createWindow(){

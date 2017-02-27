@@ -39,9 +39,6 @@ public class Handler {
 		for (int i = 0; i < object.size(); i++) {
 			object.get(i).tick();
 		}
-		for (int i = 0; i < pointers.size(); i++) {
-			object.get(i).tick();
-		}
 	}
 	
 	public Player getPlayer(String uniqueID){
@@ -141,22 +138,26 @@ public class Handler {
 		}
 		return false;
 	}
-	public GameObject getByPos(int x, int y){
-		GameObject obj = null;
+	public GameObject getByObjID(int objID){
 		for(int i = 0; i < object.size(); i++){
-			obj = object.get(i);
-			if( (int) obj.getX() == x && (int) obj.getY() == y){
-				return obj;
+			if(object.get(i).objID == objID){
+				return object.get(i);
 			}
 		}
-		return obj;
+		for(int i = 0; i < resourceObject.size(); i++){
+			if(resourceObject.get(i).objID == objID){
+				return resourceObject.get(i);
+			}
+		}
+		return null;
 	}
-	/*public void updatePos(){
+	public void updatePos(){
 		for(int i = 0; i < object.size(); i++){
 			for(Player p : server.players){
-				server.sendData(String.format("04Server: %s\n", p.serverID(), object.get(i).), ipAddress, port);
+				if(object.get(i).velX > 0 || object.get(i).velY > 0){
+					server.sendData(String.format("04Server: %s\n%d\nx: %d y: %d", p.serverID(), object.get(i).objID, (int) object.get(i).x, (int) object.get(i).y).getBytes(), p.getIP(), p.getPort());					
+				}
 			}
-			
 		}
-	}*/
+	}
 }

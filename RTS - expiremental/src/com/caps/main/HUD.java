@@ -56,8 +56,8 @@ public class HUD{
 			}
 		}
 		if(b == null && base != null && base.selected ){
-			handler.addObject(new Button(x, y -105, ID.Button, TYPE.Slave, 1060, 105));
-			handler.addObject(new Button(x, y - 105, ID.Button, TYPE.Tank, 1000, 105));
+			//handler.addObject(new Button(x, y -105, ID.Button, TYPE.Slave, 1060, 105));
+			//handler.addObject(new Button(x, y - 105, ID.Button, TYPE.Tank, 1000, 105));
 			base = (TownCenter) game.handler.findObject(ID.Base);
 			b = handler.getAllByID(ID.Button);
 			for(GameObject button : b){

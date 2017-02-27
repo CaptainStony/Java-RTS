@@ -9,12 +9,12 @@ import com.caps.main.ID;
 
 public class mousePoint extends GameObject{
 
-	private Handler handler;
+	//private Handler handler;
 	
-	public mousePoint(float x, float y, ID id, Handler handler) {
-		super(x, y, id);
+	public mousePoint(float x, float y, ID id, Handler handler, int objID) {
+		super(x, y, id, objID);
 		baseSpeed = 0;
-		this.handler = handler;
+		//this.handler = handler;
 	}
 	
 	@Override
@@ -32,7 +32,7 @@ public class mousePoint extends GameObject{
 	}
 	private void collision(){
 
-		for (int i = 0; i < handler.object.size(); i++) {
+		/*for (int i = 0; i < handler.object.size(); i++) {
 			
 			GameObject tempObject = handler.object.get(i);
 			if(tempObject.getEndPoint() == this){
@@ -43,7 +43,7 @@ public class mousePoint extends GameObject{
 					handler.removeObject(this);	
 				}
 			}
-		}
+		}*/
 
 	}
 

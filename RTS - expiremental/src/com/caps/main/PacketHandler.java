@@ -16,6 +16,9 @@ public class PacketHandler implements clientListener{
 	@Override
 	public void packetRecieved(DatagramPacket p, Game game) {
 		String[] msg = new String(p.getData()).split("\n");
+		for(int i = 0; i < msg.length; i++){
+			msg[i] = msg[i].trim();
+		}
 		String serverID = msg[0].split(" ")[1];
 		switch(msg[0].substring(0, 2)){
 		case "00":
@@ -30,23 +33,37 @@ public class PacketHandler implements clientListener{
 				String obj = msg[1].toLowerCase();
 				int x;
 				int y;
+				int objID;
 				switch(obj){
 				case "tree":
 					x = Integer.parseInt(msg[2].split(" ")[1].trim());
 					y = Integer.parseInt(msg[2].split(" ")[3].trim());
-					game.handler.addObject(new Wood(x, y, ID.Resource, game.handler));
+					objID = Integer.parseInt(msg[3]);
+					game.handler.addObject(new Wood(x, y, ID.Resource, game.handler, objID));
 					break;
 				case "slave":
 					x = Integer.parseInt(msg[2].split(" ")[1].trim());
 					y = Integer.parseInt(msg[2].split(" ")[3].trim());
-					game.handler.addObject(new Slave(x, y, ID.Slave, game.handler, game.grid));
+					objID = Integer.parseInt(msg[3]);
+					game.handler.addObject(new Slave(x, y, ID.Slave, game.handler, game.grid, objID));
 					break;
 				case "base":
 					x = Integer.parseInt(msg[2].split(" ")[1].trim());
 					y = Integer.parseInt(msg[2].split(" ")[3].trim());
-					game.handler.addObject(new TownCenter(x, y, ID.Base, game, game.handler));
+					objID = Integer.parseInt(msg[3].trim());
+					game.handler.addObject(new TownCenter(x, y, ID.Base, game, game.handler, objID));
 					break;
 				}
+			}
+			break;
+		case "04":
+			if(serverID.equals(Game.serverID)){
+				int objID = Integer.parseInt(msg[1].trim());
+				int x = Integer.parseInt(msg[2].split(" ")[1]);
+				int y = Integer.parseInt(msg[2].split(" ")[3]);
+				GameObject obj = game.handler.getByObjID(objID);
+				obj.setX(x);
+				obj.setY(y);
 			}
 			break;
 		default:

@@ -13,8 +13,8 @@ public class MiningParticle extends GameObject{
 
 	private Handler handler;
 	
-	public MiningParticle(float x, float y, ID id, Handler handler, RESOURCE resource) {
-		super(x, y, id);
+	public MiningParticle(float x, float y, ID id, Handler handler, RESOURCE resource, int objID) {
+		super(x, y, id, objID);
 		isResource = resource;
 		baseSpeed = 0;
 		Health = 30;
