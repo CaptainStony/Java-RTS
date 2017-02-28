@@ -3,21 +3,19 @@ package com.tfk.main;
 public class Ticker extends Thread{
 
 	private Server server;
-	private int i;
+	int i = 0;
 	public Ticker(Server server){
 		this.server = server;
 		this.start();
-		i = 0;
 	}
 	public void tick(){
-		i++;
 		server.handler.tick();
-		if(i % 3 == 0){
-			i = 0;
+		if(i % 2 == 0){
 			server.handler.updatePos();
 		}
+		
 	}
-	public void run(){
+	/*public void run(){
 	      long lastTime = System.nanoTime();
 	      double amountofTicks = 60.0;
 	      double ns = 1000000000 / amountofTicks;
@@ -35,5 +33,17 @@ public class Ticker extends Thread{
 	                      timer += 1000;
 	              }
 	      }
+	      this.sl
+	}*/
+	
+	public void run(){
+		tick();
+		i++;
+		try {
+			Thread.sleep(17);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		run();
 	}
 }

@@ -10,7 +10,7 @@ import java.util.LinkedList;
 
 public class Client extends Thread{
 	private InetAddress ipAddress;
-	private DatagramSocket socket;
+	protected DatagramSocket socket;
 	private Game game;
 	
 	interface clientListener{

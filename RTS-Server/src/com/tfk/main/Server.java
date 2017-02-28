@@ -34,7 +34,7 @@ interface serverListener{
 
 public class Server extends Thread{
 	
-	private DatagramSocket socket;
+	protected DatagramSocket socket;
 	
 	private final String[] serverID = new String[4];
 	protected LinkedList<Player> players = new LinkedList<Player>();

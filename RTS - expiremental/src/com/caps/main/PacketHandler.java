@@ -1,6 +1,7 @@
 package com.caps.main;
 
 import java.net.DatagramPacket;
+import java.sql.Timestamp;
 
 import com.caps.entities.Slave;
 import com.caps.entities.TownCenter;
@@ -10,6 +11,8 @@ import com.caps.resource.Wood;
 
 public class PacketHandler implements clientListener{
 
+	int pack = 0;
+	Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 	public PacketHandler(){
 		//kak
 	}
@@ -64,6 +67,9 @@ public class PacketHandler implements clientListener{
 				GameObject obj = game.handler.getByObjID(objID);
 				obj.setX(x);
 				obj.setY(y);
+				pack++;
+				timestamp.setTime(System.currentTimeMillis());
+				System.out.println(pack + " : " + timestamp.toString());
 			}
 			break;
 		default:
