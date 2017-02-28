@@ -63,7 +63,7 @@ public class Game extends Canvas implements Runnable{
 		
 		this.addMouseListener(mouseinput);
 		this.addMouseMotionListener(mouseinput);
-		Sound.backMusic.loop();
+		//Sound.backMusic.loop();
 	}
 	
 	public synchronized void start(){

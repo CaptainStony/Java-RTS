@@ -155,7 +155,7 @@ public class Handler {
 		for(int i = 0; i < object.size(); i++){
 			for(Player p : server.players){
 				if(object.get(i).velX > 0 || object.get(i).velY > 0){
-					server.sendData(String.format("04Server: %s\n%d\nx: %d y: %d", p.serverID(), object.get(i).objID, (int) object.get(i).x, (int) object.get(i).y).getBytes(), p.getIP(), p.getPort());					
+					server.sendData(String.format("04Server: %s\n%d\nx: %d y: %d", p.serverID(), object.get(i).objID, (int) object.get(i).x, (int) object.get(i).y).getBytes(), p.getIP(), p.getPort());
 				}
 			}
 		}

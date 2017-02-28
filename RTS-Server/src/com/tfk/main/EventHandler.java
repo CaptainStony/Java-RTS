@@ -34,7 +34,7 @@ public class EventHandler implements serverListener{
 			
 			for(int i = 0; i < server.handler.resourceObject.size(); i++){
 				obj = server.handler.resourceObject.get(i);
-				server.sendData(String.format("01Server: %s\ntree\nx: %d y: %d\nobjID", player.serverID(), (int) obj.getX(), (int) obj.getY(), obj.objID).getBytes(), player.getIP(), player.getPort());
+				server.sendData(String.format("01Server: %s\ntree\nx: %d y: %d\n%d", player.serverID(), (int) obj.getX(), (int) obj.getY(), obj.objID).getBytes(), player.getIP(), player.getPort());
 			}
 			
 			server.sendData(String.format("00Server: %s\nConnected", player.serverID()).getBytes(), player.getIP(), player.getPort());

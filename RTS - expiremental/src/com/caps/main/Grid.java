@@ -6,6 +6,11 @@ import java.util.LinkedList;
 public class Grid {
 	protected int[][] worldGrid = new int[75][75];
 	protected GridCell[][] gridCells = new GridCell[75][75];
+	protected GridCell[][] sector0 = new GridCell[75][15];
+	protected GridCell[][] sector1 = new GridCell[75][15];
+	protected GridCell[][] sector2 = new GridCell[75][15];
+	protected GridCell[][] sector3 = new GridCell[75][15];
+	protected GridCell[][] sector4 = new GridCell[75][15];
 	//public LinkedList<GridCell> path = new LinkedList<GridCell>();
 	private Handler handler;
 	
@@ -39,7 +44,17 @@ public class Grid {
 			    	 
 		        	}
 		        }
-
+		        if(j < 15){
+		        	sector0[i][j] = gridCells[i][j];
+		        }else if(j >= 15 && j < 30){
+		        	sector1[i][j-15] = gridCells[i][j];
+		        }else if(j >= 30 && j < 45){
+		        	sector2[i][j-30] = gridCells[i][j];
+		        }else if(j >= 45 && j < 60){
+		        	sector3[i][j-45] = gridCells[i][j];
+		        }else{
+		        	sector4[i][j-60] = gridCells[i][j];
+		        }
 		    }
 	    }
 	}

@@ -21,8 +21,6 @@ public class WorldGenerator
 				double value = noise.eval(x / FEATURE_SIZE, y / FEATURE_SIZE, 0.0);
 				if(value > 0.1 && value < 0.5 && y % 2 == 0 && !server.grid.gridCells[x][y].isWall){
 					server.handler.addObject(new Wood(x*20, y*20, ID.Resource, server.handler));
-					server.grid.findGridCellByRowAndCol(x, y).isWall = true;
-					
 				}else if(value < -0.1 && value > -0.14 && x % 2 == 0  && j < 30){
 					
 				}

@@ -99,8 +99,10 @@ public class MouseInput implements MouseListener,MouseMotionListener {
 						if(obj.getId() == ID.Slave){
 							Slave slave = (Slave) obj;
 							
-							for (int j = 0; j < handler.resourceObject.size(); j++) {
-								GameObject resObj = handler.resourceObject.get(j);
+							switch((int) Math.round(endPoint.y/300)){
+							case 0:
+								for(int j = 0; j < handler.resourceSec0.size(); j++){
+									GameObject resObj = handler.resourceSec0.get(j);
 									if(endPoint.rect.intersects(resObj.getBoundsTotal())){
 										slave.interactedResource = resObj;
 										break;
@@ -108,11 +110,58 @@ public class MouseInput implements MouseListener,MouseMotionListener {
 										slave.interactedResource = null;
 										slave.setCarry(0);
 									}
+								}
+								break;
+							case 1:
+								for(int j = 0; j < handler.resourceSec1.size(); j++){
+									GameObject resObj = handler.resourceSec1.get(j);
+									if(endPoint.rect.intersects(resObj.getBoundsTotal())){
+										slave.interactedResource = resObj;
+										break;
+									}else{
+										slave.interactedResource = null;
+										slave.setCarry(0);
+									}
+								}
+								break;
+							case 2:
+								for(int j = 0; j < handler.resourceSec2.size(); j++){
+									GameObject resObj = handler.resourceSec2.get(j);
+									if(endPoint.rect.intersects(resObj.getBoundsTotal())){
+										slave.interactedResource = resObj;
+										break;
+									}else{
+										slave.interactedResource = null;
+										slave.setCarry(0);
+									}
+								}
+								break;
+							case 3:
+								for(int j = 0; j < handler.resourceSec3.size(); j++){
+									GameObject resObj = handler.resourceSec3.get(j);
+									if(endPoint.rect.intersects(resObj.getBoundsTotal())){
+										slave.interactedResource = resObj;
+										break;
+									}else{
+										slave.interactedResource = null;
+										slave.setCarry(0);
+									}
+								}
+								break;
+							case 4:
+								for(int j = 0; j < handler.resourceSec4.size(); j++){
+									GameObject resObj = handler.resourceSec4.get(j);
+									if(endPoint.rect.intersects(resObj.getBoundsTotal())){
+										slave.interactedResource = resObj;
+										break;
+									}else{
+										slave.interactedResource = null;
+										slave.setCarry(0);
+									}
+								}
+								break;
 							}
 							game.client.sendData(String.format("04Server: %s\n%s\nx: %d y: %d\n%d", Game.uniqueID, "slave", (int) worldMouseX, (int) worldMouseY, slave.objID).getBytes()); 
-							//LinkedList<GridCell> path = grid.calculatePath(grid.findGridCellByXAndY((int) ((int)obj.getX()+obj.getBoundsTotal().getWidth()/2), (int) ((int)obj.getY()+obj.getBoundsTotal().getHeight()/2)), grid.findGridCellByXAndY(worldMouseX, worldMouseY),obj);
-							//slave.setPath(path);
-							
 						}else if (obj.getId() == ID.Archer){
 							Archer archer = (Archer) obj;
 							boolean noEnemy = true;

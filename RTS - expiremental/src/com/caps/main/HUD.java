@@ -100,7 +100,7 @@ public class HUD{
 				}else{
 					g.setColor(Color.white);
 				}
-				g.fillRect(x-(i*2)-20, y-(j*2)-650, 2, 2);
+				g.fillRect(x+(i*2)-168, y+(j*2)-798, 2, 2);
 			}
 		}
 		g.setColor(Color.black);

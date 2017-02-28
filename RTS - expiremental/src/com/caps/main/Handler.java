@@ -12,6 +12,11 @@ public class Handler {
 	public LinkedList<GameObject> object = new LinkedList<GameObject>();
 	public LinkedList<BuildingObject> buildingObject = new LinkedList<BuildingObject>();
 	public LinkedList<GameObject> resourceObject = new LinkedList<GameObject>();
+	public LinkedList<GameObject> resourceSec0 = new LinkedList<GameObject>();
+	public LinkedList<GameObject> resourceSec1 = new LinkedList<GameObject>();
+	public LinkedList<GameObject> resourceSec2 = new LinkedList<GameObject>();
+	public LinkedList<GameObject> resourceSec3 = new LinkedList<GameObject>();
+	public LinkedList<GameObject> resourceSec4 = new LinkedList<GameObject>();
 	public LinkedList<GameObject> pointers = new LinkedList<GameObject>();
 
 	//private HUD hud = new HUD();
@@ -70,6 +75,23 @@ public class Handler {
 	public void addObject(GameObject object){
 		if(object.id == ID.Resource){
 			this.resourceObject.add(object);
+			switch((int) Math.round(object.y/300)){
+			case 0:
+				resourceSec0.add(object);
+				break;
+			case 1:
+				resourceSec1.add(object);
+				break;
+			case 2:
+				resourceSec2.add(object);
+				break;
+			case 3:
+				resourceSec3.add(object);
+				break;
+			case 4:
+				resourceSec4.add(object);
+				break;
+			}
 		}else if(object.id == ID.MousePointer){
 			this.pointers.add(object);
 		}else{
@@ -82,6 +104,23 @@ public class Handler {
 	public void removeObject(GameObject object){
 		if(object.getId() == ID.Resource){
 			resourceObject.remove(object);
+			switch((int) Math.round(object.y/300)){
+			case 0:
+				resourceSec0.remove(object);
+				break;
+			case 1:
+				resourceSec1.remove(object);
+				break;
+			case 2:
+				resourceSec2.remove(object);
+				break;
+			case 3:
+				resourceSec3.remove(object);
+				break;
+			case 4:
+				resourceSec4.remove(object);
+				break;
+			}
 		}else if(object.id == ID.MousePointer){
 			this.pointers.remove(object);
 		}else{

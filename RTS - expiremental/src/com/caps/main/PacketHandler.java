@@ -67,6 +67,7 @@ public class PacketHandler implements clientListener{
 			}
 			break;
 		default:
+			System.out.println("Junk packet");
 			System.out.println(new String(p.getData()).trim());
 			break;
 		}

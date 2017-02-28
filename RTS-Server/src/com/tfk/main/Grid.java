@@ -6,7 +6,11 @@ import java.util.LinkedList;
 public class Grid {
 	protected int[][] worldGrid = new int[75][75];
 	protected GridCell[][] gridCells = new GridCell[75][75];
-	//public LinkedList<GridCell> path = new LinkedList<GridCell>();
+	protected GridCell[][] sector0 = new GridCell[75][15];
+	protected GridCell[][] sector1 = new GridCell[75][15];
+	protected GridCell[][] sector2 = new GridCell[75][15];
+	protected GridCell[][] sector3 = new GridCell[75][15];
+	protected GridCell[][] sector4 = new GridCell[75][15];
 	private Handler handler;
 	
 	public Grid(Handler handler){
@@ -17,31 +21,37 @@ public class Grid {
 	public void loadGrid(){
 		for(int i = 0; i < 75; i++){
 			for(int j = 0; j < 75; j++){
-		        gridCells[i][j] = new GridCell(i*20, j*20, i, j);
-		        for (int j2 = 0; j2 < handler.buildingObject.size(); j2++) {
+				gridCells[i][j] = new GridCell(i*20, j*20, i, j);
+		        for (int k = 0; k < handler.buildingObject.size(); k++) {
 		        	
-		        	if(gridCells[i][j].getBoundsTotal().intersects(handler.buildingObject.get(j2).getBoundsTotal())){
-				    	  worldGrid[i][j] = 1;
-				    	  gridCells[i][j].setWall(true);
-			    	 
+		        	if(gridCells[i][j].getBoundsTotal().intersects(handler.buildingObject.get(k).getBoundsTotal())){
+		        		worldGrid[i][j] = 1;
+				    	gridCells[i][j].setWall(true);
+			    	
 		        	}
 				}
 		        for(int k = 0; k < handler.object.size(); k++){
 		        	if(gridCells[i][j].getBoundsTotal().intersects(handler.object.get(k).getBoundsTotal())){
-		        		
 		        		if(handler.object.get(k).getId() == ID.Base){
-				    	    worldGrid[i][j] = 1;
-				    	    gridCells[i][j].setWall(true);
-				    	}else{
-				    	   	/*worldGrid[i][j] = 0;
-				    	    gridCells[i][j].setWall(false);*/
+		        			worldGrid[i][j] = 1;
+		        			gridCells[i][j].setWall(true);
 		        		}
-			    	 
 		        	}
 		        }
-
+		        if(j < 15){
+		        	sector0[i][j] = gridCells[i][j];
+		        }else if(j >= 15 && j < 30){
+		        	sector1[i][j-15] = gridCells[i][j];
+		        }else if(j >= 30 && j < 45){
+		        	sector2[i][j-30] = gridCells[i][j];
+		        }else if(j >= 45 && j < 60){
+		        	sector3[i][j-45] = gridCells[i][j];
+		        }else{
+		        	sector4[i][j-60] = gridCells[i][j];
+		        }
 		    }
 	    }
+		
 	}
 	public void followPath (LinkedList<GridCell> path,GameObject entity){
 		Rectangle interRect = entity.getBoundsTotal();
@@ -94,7 +104,6 @@ public class Grid {
 							}
 	
 								adjCell.H = Math.abs(adjCell.getRow() - endCell.getRow()) + Math.abs(adjCell.getCol() - endCell.getCol());
-								//adjCell.H = adjCell.H*2;
 								adjCell.F = adjCell.G + adjCell.H;
 	
 								allAdjCells.add(adjCell);
@@ -106,11 +115,7 @@ public class Grid {
 				if(entity.cnt == 0){
 					entity.tempPath.removeLast();
 					entity.openList.removeAll(prevAdjCells);
-					//entity.openList.clear();
-					//System.out.println("No open cells");
 				}else{
-					//System.out.println("Open cells: " + entity.cnt);
-
 					int lowest = 99999999;
 					GridCell lowestFCell = null;
 					for (int i = 0; i < allAdjCells.size(); i++) {
