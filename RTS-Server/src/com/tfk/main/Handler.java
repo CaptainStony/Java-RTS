@@ -157,7 +157,7 @@ public class Handler {
 	public void updatePos(){
 		for(int i = 0; i < object.size(); i++){
 			for(Player p : server.players){
-				if(object.get(i).getVelX() > 0 || object.get(i).getVelY() > 0){
+				if(object.get(i).getPath() != null){
 					server.sendData(String.format("04Server: %s\n%d\nx: %d y: %d", p.serverID(), object.get(i).objID, (int) object.get(i).x, (int) object.get(i).y).getBytes(), p.getIP(), p.getPort());
 					pack++;
 					timestamp.setTime(System.currentTimeMillis());
