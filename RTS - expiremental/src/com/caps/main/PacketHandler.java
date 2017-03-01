@@ -19,6 +19,7 @@ public class PacketHandler implements clientListener{
 	@Override
 	public void packetRecieved(DatagramPacket p, Game game) {
 		String[] msg = new String(p.getData()).split("\n");
+		System.out.println(new String(p.getData()).trim());
 		for(int i = 0; i < msg.length; i++){
 			msg[i] = msg[i].trim();
 		}
@@ -78,5 +79,4 @@ public class PacketHandler implements clientListener{
 			break;
 		}
 	}
-
 }

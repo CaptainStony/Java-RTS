@@ -17,6 +17,7 @@ public class EventHandler implements serverListener{
 
 		GameObject obj;
 		
+		
 		if (server.players.size() == 1) {
 			server.handler.addObject(new TownCenter(0, 0, BUILDINGTYPE.Base, server.handler, player.getID()));
 			server.sendData(String.format("01Server: %s\nbase\nx: %d y: %d\n%d", player.serverID(), 0, 0, server.handler.buildingObject.getLast().getObjID()).getBytes(), player.getIP(), player.getPort());

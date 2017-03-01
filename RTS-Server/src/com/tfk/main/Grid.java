@@ -57,8 +57,8 @@ public class Grid {
 		Rectangle interRect = entity.getBoundsTotal();
 		if (path.size() > entity.step && !interRect.intersects(path.getLast().getBoundsTotal())) {
 			GridCell cell = path.get(entity.step);
-		    Coordinate pointer  = new Coordinate((int) cell.getX()+10, (int) cell.getY()+10, 4, 4);
-		    handler.goToCords(pointer.getX()+10, pointer.getY()+10, entity);
+		    Coordinate pointer  = new Coordinate((int) cell.getX()-10, (int) cell.getY()-10, 4, 4);
+		    handler.goToCords(pointer.getX()-10, pointer.getY()-10, entity);
 		   
 		    if(interRect.intersects(pointer.rect)){
 		    	entity.step++;
