@@ -24,8 +24,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import com.tfk.structures.TownCenter;
 import com.tfk.structures.BuildingObject.BUILDINGTYPE;
+import com.tfk.structures.TownCenter;
 
 interface serverListener{
 	void playerConnected(Player player);

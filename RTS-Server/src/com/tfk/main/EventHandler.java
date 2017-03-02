@@ -3,6 +3,7 @@ package com.tfk.main;
 import java.net.DatagramPacket;
 import java.util.LinkedList;
 
+import com.tfk.entities.Archer;
 import com.tfk.entities.Slave;
 import com.tfk.structures.BuildingObject.BUILDINGTYPE;
 import com.tfk.structures.TownCenter;
@@ -26,9 +27,10 @@ public class EventHandler implements serverListener{
 				server.sendData(String.format("01Server: %s\ntree\nx: %d y: %d\n%d", player.serverID(), (int) obj.getX(), (int) obj.getY(), obj.objID).getBytes(), player.getIP(), player.getPort());
 			}
 			server.sendData(String.format("00Server: %s\nConnected", player.serverID()).getBytes(), player.getIP(), player.getPort());
-			server.handler.addObject(new Slave(200,200, ID.Slave, server.handler, server.grid, player.getID()));
-			server.sendData(String.format("01Server: %s\nslave\nx: %d y: %d\n%d", player.serverID(), 200, 200, server.handler.object.getLast().objID).getBytes(), player.getIP(), player.getPort());
-			
+			//server.handler.addObject(new Slave(200,200, ID.Slave, server.handler, server.grid, player.getID()));
+			//server.sendData(String.format("01Server: %s\nslave\nx: %d y: %d\n%d", player.serverID(), 200, 200, server.handler.object.getLast().objID).getBytes(), player.getIP(), player.getPort());
+			addObject(ID.Slave, 200, 200, player);
+			addObject(ID.Archer, 300, 300, player);
 		}else if(server.players.size() == 2){
 			server.handler.addObject(new TownCenter(1300,1300,BUILDINGTYPE.Base, server.handler,player.getID()));
 			server.sendData(String.format("01Server: %s\nbase\nx: %d y: %d\n%d", player.serverID(), 1300, 1300, server.handler.object.getLast().objID).getBytes(), player.getIP(), player.getPort());
@@ -40,10 +42,20 @@ public class EventHandler implements serverListener{
 			
 			server.sendData(String.format("00Server: %s\nConnected", player.serverID()).getBytes(), player.getIP(), player.getPort());
 			
-			server.handler.addObject(new Slave(1200, 1200, ID.Slave, server.handler, server.grid, player.getID()));
-			server.sendData(String.format("01Server: %s\nslave\nx: %d y: %d\n%d", player.serverID(), 1200, 1200, server.handler.object.getLast().objID).getBytes(), player.getIP(), player.getPort());
+			addObject(ID.Slave, 1200, 1200, player);
+			addObject(ID.Archer, 1300, 1300, player);
 			
 			server.addServerText("Connection packet sent.");
+		}
+	}
+	public void addObject(ID id, int x, int y, Player player){
+		if(id == ID.Slave){
+			server.handler.addObject(new Slave(x, y, id, server.handler, server.grid, player.getID()));
+			server.sendData(String.format("01Server: %s\nslave\nx: %d y: %d\n%d", player.serverID(), x, y, server.handler.object.getLast().objID).getBytes(), player.getIP(), player.getPort());
+		}else if (id == ID.Archer){
+			server.handler.addObject(new Archer(x, y, id, server.handler, server.grid, server, player.getID()));
+			server.sendData(String.format("01Server: %s\narcher\nx: %d y: %d\n%d", player.serverID(), x, y, server.handler.object.getLast().objID).getBytes(), player.getIP(), player.getPort());
+		
 		}
 	}
 	@Override

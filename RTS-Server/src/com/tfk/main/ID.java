@@ -1,6 +1,7 @@
 package com.tfk.main;
 
 public enum ID{
+	
 	MousePointer(),
 	Tank(),
 	Slave(),

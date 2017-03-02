@@ -12,6 +12,7 @@ public class WorldGenerator
 
 	public void run(long i, Server server)
 		throws IOException {
+		i = 2;
 		OpenSimplexNoise noise = new OpenSimplexNoise(i);
 		int j = 0;
 		for (int x = 0; x < WIDTH; x++)
